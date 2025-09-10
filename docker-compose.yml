@@ -1,0 +1,19 @@
+services:
+  vue:
+    build:
+      context: .  #Dockerfile 所在目录
+      dockerfile: Dockerfile 
+    image: tenantweb  #镜像名称
+    environment: 
+      VUE_APP_AUTH_URL: http://111.67.201.26:5000
+      VUE_APP_TENANT_URL: http://111.67.201.26:5003/
+      VUE_APP_MANAGE_URL: http://111.67.201.26:5002
+      VUE_APP_SERVER_URL: http://111.67.201.26:5004
+   # restart: unless-stopped
+   # network_mode: "host"
+    privileged: true
+    container_name: tenantweb
+    volumes:
+      - /logs:/logs
+    ports:
+      - 5004:80

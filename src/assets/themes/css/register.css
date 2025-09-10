@@ -1,0 +1,58 @@
+.regtitle {
+    line-height: 60px;
+    height: 60px;
+    text-align: center;
+    font-size: 24px;
+    margin-top: 20px;
+}
+
+body {
+    background-image: url(../images/regbg.jpg);
+    background-size: cover;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.register .layui-form {
+    margin-top: 20px;
+    width: 50%;
+    margin-bottom: 50px;
+}
+
+.layui-input-block {
+    height: 50px;
+}
+
+.layui-input {
+    height: 50px;
+    border: 1px solid #aaaaaa;
+}
+
+.layui-form-label {
+    height: 50px !important;
+    line-height: 35px !important;
+    border: 1px solid #aaaaaa !important;
+}
+
+.layui-btn {
+    height: 50px;
+}
+
+.btn-send {
+    background-color: #7AC23C;
+}
+
+.layui-btn:disabled {
+    border: 1px solid #DDD;
+    background-color: #FBFBFB;
+    color: #ACA899;
+    cursor: not-allowed;
+}
+
+.btn-sub {
+    height: 50px;
+    font-size: 16px;
+}
+
+.margin-r {
+    margin-right: 0 !important;
+}

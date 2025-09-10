@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="uft-8">
+  <title>Waiting...</title>
+  <!-- <script src="http://cdn.bootcss.com/jquery/1.12.3/jquery.min.js"></script>
+  <script src="../static/layer/layer.js"></script> -->
+</head>
+
+<body>
+  <script src="oidc-client.js"></script>
+  <script>
+    var mgr = new Oidc.UserManager({
+      userStore: new Oidc.WebStorageStateStore(),
+      loadUserInfo: true,
+      filterProtocolClaims: true
+    });
+    mgr.signinRedirectCallback().then(function (user) {
+      console.log('callback.html success');
+      var index = parent.layer.getFrameIndex(window.name);
+      if (!index) {
+        window.location.href = '../#/main/home';
+      } else {
+        console.log('index:', index);
+        parent.layer.close(index);
+      }
+     });//.catch(function (err) {
+    //   console.log(err);
+    // });
+  </script>
+</body>
+
+</html>

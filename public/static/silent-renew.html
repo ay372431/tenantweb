@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Silent Renew Token for SpeEDI Cargo</title>
+</head>
+<body>
+    <script src='oidc-client.js'></script>
+    <script>        
+        new Oidc.UserManager({ userStore: new Oidc.WebStorageStateStore({ store: window.localStorage }), loadUserInfo: true, filterProtocolClaims: true }).signinSilentCallback();
+    </script>
+</body>
+</html>
