@@ -1602,7 +1602,7 @@ export default {
             minAmount: this.baseInfo.minMoney,
             maxAmount: this.baseInfo.maxMoney,
             fixedAmountGroup: this.baseInfo.fixedMoney,
-            isTongQu: his.baseInfo.isTongQu,
+            isTongQu: this.baseInfo.isTongQu,
             gameName: this.baseInfo.gameMing,
             rechargeWay: this.baseInfo.chargetype,
             // 激励详情

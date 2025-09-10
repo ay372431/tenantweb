@@ -847,7 +847,7 @@ export default {
       this.$api.partinstall
         .delMachineCode([data])
         .then(data => {
-          if ((this.serverIp = data)) {
+          if (this.serverIp === data) {
             this.serverIp = '';
           }
           this.getequipcode();
