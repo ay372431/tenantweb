@@ -60,7 +60,7 @@
           </el-form-item>
         </el-form>
       </div>
-      <div style="height:310px;border-right:1px dashed #888;float:left;"></div>
+      <div style="height:460px;border-right:1px dashed #888;float:left;"></div>
       <div class="alignmentright">
         <h4 style="padding-left: 20px;">整区补发</h4>
         <el-form label-width="100px">

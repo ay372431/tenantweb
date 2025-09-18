@@ -7,7 +7,7 @@
  -->
 <template>
   <div class="home">
-    <div class="gs_title">分区管理</div>
+    <div class="gs_title" style="color: white;">分区管理</div>
     <div class="opeartbox">
       <ul class="clearfix">
         <li>
@@ -84,11 +84,13 @@
           <el-table-column prop="serverIp" label="服务器" width="120">
           </el-table-column>
           <el-table-column prop="scriptPath" label="路径">
+          <el-table-column prop="scriptPath" label="通区充值">
+          </el-table-column>
           </el-table-column>
           <el-table-column prop="name" label="操作" width='450'>
             <template slot-scope="scope">
               <el-button-group>
-                <el-button size="mini" type="primary" @click="rechargeTeam(scope.row.uuid)">充值链接</el-button>
+                <el-button size="mini" type="primary" @click="rechargeTeam(scope.row.uuid)">充值</el-button>
                 <el-button size="mini" type="primary" @click="checklink(scope.row.id, scope.$index)"
                   :loading="!checkflag && checkIndex === scope.$index">检测</el-button>
                 <el-button size="mini" type="primary" @click="editarea(scope.row.id)">编辑</el-button>

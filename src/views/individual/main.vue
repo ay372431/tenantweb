@@ -66,7 +66,7 @@
         <div class="slider"  :style="sliderStyle">
           <div class="top_tit" :style="headerStyle">个人中心</div>
           <ul>
-            <li  :style="sliderStyle">
+            <li  :style="sliderStyle" style="margin-top: 10px;">
               <span class="icon1" style="" @click="refresh('/personal/baseInfo')"
                 >用户信息</span
               >

@@ -72,7 +72,7 @@
         <div class="slider" :style="sliderStyle">
           <div class="top_tit" :style="headboxStyle">控制面板</div>
           <ul>
-            <li :style="sliderStyle">
+            <li :style="sliderStyle" style="margin-top: 10px;">
               <span class="icon1" @click="refresh('/main/partmodules')"
                 >分区模板</span
               >
@@ -289,45 +289,45 @@ export default {
     headboxStyle() {
       switch (this.skinNum) {
         case 1: return { background: '#88434f',color: 'white'};
-        case 2: return { background: '#0398d6',color: 'white' };
+        case 2: return { background: '#2d3338',color: 'white' };
         case 3: return { background: '#3370ff',color: 'white'};
         case 4: return { background: '#d75f28',color: 'white' };
         case 5: return { background: '#88434f',color: 'white'};
         case 6: return { background: '#5d4aee',color: 'white' };
-        default: return { background: '#2d3338',color: 'white' };
+        default: return { background: '#0398d6',color: 'white' };
       }
     },
     sliderStyle() {
       switch (this.skinNum) {
         case 1: return { background: '#eee2e4', color: 'grey' };
-        case 2: return { background: '#e0eaf2', color: 'grey' };
+        case 2: return { background: 'var(--312143a6)', color: 'grey' };
         case 3: return { background: '#e5e6f6', color: 'grey' };
         case 4: return { background: '#f6e5e0', color: 'grey' };
         case 5: return { background: '#e9e3f4', color: 'grey' };
         case 6: return { background: '#e5e0e2', color: 'grey' };
-        default: return { background: 'var(--312143a6)', color: 'grey' };
+        default: return { background: 'linear-gradient(to bottom,#f2f2f2 0,#f8f8f8 100%', color: 'grey' };;
       }
     },
     activeNavStyle() {
       switch (this.skinNum) {
         case 1: return { background: '#b5c9b8', color: '#fff' }; // 莫兰迪绿
-        case 2: return { background: '#a7c7e7', color: '#fff' }; // 莫兰迪蓝
+        case 2: return { background: '#b5c9b8', color: '#fff' }; // 莫兰迪蓝
         case 3: return { background: '#b7afc6', color: '#fff' }; // 莫兰迪紫
         case 4: return { background: '#e6c1c5', color: '#fff' }; // 莫兰迪粉
         case 5: return { background: '#e9d7a5', color: '#fff' }; // 莫兰迪黄
         case 6: return { background: '#b4b8ab', color: '#fff' }; // 莫兰迪灰
-        default: return { background: '#b5c9b8', color: '#fff' };
+        default: return { background: '#a7c7e7', color: '#fff' };
       }
     },
     hoverNavStyle() {
       switch (this.skinNum) {
         case 1: return { background: '#b5c9b8', color: '#fff' }; // 莫兰迪绿加深
-        case 2: return { background: '#a7c7e7', color: '#fff' }; // 莫兰迪蓝加深
+        case 2: return { background: '#b5c9b8', color: '#fff' }; // 莫兰迪蓝加深
         case 3: return { background: '#b7afc6', color: '#fff' }; // 莫兰迪紫加深
         case 4: return { background: '#e6c1c5', color: '#fff' }; // 莫兰迪粉加深
         case 5: return { background: '#e9d7a5', color: '#fff' }; // 莫兰迪黄加深
         case 6: return { background: '#b4b8ab', color: '#fff' }; // 莫兰迪灰加深
-        default: return { background: '#b5c9b8', color: '#fff' };
+        default: return { background: '#a7c7e7', color: '#fff' };
       }
     },
   },

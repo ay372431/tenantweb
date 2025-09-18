@@ -6,8 +6,9 @@
           <div style="display: flex;justify-content: center;align-items: center;">
             <el-upload class="avatar-uploader" accept=".jpg,.jpeg,.png" action="" :http-request="() => { }"
               :before-upload="fileSelect" :show-file-list="false">
-              <img v-if="userInfo.imgurl" :src="userInfo.imgurl" class="avatar">
-              <img v-else src="../assets/images/header.png" class="avatar">
+              <!-- <img v-if="userInfo.imgurl" :src="userInfo.imgurl" class="avatar"> -->
+              <!-- <img v-else src="../assets/images/header.png" class="avatar"> -->
+               <img src="../assets/images/header.png" class="avatar">
             </el-upload>
             <div class="textbox" style="margin-left: 15px;">
               <!-- <p class="acout">{{ userInfo.userName }}
@@ -20,7 +21,7 @@
               </p> -->
               <p class="acout">{{ userInfo.userName }}</p>
               <p class="text">ID：{{ userInfo.id }}</p>
-              <p class="text">{{ userInfo.ip?userInfo.ip:"127.0.0.1" }}</p>
+              <p class="text">IP：{{ userInfo.ip?userInfo.ip:"127.0.0.1" }}</p>
               <!-- <p class="range"><span>{{ userInfo.type ? '代理' : '商户' }}</span></p> -->
             </div>
           </div>
@@ -46,10 +47,10 @@
       <div class="topinfo clearfix" style="height: 150px;width: 76%;">
         <div class="moneybox gs_shadow" style="height: 97%;">
           <div class="numberbox">
-            <ul class="clearfix">
+            <ul class="clearfix" style="border-bottom: 1px dashed #ccc">
               <li>
                 <p class="tit">账户余额</p>
-                <p style="color: blue;" class="number">{{ accountInfo.accout }}</p>
+                <p style="color: blue;font-weight: bold;" class="number">{{ accountInfo.accout }}</p>
               </li>
               <!-- <li>
                 <p class="tit">冻结金额</p>
@@ -57,18 +58,18 @@
               </li> -->
               <li>
                 <p class="tit">可提现金额</p>
-                <p style="color: #ff4440;" class="number">{{ accountInfo.withdraw }}</p>
+                <p style="color: #ff4440;font-weight: bold" class="number">{{ accountInfo.withdraw }}</p>
               </li>
               <li class="linebox">
                 <p class="line"></p>
               </li>
               <li>
                 <p class="tit">提现中金额</p>
-                <p style="color: green;" class="number">{{ cashInfo.amount }}</p>
+                <p style="color: green;font-weight: bold" class="number">{{ cashInfo.amount }}</p>
               </li>
               <li>
                 <p class="tit">提现手续费</p>
-                <p class="number">{{ cashInfo.fee }}</p>
+                <p class="number" style="font-weight: bold">{{ cashInfo.fee }}</p>
               </li>
             </ul>
             <div class="getbtn">
@@ -426,7 +427,7 @@
       <el-divider content-position="left">商户后台</el-divider>
       <ul class="areaContainer clearfix">
         <li :class="{ on: dialogSkins.skinNums === 0 }" @click="handleSkinChange(0)">
-          <el-tooltip class="item" effect="dark" content="默认皮肤（莫兰迪）" placement="bottom">
+          <el-tooltip class="item" effect="dark" content="默认皮肤（怀旧）" placement="bottom">
             <img class="imgskin" src="../assets/images/skin0.jpg" alt="">
           </el-tooltip>
         </li>
@@ -436,7 +437,7 @@
           </el-tooltip>
         </li>
         <li :class="{on:dialogSkins.skinNums===2}" @click="handleSkinChange(2)">
-          <el-tooltip class="item" effect="dark" content="天蓝色" placement="bottom">
+          <el-tooltip class="item" effect="dark" content="莫兰迪" placement="bottom">
             <img class="imgskin" src="../assets/images/skin2.jpg" alt="">
           </el-tooltip>
         </li>
@@ -1278,7 +1279,7 @@ export default {
             display: inline-block;
             height: 48px;
             width: 1px;
-            background: #63aafa;
+            background: #ccc;
           }
         }
 
@@ -1307,7 +1308,7 @@ export default {
       span {
         display: inline-block;
         font-size: 14px;
-        color: #63aafa;
+        color: #0a57ac;
         cursor: pointer;
         margin-top: 8px;
 
@@ -1325,7 +1326,7 @@ export default {
     padding: 2px 20px 1px;
     
     .chargebox_t{
-        border: 1px solid #eaedf1;
+        border: 1px solid #facd89;
         padding: 0 15px ;
         margin-bottom: 15px;
     }
@@ -1333,7 +1334,7 @@ export default {
       display: flex;
       flex-flow: row nowrap;
       justify-content: space-between;
-      border-bottom: 1px dashed #63aafa;
+      border-bottom: 1px dashed #ccc;
       padding: 20px 0 21px;
 
       li {
@@ -1421,8 +1422,8 @@ export default {
         }
 
         .text {
-          font-size: 16px;
-          color: #222;
+          font-size: 14px;
+          color: #777;
           margin-top: 5px;
           margin-bottom: 5px;
         }
@@ -1452,7 +1453,7 @@ export default {
         display: inline-block;
         width: 82px;
         border-right: 1px solid #63aafa;
-        font-size: 12px;
+        font-size: 14px;
 
         &.noboder {
           border-right: none;
@@ -1460,7 +1461,7 @@ export default {
 
         span {
           cursor: pointer;
-          color: #63aafa;
+          color: #0a57ac;
         }
       }
     }
