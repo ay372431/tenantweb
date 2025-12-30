@@ -9,58 +9,47 @@
   <div class="main">
     <div class="header" :style="headboxStyle">
       <div class="headbox clearfix" :style="headboxStyle" style="display: flex;">
-        <div class="logo"><img src="http://www.10pay.com/themes/ucenter/default/images/uc.png" alt="" /></div>
+        <div class="logo"><img src="../assets//img/logo3.png" style="width: 154px;height: 40px;" alt="" /></div>
         <ul class="navbox clearfix" style="width: 75%;">
-          <li 
-          :class="{ active: activeNav === '/main/home' }" 
-          :style="activeNav === '/main/home' ? activeNavStyle : (hoverNav === '/main/home' ? hoverNavStyle : null)"
-          
-          @click="setActive('/main/home')">
+          <li v-if="hasMenu(1) || $store.state.settlementType != 3" :class="{ active: activeNav === '/main/home' }"
+            :style="activeNav === '/main/home' ? activeNavStyle : (hoverNav === '/main/home' ? hoverNavStyle : null)"
+            @click="setActive('/main/home')">
             <span class="icon1">首页</span>
           </li>
-          <li 
-          :class="{ active: activeNav === '/main/Ordermanagement' }" 
-          :style="activeNav === '/main/Ordermanagement' ? activeNavStyle : (hoverNav === '/main/Ordermanagement' ? hoverNavStyle : null)"
-          
-          @click="setActive('/main/Ordermanagement')">
-            <span class="icon1">订单管理</span
-            >
+          <li v-if="hasMenu(2) || $store.state.settlementType != 3"
+            :class="{ active: activeNav === '/main/Ordermanagement' }"
+            :style="activeNav === '/main/Ordermanagement' ? activeNavStyle : (hoverNav === '/main/Ordermanagement' ? hoverNavStyle : null)"
+            @click="setActive('/main/Ordermanagement')">
+            <span class="icon1">订单管理</span>
           </li>
-          <li 
-          :class="{ active: activeNav === '/main/Zoningmanagement' }" 
-          :style="activeNav === '/main/Zoningmanagement' ? activeNavStyle : (hoverNav === '/main/Zoningmanagement' ? hoverNavStyle : null)"
-          
-          @click="setActive('/main/Zoningmanagement')">
-            <span class="icon1">分区管理</span
-            >
+          <li v-if="(hasMenu(3) && (hasMenu(12) && hasMenu(13))) || $store.state.settlementType != 3"
+            :class="{ active: activeNav === '/main/Zoningmanagement' }"
+            :style="activeNav === '/main/Zoningmanagement' ? activeNavStyle : (hoverNav === '/main/Zoningmanagement' ? hoverNavStyle : null)"
+            @click="setActive('/main/Zoningmanagement')">
+            <span class="icon1">分区管理</span>
           </li>
-          <li 
-          :class="{ active: activeNav === '/main/DA' }" 
-          :style="activeNav === '/main/DA' ? activeNavStyle : (hoverNav === '/main/DA' ? hoverNavStyle : null)"
-          
-          @click="setActive('/main/DA')">
+          <li v-if="hasMenu(4) || $store.state.settlementType != 3" :class="{ active: activeNav === '/main/DA' }"
+            :style="activeNav === '/main/DA' ? activeNavStyle : (hoverNav === '/main/DA' ? hoverNavStyle : null)"
+            @click="setActive('/main/DA')">
             <span class="icon1">数据分析</span>
           </li>
-          <li @click="refresh('/personal')"
-          :style="hoverNav === 'account' ? hoverNavStyle : null"
-          >
+          <li @click="setActive('/personal/baseInfo')" v-if="$store.state.settlementType != 3"
+            :class="{ active: activeNav === '/personal' || activeNav === '/personal/baseInfo' }"
+            :style="activeNav === '/personal' || activeNav === '/personal/baseInfo' ? activeNavStyle : (hoverNav === '/personal' ? hoverNavStyle : null)">
             <span class="icon1">账户管理</span>
           </li>
-          <li v-if="$store.state.isEnabledPaid" @click="refresh('/behalf')"
-          :style="hoverNav === 'paid' ? hoverNavStyle : null"
-          >
+          <li v-if="$store.state.isEnabledPaid && $store.state.settlementType != 3" @click="setActive('/behalf')"
+            :class="{ active: activeNav === '/behalf' }" :style="hoverNav === '/behalf' ? hoverNavStyle : null">
             <span class="icon1">代付管理</span>
           </li>
-          <li v-if="userType" @click="refresh('/agentsystem')"
-          :style="hoverNav === 'agent' ? hoverNavStyle : null"
-          >
+          <li v-if="$store.state.userType && $store.state.settlementType != 3" @click="setActive('/agentsystem')"
+            :class="{ active: activeNav === '/agentsystem' }"
+            :style="hoverNav === '/agentsystem' ? hoverNavStyle : null">
             <span class="icon1">代理系统</span>
           </li>
-          <li 
-          :class="{ active: activeNav === '/main/employee' }" 
-          :style="activeNav === '/main/employee' ? activeNavStyle : (hoverNav === '/main/employee' ? hoverNavStyle : null)"
-          
-          @click="setActive('/main/employee')">
+          <li v-if="$store.state.settlementType != 3" :class="{ active: activeNav === '/employee' }"
+            :style="activeNav === '/employee' ? activeNavStyle : (hoverNav === '/employee' ? hoverNavStyle : null)"
+            @click="setActive('/employee')">
             <span class="icon1">员工管理</span>
           </li>
         </ul>
@@ -72,40 +61,32 @@
         <div class="slider" :style="sliderStyle">
           <div class="top_tit" :style="headboxStyle">控制面板</div>
           <ul>
-            <li :style="sliderStyle" style="margin-top: 10px;">
-              <span class="icon1" @click="refresh('/main/partmodules')"
-                >分区模板</span
-              >
+            <li v-if="hasMenu(11) || $store.state.settlementType != 3" :style="sliderStyle" style="margin-top: 10px;">
+              <span class="icon1" @click="refresh('/main/partmodules')">分区模板</span>
             </li>
-            <li :style="sliderStyle">
-              <span class="icon2" @click="refresh('/main/partinstalls')"
-                >安装分区</span
-              >
+            <li v-if="hasMenu(12) || $store.state.settlementType != 3" :style="sliderStyle">
+              <span class="icon2" @click="refresh('/main/partinstalls')">安装分区</span>
             </li>
-            <li :style="sliderStyle">
-              <span class="icon3" @click="refresh('/main/Zoningmanagement')"
-                >分区管理</span
-              >
+            <li v-if="hasMenu(13) || $store.state.settlementType != 3" :style="sliderStyle">
+              <span class="icon3" @click="refresh('/main/Zoningmanagement')">分区管理</span>
             </li>
-            <li :style="sliderStyle">
-              <span class="icon4" @click="refresh('/main/Groupmanagement')"
-                >分组管理</span
-              >
+            <li v-if="hasMenu(14) || $store.state.settlementType != 3" :style="sliderStyle">
+              <span class="icon4" @click="refresh('/main/Groupmanagement')">分组管理</span>
             </li>
-            <li :style="sliderStyle">
-              <span class="icon6" @click="refresh('/main/Orderreissue')"
-                >订单补发</span
-              >
+            <li v-if="hasMenu(15) || $store.state.settlementType != 3" :style="sliderStyle">
+              <span class="icon6" @click="refresh('/main/Orderreissue')">手动补发</span>
             </li>
-            <li :style="sliderStyle">
-              <span class="icon5" @click="refresh('/main/Replacementofrecords')"
-                >补发记录</span
-              >
+            <li v-if="hasMenu(20) || $store.state.settlementType != 3" :style="sliderStyle">
+              <span class="icon7" @click="refresh('/main/BetchOrderreissue')">整区补发</span>
             </li>
-            <li :style="sliderStyle">
-              <span class="icon12" @click="refresh('/main/conectKey')"
-                >通讯秘钥</span
-              >
+            <li v-if="hasMenu(16) || $store.state.settlementType != 3" :style="sliderStyle">
+              <span class="icon5" @click="refresh('/main/Replacementofrecords')">补发记录</span>
+            </li>
+            <li v-if="hasMenu(16) || $store.state.settlementType != 3" :style="sliderStyle">
+              <span class="icon8" @click="refresh('/main/transfer')">转区点记录</span>
+            </li>
+            <li v-if="hasMenu(17) || $store.state.settlementType != 3" :style="sliderStyle">
+              <span class="icon12" @click="refresh('/main/conectKey')">通讯秘钥</span>
             </li>
             <!-- <li style="color: black;">
               <span class="icon7" @click="refresh('/main/Withdrawalrecords')"
@@ -120,17 +101,15 @@
             <!-- <li>
               <router-link tag="span" :to="{path:'/main/Userlogs'}" class="icon8">用户日志</router-link>
             </li> -->
-            <li :style="sliderStyle">
-              <span class="icon9" @click="refresh('/main/gaincode')"
-                >获取代码</span
-              >
+            <li v-if="hasMenu(18) || $store.state.settlementType != 3" :style="sliderStyle">
+              <span class="icon9" @click="refresh('/main/gaincode')">获取代码</span>
             </li>
-             <!-- <li style="color: black;">
+            <!-- <li style="color: black;">
               <span class="icon8" @click="refresh('/main/fenyong')"
                 >推广分佣</span
               >
             </li> -->
-            <li :style="sliderStyle">
+            <li v-if="hasMenu(19) || $store.state.settlementType != 3" :style="sliderStyle">
               <span class="icon10" @click="download">下载网关</span>
             </li>
             <!-- <li>
@@ -149,13 +128,7 @@
       </div>
     </div>
     <!-- 网关下载弹框 -->
-    <el-dialog
-      title="网关下载"
-      :visible.sync="dialog.show"
-      @close="dialoginit"
-      custom-class="gs_dialog"
-      width="350px"
-    >
+    <el-dialog title="网关下载" :visible.sync="dialog.show" @close="dialoginit" custom-class="gs_dialog" width="350px">
       <ul class="areaContainer clearfix">
         <!-- <li>
           <a href="http://192.168.1.80:5003/GateWay_Agent.rar">
@@ -168,12 +141,7 @@
           </a>
         </li> -->
         <li>
-          <el-tooltip
-            class="item"
-            effect="dark"
-            content="热血传奇"
-            placement="bottom"
-          >
+          <el-tooltip class="item" effect="dark" content="热血传奇" placement="bottom">
             <div class="imgbox">
               <img src="../assets/images/index.png" alt="" />
               <span class="mask" @click="loadzip(1)">{{
@@ -182,21 +150,16 @@
             </div>
           </el-tooltip>
         </li>
-        <li>
-          <el-tooltip
-            class="item"
-            effect="dark"
-            content="传奇世界"
-            placement="bottom"
-          >
+        <!-- <li>
+          <el-tooltip class="item" effect="dark" content="传奇世界" placement="bottom">
             <div class="imgbox">
               <img src="../assets/images/cs.png" alt="" />
               <span class="mask" @click="loadzip(2)">{{
                 dialog.ty === '' ? '暂无下载' : '点击下载'
-              }}</span>
+                }}</span>
             </div>
           </el-tooltip>
-        </li>
+        </li> -->
 
         <!-- <li>
           <el-tooltip
@@ -228,12 +191,8 @@
         </li> -->
       </ul>
     </el-dialog>
-    <charge-link
-      v-if="preview"
-      :chargeUrl="chargeUrl"
-      :styleNum="floatingpictures"
-      :styletype="floatstyle"
-    ></charge-link>
+    <charge-link v-if="preview" :chargeUrl="chargeUrl" :styleNum="floatingpictures"
+      :styletype="floatstyle"></charge-link>
     <iframe name="downloadIframe" style="display:none;"></iframe>
   </div>
 </template>
@@ -256,7 +215,7 @@ export default {
       // nickName: '', // 用户名
       // isAgent: false, // 是否为代理
       // id: '',
-      role:'',
+      role: '',
       dialog: {
         show: false,
         cq3: '', // 传奇3
@@ -269,11 +228,11 @@ export default {
         ymcq: '',
         cqby: '',
         xbnz: '',
-        jxqy: '',
+        jxqy: ''
       },
       activeNav: '/main/home', // 默认选中首页
       skinNum: Number(localStorage.getItem('skinNum')) || 0,
-      hoverNav: '', // 当前 hover 的菜单 path
+      hoverNav: '' // 当前 hover 的菜单 path
     };
   },
   computed: {
@@ -288,13 +247,13 @@ export default {
     ]),
     headboxStyle() {
       switch (this.skinNum) {
-        case 1: return { background: '#88434f',color: 'white'};
-        case 2: return { background: '#2d3338',color: 'white' };
-        case 3: return { background: '#3370ff',color: 'white'};
-        case 4: return { background: '#d75f28',color: 'white' };
-        case 5: return { background: '#88434f',color: 'white'};
-        case 6: return { background: '#5d4aee',color: 'white' };
-        default: return { background: '#0398d6',color: 'white' };
+        case 1: return { background: '#88434f', color: 'white' };
+        case 2: return { background: '#2d3338', color: 'white' };
+        case 3: return { background: '#3370ff', color: 'white' };
+        case 4: return { background: '#d75f28', color: 'white' };
+        case 5: return { background: '#9966cc', color: 'white' };
+        case 6: return { background: '#5d4aee', color: 'white' };
+        default: return { background: '#0398d6', color: 'white' };
       }
     },
     sliderStyle() {
@@ -305,7 +264,7 @@ export default {
         case 4: return { background: '#f6e5e0', color: 'grey' };
         case 5: return { background: '#e9e3f4', color: 'grey' };
         case 6: return { background: '#e5e0e2', color: 'grey' };
-        default: return { background: 'linear-gradient(to bottom,#f2f2f2 0,#f8f8f8 100%', color: 'grey' };;
+        default: return { background: 'linear-gradient(to bottom,#f2f2f2 0,#f8f8f8 100%', color: 'grey' };
       }
     },
     activeNavStyle() {
@@ -329,21 +288,82 @@ export default {
         case 6: return { background: '#b4b8ab', color: '#fff' }; // 莫兰迪灰加深
         default: return { background: '#a7c7e7', color: '#fff' };
       }
-    },
+    }
   },
   watch: {
-    floatingpictures(n) {
-      console.log(n);
+    '$route.path'(newPath) {
+      this.updateActiveByRoute(newPath || this.$route.path);
+    },
+    skinNum() {
+      this.updateThemeVars();
     }
   },
   methods: {
-    //选中事件
+    // 选中事件
     setActive(path) {
-      this.activeNav = path;
-      if (this.$route.path.indexOf(path) > -1) {
-        this.reload();
-      } else {
-        this.$router.push({ path: path });
+      // 只做路由跳转，active 由 updateActiveByRoute 统一计算
+
+      // 如果已经在目标路由，调用 injected reload（例如 iframe 内刷新等），并避免重复 push 导致的时序问题
+      if (this.$route && this.$route.path === path) {
+        console.log('setActive reload', path);
+        // if (typeof this.reload === 'function') {
+        //   this.reload();
+        // }
+        return;
+      }
+      // 正常跳转
+      this.$router.push({ path });
+    },
+    // 根据当前路由更可靠地计算顶部菜单应高亮哪一项
+    updateActiveByRoute(newPath) {
+      const path = newPath || (this.$route && this.$route.path) || '';
+
+      // 优先使用 route.name 映射（更稳定）
+      const nameMap = {
+        Ordermanagement: '/main/Ordermanagement',
+        Zoningmanagement: '/main/Zoningmanagement',
+        home: '/main/home',
+        DA: '/main/DA',
+        conectKey: '/main/conectKey'
+        // 若路由名与菜单不一致，按需补充
+      };
+      console.log(this.$route.name);
+      if (this.$route && this.$route.name && nameMap[this.$route.name]) {
+        this.activeNav = nameMap[this.$route.name];
+        return;
+      }
+
+      // 兜底：按最长前缀匹配 topMenus
+      const topMenus = [
+        '/main/Ordermanagement',
+        '/main/Zoningmanagement',
+        '/main/home',
+        '/main/DA',
+        '/personal/baseInfo',
+        '/personal',
+        '/behalf',
+        '/agentsystem',
+        '/employee'
+      ].sort((a, b) => b.length - a.length); // 长到短
+
+      for (const menu of topMenus) {
+        if (path === menu || path.startsWith(menu + '/') || path.startsWith(menu + '?') || path.startsWith(menu)) {
+          this.activeNav = menu;
+          return;
+        }
+      }
+
+      // 保持当前 layout 上的默认项，不盲目回首页
+      if (path.startsWith('/main')) {
+        this.activeNav = '/main/home';
+      } else if (path.startsWith('/personal')) {
+        this.activeNav = '/personal/baseInfo';
+      } else if (path.startsWith('/behalf')) {
+        this.activeNav = '/behalf';
+      } else if (path.startsWith('/agentsystem')) {
+        this.activeNav = '/agentsystem';
+      } else if (path.startsWith('/employee')) {
+        this.activeNav = '/employee';
       }
     },
     // 获取用户信息
@@ -362,8 +382,11 @@ export default {
           this.$store.commit('setEnabledPaid', data.data.isEnabledPaid);
           this.$store.commit('setEnabledWxValid', data.data.isEnabledWxValid);
           this.$store.commit('setPlatOpenWxValid', data.data.isPlatOpenWxValid);
+          this.$store.commit('settlementType', data.data.settlementType);
+          this.$store.commit('setRoleInfo', data.data.roleinfon);
+          this.$store.commit('saveisCro', data.data.isCro);
           // this.role=data.profile.role;
-          // console.log(data.profile)
+          console.log(this.$store.state);
         })
         .catch(err => {
           this.$messageError(err.message);
@@ -371,38 +394,23 @@ export default {
     },
     // 退出登录
     loginOut() {
-      // this.$api.home
-      //   .loginOut()
-      //   .then((data) => {})
-      //   .catch((err) => {
-      //     this.$messageError(err.message);
-      //   });
-      // 如果是从代理进入则直接关闭
-      if (window.sessionStorage.getItem('agentMerchantId')) {
-        window.opener = null;
-        window.open('', '_self');
-        window.close();
-        return;
-      }
-      // 判断用户信息
-      let user = new Mgr();
-      user
-        .getUser()
-        .then(data => {
-          if (
-            data.profile.role === 'SuperAdmin' ||
-            data.profile.role === 'Admin'
-          ) {
-            window.opener = null;
-            window.open('', '_self');
-            window.close();
-          } else {
-            user.signOut();
-          }
+      this.$api.home
+        .loginOut()
+        .then(() => {
+          const user = new Mgr();
+          user.signOut(); // 里边清 token 也可以
+          this.$router.push('/login/loginHome');
         })
         .catch(err => {
-          console.log(err);
+          // 即便后端登出失败，也可以在前端做强制退出
+          const user = new Mgr();
+          user.signOut();
+          this.$router.replace('/login');
+          this.$messageError(err.message);
         });
+      // const user = new Mgr();
+      // user.signOut();
+      // this.$router.push('/login/loginHome');
     },
     // 下载网关
     async download() {
@@ -513,38 +521,7 @@ export default {
         }
       }
       url = url + '&merchantId=' + this.id;
-      // let elem = document.createElement('iframe');
-      // elem.src = url;
-      // elem.style.display = 'none';
-      // document.body.appendChild(elem);
-      // this.$api.home
-      //   .downloadNet({ fileUrl: url })
-      //   .then((data) => {
-      //     // 创建隐藏的可下载链接
-      //     var eleLink = document.createElement('a');
-      //     eleLink.style.display = 'none';
-      //     // 字符内容转变成blob地址
-      //     // eleLink.href = 'http://192.168.1.79:5004/11_Agent.exe';
-      //     // eleLink.href = 'https://down.qq.com/qqweb/PCQQ/PCQQ_EXE/PCQQ2020.exe';
-      //     // eleLink.href = 'http://wxwx.45cx.com/GateWay_Agent.exe';
-      //     eleLink.href = data.data;
-      //     // 触发点击
-      //     document.body.appendChild(eleLink);
-      //     eleLink.click();
-      //     // 然后移除
-      //     this.dialog.show = false;
-      //     document.body.removeChild(eleLink);
-      //   })
-      //   .catch((err) => {
-      //     this.$messageError(err.message);
-      //     this.dialog.show = false;
-      //   });
-      // url = 'http://36.250.236.209:5003/wg.rar';
-      // url = 'http://36.250.236.209:5002/api/Upload/ShowFile?name=Wg&merchantId=1046&v=dd.exe';
-      /* eslint-disable */
-      // console.log(url);
-      // window.frames['downloadIframe'].location.href = url;
-      /* eslint-enable */
+
       // 创建隐藏的可下载链接
       var eleLink = document.createElement('a');
       eleLink.style.display = 'none';
@@ -565,18 +542,50 @@ export default {
       } else {
         this.$router.push({ path: path });
       }
+    },
+    hasMenu(menuId) {
+      const menuIds = (this.$store.state.roleInfo || '').split(',').map(id => Number(id));
+      return menuIds.includes(menuId);
+    },
+    updateThemeVars() {
+      // headboxStyle 是 computed，可以直接读取 background 与 color
+      const bg = (this.headboxStyle && this.headboxStyle.background) || '#0398d6';
+      const txt = (this.headboxStyle && this.headboxStyle.color) || 'white';
+      document.documentElement.style.setProperty('--theme-color', bg);
+      document.documentElement.style.setProperty('--theme-text', txt);
     }
   },
   created() {
     this.getUser();
+    // 监听皮肤切换事件
     this.$root.$on('skin-change', num => {
       this.skinNum = num;
     });
+    this.updateThemeVars();
+    // 监听来自个人中心的顶部菜单切换通知，立即设置主 layout 的 activeNav
+    this.$root.$on('topnav-change', path => {
+      // 优先使用精确 path 作为 active
+      if (path && path.startsWith('/main/')) {
+        this.activeNav = path;
+      }
+    });
+    // 如果 personal 在 push 之前把目标写入 root.pending（主 layout 尚未挂载），这里读取一次并清理
+    if (this.$root && this.$root.__pendingTopnav) {
+      const p = this.$root.__pendingTopnav;
+      if (p && p.startsWith('/main/')) {
+        this.activeNav = p;
+      }
+      delete this.$root.__pendingTopnav;
+    }
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
+
 .main {
   position: relative;
   padding-top: 60px;
@@ -585,6 +594,7 @@ export default {
   width: 100%;
   overflow: hidden;
   background: #e6edf5;
+
   .header {
     position: absolute;
     width: 100%;
@@ -592,20 +602,24 @@ export default {
     top: 0;
     left: 0;
     background: #24adec;
+
     .headbox {
       width: 80vw;
       margin: 0 auto;
       height: 60px;
+
       .logo {
         margin-top: 13px;
         float: left;
         width: 20%;
         text-align: right;
       }
+
       .navbox {
         float: left;
         // margin-top: 15px;
         margin-left: 50px;
+
         li {
           float: left;
           padding: 0 35px;
@@ -614,14 +628,17 @@ export default {
           // border-right: 1px solid #fff;
           color: #fff;
           font-size: 16px;
+
           // position: relative;
           span {
             cursor: pointer;
           }
+
           &.active {
             // background: #b5c9b8 !important; // 莫兰迪绿或你喜欢的色
             color: #fff;
           }
+
           // &::after{
           //   content: '';
           //   position: absolute;
@@ -632,10 +649,12 @@ export default {
           //   border-right: 1px solid #fff;
           // }
         }
+
         // & li:hover{
         //     filter: brightness(0.85);
         // }
       }
+
       .count {
         float: right;
         height: 28px;
@@ -650,26 +669,32 @@ export default {
       }
     }
   }
+
   .container {
     height: 100%;
     box-sizing: border-box;
     overflow-y: auto;
+
     &::-webkit-scrollbar {
       width: 8px;
     }
+
     &::-webkit-scrollbar-thumb {
       border-radius: 10px;
       box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
     }
+
     &::-webkit-scrollbar-track {
       box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
       border-radius: 10px;
     }
+
     .midleContaner {
       width: 80vw;
       margin: 20px auto 22px;
       position: relative;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
       //width: 1286px;
       //margin: 20px auto 22px;
       //position: relative;
@@ -681,6 +706,7 @@ export default {
         height: 100%;
         left: 0;
         top: 0;
+
         .top_tit {
           height: 40px;
           line-height: 40px;
@@ -690,7 +716,9 @@ export default {
           color: #fff;
           background: #0398d6;
         }
+
         ul {
+
           // margin-top: 30px;
           li {
             height: 35px;
@@ -700,6 +728,7 @@ export default {
             color: #fff;
             font-size: 14px;
             position: relative;
+
             &::after {
               content: '';
               position: absolute;
@@ -709,11 +738,13 @@ export default {
               height: 1px;
               background: #f8f7f7;
             }
+
             span {
               display: block;
               cursor: pointer;
               height: 35px;
               padding-left: 66px;
+
               &.icon1 {
                 background-image: url(../assets/images/icons.png);
                 background-repeat: no-repeat;
@@ -721,6 +752,7 @@ export default {
                 height: 32px;
                 line-height: 32px;
               }
+
               &.icon2 {
                 background-image: url(../assets/images/icons.png);
                 background-repeat: no-repeat;
@@ -728,6 +760,7 @@ export default {
                 height: 32px;
                 line-height: 32px;
               }
+
               &.icon3 {
                 background-image: url(../assets/images/icons.png);
                 background-repeat: no-repeat;
@@ -735,6 +768,7 @@ export default {
                 height: 32px;
                 line-height: 32px;
               }
+
               &.icon4 {
                 background-image: url(../assets/images/icons.png);
                 background-repeat: no-repeat;
@@ -742,6 +776,7 @@ export default {
                 height: 32px;
                 line-height: 32px;
               }
+
               &.icon5 {
                 background-image: url(../assets/images/icons.png);
                 background-repeat: no-repeat;
@@ -749,6 +784,7 @@ export default {
                 height: 32px;
                 line-height: 32px;
               }
+
               &.icon6 {
                 background-image: url(../assets/images/icons.png);
                 background-repeat: no-repeat;
@@ -756,20 +792,26 @@ export default {
                 height: 32px;
                 line-height: 32px;
               }
+
               &.icon7 {
-                background-image: url(../assets/images/icons.png);
+                background-image: url(../assets/images/整区补发.png);
                 background-repeat: no-repeat;
-                background-position: 32px -544px;
-                height: 32px;
-                line-height: 32px;
+                background-size: 20px 20px;
+                background-position: 36px 10px;
+                // background-position: 32px -544px;
+                // height: 32px;
+                // line-height: 32px;
               }
+
               &.icon8 {
-                background-image: url(../assets/images/icons.png);
+                background-image: url(../assets/images/转区点记录.png);
                 background-repeat: no-repeat;
-                background-position: 32px -608px;
-                height: 32px;
-                line-height: 32px;
+                background-size: 20px 20px;
+                background-position: 36px 10px;
+                // height: 32px;
+                // line-height: 32px;
               }
+
               &.icon9 {
                 background-image: url(../assets/images/icons.png);
                 background-repeat: no-repeat;
@@ -777,6 +819,7 @@ export default {
                 height: 32px;
                 line-height: 32px;
               }
+
               &.icon10 {
                 background-image: url(../assets/images/icons.png);
                 background-repeat: no-repeat;
@@ -784,6 +827,7 @@ export default {
                 height: 32px;
                 line-height: 32px;
               }
+
               &.icon11 {
                 background-image: url(../assets/images/icons.png);
                 background-repeat: no-repeat;
@@ -791,6 +835,7 @@ export default {
                 height: 32px;
                 line-height: 32px;
               }
+
               &.icon12 {
                 background-image: url(../assets/images/icons.png);
                 background-repeat: no-repeat;
@@ -802,14 +847,17 @@ export default {
           }
         }
       }
+
       .contentbox {
         min-height: 900px;
         margin-left: 178px;
       }
     }
   }
+
   .areaContainer {
     padding: 0 0 20px 15px;
+
     li {
       position: relative;
       float: left;
@@ -817,9 +865,11 @@ export default {
       padding: 4px;
       cursor: pointer;
       margin-right: 17px;
+
       .imgbox {
         padding: 15px 8px;
       }
+
       .mask {
         display: none;
         position: absolute;
@@ -832,12 +882,15 @@ export default {
         text-align: center;
         line-height: 90px;
       }
+
       &:hover {
         border-color: #00b066;
+
         .mask {
           display: block;
         }
       }
+
       img {
         display: block;
       }

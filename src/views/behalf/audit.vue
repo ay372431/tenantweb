@@ -1,6 +1,6 @@
 <template>
   <div class="wrap-box">
-    <div class="sonbar"><img src="../../assets/img/san.png" />待审核订单</div>
+    <div class="gs_title" style="color: white;">待审核订单</div>
     <div class="wrap-box-c">
       <div class="fieldset">
         <el-divider content-position="left"
@@ -100,8 +100,6 @@
             </el-table-column>
             <el-table-column property="remarks" label="备注" align="center">
             </el-table-column>
-            <!-- <el-table-column label="操作" align="center">
-						</el-table-column> -->
           </el-table>
           <div class="table-tool">
             <div class="item">
@@ -319,6 +317,9 @@ export default {
 </script>
 
 <style scoped>
+.gs_title {
+  background: var(--theme-color);
+}
 .baseinfo {
   display: flex;
   justify-content: space-around;
@@ -346,5 +347,9 @@ export default {
 
 .table-tool .item {
   margin-right: 15px;
+}
+.wrap-box {
+  min-height: 800px;
+  background-color: #fff;
 }
 </style>

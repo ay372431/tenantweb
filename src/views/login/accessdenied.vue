@@ -17,6 +17,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
 .errorBox {
   height: 100%;
   background: url(../../assets/images/error.jpg) no-repeat center -70px;

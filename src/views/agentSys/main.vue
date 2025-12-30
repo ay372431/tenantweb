@@ -6,44 +6,43 @@
  * @LastEditors: gao shuai
 -->
 <template>
-  <div class="main" >
+  <div class="main">
     <div class="header" :style="headerStyle">
       <div class="headbox clearfix" :style="headerStyle" style="display: flex;">
-        <div class="logo"><img src="http://www.10pay.com/themes/ucenter/default/images/uc.png" alt="" /></div>
+        <div class="logo"><img src="../../assets/img//logo3.png" style="width: 154px;height: 40px;" alt="" /></div>
         <ul class="navbox clearfix" style="width: 75%;">
-          <li :class="{ active: activeNav === '/main/home' }" 
-          :style="activeNav === '/main/home' ? activeNavStyle : (hoverNav === '/main/home' ? hoverNavStyle : null)"
-          >
+          <!-- <li :class="{ active: activeNav === '/main/home' }"
+            :style="activeNav === '/main/home' ? activeNavStyle : (hoverNav === '/main/home' ? hoverNavStyle : null)">
             <span class="icon1" @click="refresh('/main/home')">首页</span>
           </li>
-          <li :class="{ active: activeNav === '/main/Ordermanagement' }" 
-          :style="activeNav === '/main/Ordermanagement' ? activeNavStyle : (hoverNav === '/main/Ordermanagement' ? hoverNavStyle : null)"
-          >
+          <li :class="{ active: activeNav === '/main/Ordermanagement' }"
+            :style="activeNav === '/main/Ordermanagement' ? activeNavStyle : (hoverNav === '/main/Ordermanagement' ? hoverNavStyle : null)">
             <span class="icon1" @click="refresh('/main/Ordermanagement')">订单管理</span>
           </li>
-          <li :class="{ active: activeNav === '/main/Zoningmanagement' }" 
-          :style="activeNav === '/main/Zoningmanagement' ? activeNavStyle : (hoverNav === '/main/Zoningmanagement' ? hoverNavStyle : null)"
-          >
+          <li :class="{ active: activeNav === '/main/Zoningmanagement' }"
+            :style="activeNav === '/main/Zoningmanagement' ? activeNavStyle : (hoverNav === '/main/Zoningmanagement' ? hoverNavStyle : null)">
             <span class="icon1" @click="refresh('/main/Zoningmanagement')">分区管理</span>
           </li>
-          <li :class="{ active: activeNav === '/main/DA' }" 
-          :style="activeNav === '/main/DA' ? activeNavStyle : (hoverNav === '/main/DA' ? hoverNavStyle : null)"
-         >
+          <li :class="{ active: activeNav === '/main/DA' }"
+            :style="activeNav === '/main/DA' ? activeNavStyle : (hoverNav === '/main/DA' ? hoverNavStyle : null)">
             <span class="icon1" @click="refresh('/main/DA')">数据分析</span>
           </li>
-          <li :class="{ active: activeNav === '/personal' }" 
-          :style="activeNav === '/personal' ? activeNavStyle : (hoverNav === '/personal' ? hoverNavStyle : null)"
-          
-           @click="refresh('/personal')">
+          <li :class="{ active: activeNav === '/personal' }"
+            :style="activeNav === '/personal' ? activeNavStyle : (hoverNav === '/personal' ? hoverNavStyle : null)"
+            @click="refresh('/personal')">
             <span>账户管理</span>
-          </li>
-          <li v-if="userType" :class="{ active: activeNav === '/agentsystem' }" 
-          :style="activeNav === '/agentsystem' ? activeNavStyle : (hoverNav === '/agentsystem' ? hoverNavStyle : null)"
-          >
+          </li> -->
+          <li :class="{ active: activeNav === '/agentsystem' }"
+            :style="activeNav === '/agentsystem' ? activeNavStyle : (hoverNav === '/agentsystem' ? hoverNavStyle : null)">
             <span class="icon1" @click="refresh('/agentsystem')">代理系统</span>
           </li>
+          <li :class="{ active: activeNav === '/main/hom' }"
+            :style="activeNav === '/main/hom' ? activeNavStyle : (hoverNav === '/main/hom' ? hoverNavStyle : null)"
+            @click="refresh('/main/home')">
+            <span class="icon1">返回平台</span>
+          </li>
         </ul>
-        <div class="count" style="width: 6%;">{{nickName}}</div>
+        <div class="count" style="width: 6%;">{{ nickName }}</div>
       </div>
     </div>
     <div class="container">
@@ -51,9 +50,9 @@
         <div class="slider" :style="sliderStyle">
           <div class="top_tit" :style="headerStyle">代理管理</div>
           <ul>
-            <li :style="sliderStyle" style="margin-top: 10px;">
+            <!-- <li :style="sliderStyle" style="margin-top: 10px;">
               <span class="icon1" @click="refresh('/agentsystem/setting')">网站设置</span>
-            </li>
+            </li> -->
             <li :style="sliderStyle">
               <span class="icon2" @click="refresh('/agentsystem/merchant')">下属商户</span>
             </li>
@@ -91,7 +90,7 @@ export default {
     return {
       activeNav: '/agentsystem', // 默认选中首页
       skinNum: Number(localStorage.getItem('skinNum')) || 0,
-      hoverNav: '', // 当前 hover 的菜单 path
+      hoverNav: '' // 当前 hover 的菜单 path
     };
   },
   computed: {
@@ -99,13 +98,13 @@ export default {
     headerStyle() {
       // 根据皮肤号返回不同背景色
       switch (this.skinNum) {
-        case 1: return { background: '#88434f',color: 'white'};
-        case 2: return { background: '#2d3338',color: 'white' };
-        case 3: return { background: '#3370ff',color: 'white'};
-        case 4: return { background: '#d75f28',color: 'white' };
-        case 5: return { background: '#88434f',color: 'white'};
-        case 6: return { background: '#5d4aee',color: 'white' };
-        default: return { background: '#0398d6',color: 'white' };
+        case 1: return { background: '#88434f', color: 'white' };
+        case 2: return { background: '#2d3338', color: 'white' };
+        case 3: return { background: '#3370ff', color: 'white' };
+        case 4: return { background: '#d75f28', color: 'white' };
+        case 5: return { background: '#9966cc', color: 'white' };
+        case 6: return { background: '#5d4aee', color: 'white' };
+        default: return { background: '#0398d6', color: 'white' };
       }
     },
     sliderStyle() {
@@ -116,18 +115,18 @@ export default {
         case 4: return { background: '#f6e5e0', color: 'grey' };
         case 5: return { background: '#e9e3f4', color: 'grey' };
         case 6: return { background: '#e5e0e2', color: 'grey' };
-        default: return { background: 'linear-gradient(to bottom,#f2f2f2 0,#f8f8f8 100%', color: 'grey' };;
+        default: return { background: 'linear-gradient(to bottom,#f2f2f2 0,#f8f8f8 100%', color: 'grey' }; ;
       }
     },
     activeNavStyle() {
       switch (this.skinNum) {
         case 1: return { background: '#b5c9b8', color: '#fff' }; // 莫兰迪绿
-        case 2: return { background: '#a7c7e7', color: '#fff' }; // 莫兰迪蓝
+        case 2: return { background: '#b5c9b8', color: '#fff' }; // 莫兰迪蓝
         case 3: return { background: '#b7afc6', color: '#fff' }; // 莫兰迪紫
         case 4: return { background: '#e6c1c5', color: '#fff' }; // 莫兰迪粉
         case 5: return { background: '#e9d7a5', color: '#fff' }; // 莫兰迪黄
         case 6: return { background: '#b4b8ab', color: '#fff' }; // 莫兰迪灰
-        default: return { background: '#b5c9b8', color: '#fff' };
+        default: return { background: '#a7c7e7', color: '#fff' };
       }
     },
     hoverNavStyle() {
@@ -140,7 +139,7 @@ export default {
         case 6: return { background: '#b4b8ab', color: '#fff' }; // 莫兰迪灰加深
         default: return { background: '#b5c9b8', color: '#fff' };
       }
-    },
+    }
   },
   methods: {
     // 获取用户信息
@@ -173,6 +172,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
 .main {
   position: relative;
   padding-top: 60px;
@@ -189,20 +191,24 @@ export default {
     top: 0;
     left: 0;
     background: #63aafa;
+
     .headbox {
       width: 80vw;
       margin: 0 auto;
       height: 60px;
+
       .logo {
         margin-top: 13px;
         float: left;
         width: 20%;
         text-align: right;
       }
+
       .navbox {
         float: left;
         // margin-top: 15px;
         margin-left: 50px;
+
         li {
           float: left;
           padding: 0 35px;
@@ -211,10 +217,12 @@ export default {
           // border-right: 1px solid #fff;
           color: #fff;
           font-size: 16px;
+
           // position: relative;
           span {
             cursor: pointer;
           }
+
           // &::after{
           //   content: '';
           //   position: absolute;
@@ -226,6 +234,7 @@ export default {
           // }
         }
       }
+
       .count {
         float: right;
         height: 28px;
@@ -239,25 +248,31 @@ export default {
       }
     }
   }
+
   .container {
     height: 100%;
     box-sizing: border-box;
     overflow-y: auto;
+
     &::-webkit-scrollbar {
       width: 8px;
     }
+
     &::-webkit-scrollbar-thumb {
       border-radius: 10px;
       box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
     }
+
     &::-webkit-scrollbar-track {
       box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
       border-radius: 10px;
     }
+
     .midleContaner {
       width: 80vw;
       margin: 20px auto 22px;
       position: relative;
+
       // box-shadow: 0 0 10px rgba(0, 0, 0, .25);
       .slider {
         position: absolute;
@@ -266,6 +281,7 @@ export default {
         height: 100%;
         left: 0;
         top: 0;
+
         .top_tit {
           height: 40px;
           line-height: 40px;
@@ -276,7 +292,9 @@ export default {
           // background: #fff url(../../assets/images/line_big.png) no-repeat 0 center;
           background: #0398d6;
         }
+
         ul {
+
           // margin-top: 30px;
           li {
             height: 35px;
@@ -288,6 +306,7 @@ export default {
             position: relative;
             // ...existing code...
             border-bottom: none; // 先去掉原有的
+
             &::after {
               content: '';
               position: absolute;
@@ -297,58 +316,62 @@ export default {
               height: 1px;
               background: #f8f7f7;
             }
+
             span {
               display: block;
               cursor: pointer;
               height: 35px;
               padding-left: 66px;
+
               &.icon1 {
-                background: url(../../assets/images/shezhi.png) no-repeat 39px
-                  center;
+                background: url(../../assets/images/shezhi.png) no-repeat 39px center;
                 background-size: auto 18px;
               }
+
               &.icon2 {
-                background: url(../../assets/images/xiashu.png) no-repeat 39px
-                  center;
+                background: url(../../assets/images/xiashu.png) no-repeat 39px center;
                 background-size: auto 18px;
               }
+
               &.icon3 {
-                background: url(../../assets/images/dingdan.png) no-repeat 40px
-                  center;
+                background: url(../../assets/images/dingdan.png) no-repeat 40px center;
                 background-size: auto 18px;
               }
+
               &.icon4 {
-                background: url(../../assets/images/dikou.png) no-repeat 39px
-                  center;
+                background: url(../../assets/images/dikou.png) no-repeat 39px center;
                 background-size: auto 18px;
               }
+
               &.icon5 {
-                background: url(../../assets/images/fenzu.png) no-repeat 40px
-                  center;
+                background: url(../../assets/images/fenzu.png) no-repeat 40px center;
                 background-size: auto 18px;
               }
+
               &.icon6 {
-                background: url(../../assets/images/tongji.png) no-repeat 40px
-                  center;
+                background: url(../../assets/images/tongji.png) no-repeat 40px center;
                 background-size: auto 18px;
               }
+
               &.icon7 {
-                background: url(../../assets/images/fenqu.png) no-repeat 40px
-                  center;
+                background: url(../../assets/images/fenqu.png) no-repeat 40px center;
                 background-size: auto 18px;
               }
             }
           }
         }
       }
+
       .contentbox {
         min-height: 800px;
         margin-left: 178px;
       }
     }
   }
+
   .areaContainer {
     padding: 0 0 20px 15px;
+
     li {
       position: relative;
       float: left;
@@ -356,9 +379,11 @@ export default {
       padding: 4px;
       cursor: pointer;
       margin-right: 17px;
+
       .imgbox {
         padding: 15px 8px;
       }
+
       .mask {
         display: none;
         position: absolute;
@@ -371,12 +396,15 @@ export default {
         text-align: center;
         line-height: 90px;
       }
+
       &:hover {
         border-color: #00b066;
+
         .mask {
           display: block;
         }
       }
+
       img {
         display: block;
       }

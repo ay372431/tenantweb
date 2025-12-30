@@ -14,27 +14,32 @@
     <div class="tablebox pdb15 pdt20">
       <div class="gs_tablebox">
         <el-table ref="moduleTable" size="mini" :data="tableData" border style="width: 100%" stripe>
-          <el-table-column prop="id" label="编号">
+          <el-table-column prop="id" label="编号" width="80">
           </el-table-column>
-          <el-table-column label="创建时间">
-            <template slot-scope="scope">
+          <el-table-column label="创建时间" prop="createDate" width="280">
+            <!-- <template slot-scope="scope">
               <p style="height:18px;">{{scope.row.createDate.split(' ')[0]}}</p>
               <p style="height:18px;color:#999;">{{scope.row.createDate.split(' ')[1]}}</p>
-            </template>
+            </template> -->
           </el-table-column>
           <el-table-column prop="name" label="分组名称">
           </el-table-column>
-          <el-table-column prop="partitionIdCount" label="分区个数">
+          <el-table-column prop="partitionIdCount" label="分区个数" width="120">
             <template slot-scope="scope">
               <span class="partition-count-link" style="color:#409EFF;cursor:pointer;" @click="toPartList(scope.row.id)">
                 {{ scope.row.partitionIdCount }}
               </span>
             </template>
           </el-table-column>
-          <el-table-column label="操作" width="350">
+          <el-table-column prop="name" label="分组网址">
+            <template slot-scope="scope">
+              <span @click="getCircuite(scope.row.uuid)">分组充值地址</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="操作" width="280">
             <template slot-scope="scope">
               <el-button-group>
-                <el-button size="mini" type="warning" @click="copyaddress(scope.row.uuid)">推广</el-button>
+                <!-- <el-button size="mini" type="warning" @click="copyaddress(scope.row.uuid)">推广</el-button> -->
                 <el-button size="mini" type="info" @click="downLink(scope.row.uuid,scope.$index)" :loading="loading&&loadingIndex===scope.$index">推广下载</el-button>
                 <el-button size="mini" type="primary" @click="editgroup(scope.row.id,scope.row.name)">编辑</el-button>
                 <el-button size="mini" type="success" @click="getCircuite(scope.row.uuid)">充值</el-button>
@@ -68,10 +73,14 @@
       </p>
     </el-dialog>
     <el-dialog title="充值地址" :visible.sync="toPay">
-      <el-table :data="payList">
-        <el-table-column property="id" label="序号" width="150"></el-table-column>
-        <el-table-column property="domainName" label="地址"></el-table-column>
-        <el-table-column label="操作">
+      <el-table :data="payList" show-header="false">
+        <el-table-column property="name" label="充值地址" width="150"></el-table-column>
+        <el-table-column property="domainName" label="地址">
+          <template slot-scope="scope">
+            {{ scope.row.domainName +  (scope.row.port=="80"||scope.row.port=="443"?'':(':' + scope.row.port)) + '/chargepageg/' + scope.row.uuid }}
+          </template>
+        </el-table-column>
+        <el-table-column label="操作"  width="200">
           <template slot-scope="scope">
               <el-button-group>
                 <el-button type="primary" @click="copyPromoteLink(scope.row.domainName,scope.row.uuid,scope.row.port)">复制</el-button>
@@ -98,10 +107,10 @@ export default {
         show: false,
         editflag: true,
         id: '',
-        groupName: '',
+        groupName: ''
       },
-      toPay:false,
-      payList:[]
+      toPay: false,
+      payList: []
     };
   },
   methods: {
@@ -126,9 +135,9 @@ export default {
         });
     },
     // 复制推广链接
-    copyPromoteLink(url,uuid,port) {
+    copyPromoteLink(url, uuid, port) {
       let oInput = document.createElement('input');
-      oInput.value = url + (port=="80"||port=="443"?'':(':' + port)) + '/chargepageg/' + uuid;
+      oInput.value = url + (port === '80' || port === '443' ? '' : (':' + port)) + '/chargepageg/' + uuid;
       document.body.appendChild(oInput);
       oInput.select(); // 选择对象
       document.execCommand('Copy'); // 执行浏览器复制命令
@@ -137,11 +146,11 @@ export default {
       this.$messageSuccess('复制成功');
       document.body.removeChild(oInput);
     },
-    //前往充值页面
-    jumpUrl(url,uuid,port){
-      window.open().location = url + (port=="80"||port=="443"?'':(':' + port)) + '/chargepageg/' + uuid;
+    // 前往充值页面
+    jumpUrl(url, uuid, port) {
+      window.open().location = url + (port === '80' || port === '443' ? '' : (':' + port)) + '/chargepageg/' + uuid;
     },
-    //前往分区列表页
+    // 前往分区列表页
     toPartList(id) {
       this.$router.push({ path: '/main/Zoningmanagement', query: { groupId: id } });
     },
@@ -238,9 +247,9 @@ export default {
         })
         .then((data) => {
           if (data.status === 200) {
-            this.payList = data.data
+            this.payList = data.data;
             this.payList.forEach(element => {
-              element.uuid = uuid
+              element.uuid = uuid;
             });
             console.log(this.payList);
             this.toPay = true;
@@ -338,6 +347,9 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
 .opeartbox {
   padding: 15px 20px 5px;
   background: #fff;

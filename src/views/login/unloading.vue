@@ -7,7 +7,7 @@
         <p class="red_tip">抱歉，审核未通过的账号不能登录当前系统</p>
         <p class="text">
           <span class="txt">请联系工作人员进行审核</span>
-          <a v-for="(item,i) in serverQQ" :key="'qq'+i" class="service-qq" data-tooltip-title="点击联系客服" :href="'http://wpa.qq.com/msgrd?v=1&uin='+item.qq+'&site=qq&menu=yes'" target='_blank'>
+          <a v-for="(item,i) in serverQQ" :key="'qq'+i" class="service-qq" data-tooltip-title="点击联系客服" :href="'https://wpa.qq.com/msgrd?v=1&uin='+item.qq+'&site=qq&menu=yes'" target='_blank'>
             <img src="../../assets/images/login/contact_qq.png" alt="">
           </a>
         </p>
@@ -52,6 +52,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
 .container {
   padding-top: 1px;
   background: url(../../assets/images/login/rejester.jpg) no-repeat center top;

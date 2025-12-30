@@ -52,6 +52,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
 .container {
   padding-top: 1px;
   background: url(../../assets/images/login/rejester.jpg) no-repeat center top;

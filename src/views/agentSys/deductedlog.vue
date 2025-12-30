@@ -58,7 +58,7 @@
         <el-table-column prop="agentIncome" label="代理收入" align="center" min-width="90"/>
         <el-table-column prop="chargeTime" label="充值时间" align="center" min-width="140"/>
         <el-table-column label="操作" align="center" min-width="80">
-          <template slot-scope="scope">
+          <template slot-scope>
             <el-button type="text" size="mini" style="color:#409EFF;">详情</el-button>
           </template>
         </el-table-column>
@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import { loginUrl } from '../../assets/js/version';
+// import { loginUrl } from '../../assets/js/version';
 export default {
   inject: ['reload'],
   data() {
@@ -247,6 +247,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
 .gs_tabbox {
   background: #fff;
   padding: 20px 0 20px 0;

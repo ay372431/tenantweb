@@ -73,46 +73,47 @@
 import Mgr from '../../assets/js/SecurityService';
 import router from '../../router';
 export default {
-    data() {
-        return {
-            webName: '', // 网站信息
-            copyright: '', // 版权
-            servicePhone: '',
-            height: 0
-        };
+  data() {
+    return {
+      webName: '', // 网站信息
+      copyright: '', // 版权
+      servicePhone: '',
+      height: 0
+    };
+  },
+  mounted() {
+    window.addEventListener('scroll', this.windowScroll, true);
+    this.footerInfo();
+    // let mgr = new Mgr();
+    // mgr.signIn();
+  },
+  methods: {
+    windowScroll() {
+      this.height = document.getElementsByClassName('contentBox')[0].scrollTop;
     },
-    mounted() {
-        window.addEventListener('scroll', this.windowScroll, true);
-        this.footerInfo();
-        // let mgr = new Mgr();
-        // mgr.signIn();
+    singin() {
+      let mgr = new Mgr();
+      mgr.signIn();
+      // mgr.popupLayer();
     },
-    methods: {
-        windowScroll() {
-            this.height = document.getElementsByClassName('contentBox')[0].scrollTop;
-        },
-        singin() {
-            let mgr = new Mgr();
-            mgr.signIn();
-            // mgr.popupLayer();
-        },
-        // 获取注册页面的底部信息
-        footerInfo() {
-            this.$api.login
-                .footerInfo()
-                .then(data => {
-                    if (data.status === 200) {
-                        this.webName = data.data.webName;
-                        this.copyright = data.data.copyright;
-                        this.servicePhone = data.data.servicePhone;
-                    }
-                })
-                .catch(err => {
-                    this.$messageError(err.message);
-                });
-        }
-    },
-    components: { router }
+    // 获取注册页面的底部信息
+    footerInfo() {
+      this.$api.login
+        .footerInfo()
+        .then(data => {
+          if (data.status === 200) {
+            this.webName = data.data.webName;
+            this.copyright = data.data.copyright;
+            this.servicePhone = data.data.servicePhone;
+          }
+        })
+        .catch(err => {
+          this.$messageError(err.message);
+        });
+    }
+  },
+  // eslint-disable-next-line vue/no-unused-components
+  components: { router }
 };
 </script>
 

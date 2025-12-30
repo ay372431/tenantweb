@@ -14,7 +14,7 @@
         <div class="tablebox pdb15 pdt10 bg_fff">
           <div class="clearfix pdb10">
             <p class="mgr10">
-              <el-button size='small' type="success" @click="subMerchant.dialog.show = true">添加商户</el-button>
+              <el-button size='small' type="primary" @click="subMerchant.dialog.show = true">添加商户</el-button>
             </p>
           </div>
           <div class="gs_tablebox">
@@ -29,10 +29,12 @@
               </el-table-column>
               <el-table-column prop="userName" label="帐号">
               </el-table-column>
+              <el-table-column prop="desc" label="备注">
+              </el-table-column>
               <el-table-column prop="partitionCount" label="分区个数">
               </el-table-column>
-              <el-table-column prop="qqNumber" label="联系QQ">
-              </el-table-column>
+              <!-- <el-table-column prop="qqNumber" label="联系QQ" width="120">
+              </el-table-column> -->
               <el-table-column prop="partitionsCount" label="结算类型">
                 <template slot-scope="scope">
                   <span>{{'T+'+scope.row.settlementType}}</span>
@@ -57,11 +59,12 @@
                   </el-select>
                 </template>
               </el-table-column>
-              <el-table-column label="操作" width="140">
+              <el-table-column label="操作" width="240">
                 <template slot-scope="scope">
                   <el-button-group>
                     <el-button size="mini" type="primary" @click="merchantLogin(scope.row.id)">登录</el-button>
-                    <!-- <el-button size="mini" type="danger" @click="handleClose(scope.row.id)">删除</el-button> -->
+                    <el-button size="mini" type="warning" @click="updateDesc(scope.row.id, scope.row.desc)">修改备注</el-button>
+                    <el-button size="mini" type="danger" @click="handleClose(scope.row.id)">删除</el-button>
                   </el-button-group>
                 </template>
               </el-table-column>
@@ -122,6 +125,12 @@
               </el-select>
             </span>
           </li>
+          <li>
+            <span class='tit'>备注：</span>
+            <span class="txtbox">
+              <el-input size="small" v-model="subMerchant.dialog.remark"></el-input>
+            </span>
+          </li>
         </ul>
         <p class="tc pdt10 pdb10">
           <el-button class="referring" size="small" type="primary" @click="addMerchant">提交</el-button>
@@ -153,7 +162,8 @@ export default {
           mail: '', // 邮箱
           qq: '', // 联系qq
           phone: '', // 联系电话
-          rate: '' // 比率组
+          rate: '', // 比率组
+          remark: '无' // 备注
         }
       }
     };
@@ -173,6 +183,7 @@ export default {
             this.subMerchant.total = 0;
           } else if (data.status === 200) {
             this.subMerchant.tableData = data.data;
+            //
             this.subMerchant.total = JSON.parse(
               data.headers['x-pagination']
             ).TotalCount;
@@ -181,6 +192,33 @@ export default {
         .catch((err) => {
           this.$messageError(err.message);
         });
+    },
+    // 修改备注
+    updateDesc(id, desc) {
+      this.$prompt('请输入备注信息', '修改备注', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputValue: desc
+        // inputPattern: /[\S]+/,
+        // inputErrorMessage: '备注不能为空'
+      })
+        .then(({ value }) => {
+          this.$api.agent
+            .updateMerchantDesc({
+              id: id,
+              desc: value
+            })
+            .then((data) => {
+              if (data.status === 200) {
+                this.$messageSuccess('修改成功！');
+                this.getlist();
+              }
+            })
+            .catch((err) => {
+              this.$messageError(err.message);
+            });
+        })
+        .catch(() => {});
     },
     // 比率组下拉
     rankDraw() {
@@ -227,7 +265,8 @@ export default {
           email: this.subMerchant.dialog.mail,
           qqNumber: this.subMerchant.dialog.qq,
           phoneNumber: this.subMerchant.dialog.phone,
-          rankId: this.subMerchant.dialog.rate
+          rankId: this.subMerchant.dialog.rate,
+          desc: this.subMerchant.dialog.remark
         })
         .then((data) => {
           if (data.status === 200) {
@@ -360,6 +399,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
 .gs_tabbox {
   .tabbox {
     float: none;

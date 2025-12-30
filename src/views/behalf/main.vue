@@ -9,33 +9,33 @@
   <div class="main">
     <div class="header" :style="headerStyle">
       <div class="headbox clearfix" :style="headerStyle"  style="display: flex;">
-        <div class="logo"><img src="http://www.10pay.com/themes/ucenter/default/images/uc.png" alt="" /></div>
+        <div class="logo"><img src="../../assets/img/logo3.png" style="width: 154px;height: 40px;" alt="" /></div>
         <ul class="navbox clearfix" style="width: 75%;">
-          <li :class="{ active: activeNav === '/behalf/baseInfo' }" 
+          <li :class="{ active: activeNav === '/behalf/baseInfo' }"
           :style="activeNav === '/behalf/baseInfo' ? activeNavStyle : (hoverNav === '/behalf/baseInfo' ? hoverNavStyle : null)"
-          
+
           @click="refresh('/behalf/baseInfo')">
             <span class="icon1" @click="refresh('/behalf/baseInfo')"
               >账户管理</span
             >
           </li>
-          <li :class="{ active: activeNav === '/audit/audit' }" 
+          <li :class="{ active: activeNav === '/audit/audit' }"
           :style="activeNav === '/audit/audit' ? activeNavStyle : (hoverNav === '/audit/audit' ? hoverNavStyle : null)"
-          
+
           @click="refresh('/audit/audit')">
             <span class="icon1" @click="refresh('/audit/audit')">订单管理</span>
           </li>
-          <li :class="{ active: activeNav === '/rollout/everyday' }" 
+          <li :class="{ active: activeNav === '/rollout/everyday' }"
           :style="activeNav === '/rollout/everyday' ? activeNavStyle : (hoverNav === '/rollout/everyday' ? hoverNavStyle : null)"
-          
+
           @click="refresh('/rollout/everyday')">
             <span class="icon1" @click="refresh('/rollout/everyday')"
               >转出统计</span
             >
           </li>
-          <li :class="{ active: activeNav === '/main/home' }" 
+          <li :class="{ active: activeNav === '/main/home' }"
           :style="activeNav === '/main/home' ? activeNavStyle : (hoverNav === '/main/home' ? hoverNavStyle : null)"
-          
+
           @click="refresh('/main/home')">
             <span class="icon1" @click="refresh('/main/home')">返回平台</span>
           </li>
@@ -76,22 +76,23 @@ export default {
     return {
       name: 'baseInfo',
       activeNav: '/behalf/baseInfo', // 默认选中首页
-      skinNum: Number(localStorage.getItem('skinNum')) || 0,
+      skinNum: 0, // 安全默认值，后面再尝试从 localStorage 读取
       hoverNav: '', // 当前 hover 的菜单 path
+      // eslint-disable-next-line vue/no-reserved-keys
+      _onSkinChange: null
     };
   },
   computed: {
     ...mapState(['userType', 'nickName']),
     headerStyle() {
-      // 根据皮肤号返回不同背景色
       switch (this.skinNum) {
-        case 1: return { background: '#88434f',color: 'white'};
-        case 2: return { background: '#2d3338',color: 'white' };
-        case 3: return { background: '#3370ff',color: 'white'};
-        case 4: return { background: '#d75f28',color: 'white' };
-        case 5: return { background: '#88434f',color: 'white'};
-        case 6: return { background: '#5d4aee',color: 'white' };
-        default: return { background: '#0398d6',color: 'white' };
+        case 1: return { background: '#88434f', color: 'white' };
+        case 2: return { background: '#2d3338', color: 'white' };
+        case 3: return { background: '#3370ff', color: 'white' };
+        case 4: return { background: '#d75f28', color: 'white' };
+        case 5: return { background: '#9966cc', color: 'white' };
+        case 6: return { background: '#5d4aee', color: 'white' };
+        default: return { background: '#0398d6', color: 'white' };
       }
     },
     sliderStyle() {
@@ -102,35 +103,36 @@ export default {
         case 4: return { background: '#f6e5e0', color: 'grey' };
         case 5: return { background: '#e9e3f4', color: 'grey' };
         case 6: return { background: '#e5e0e2', color: 'grey' };
-        default: return { background: 'linear-gradient(to bottom,#f2f2f2 0,#f8f8f8 100%', color: 'grey' };;
+        default: return { background: 'linear-gradient(to bottom,#f2f2f2 0,#f8f8f8 100%)', color: 'grey' };
       }
     },
     activeNavStyle() {
       switch (this.skinNum) {
-        case 1: return { background: '#b5c9b8', color: '#fff' }; // 莫兰迪绿
-        case 2: return { background: '#a7c7e7', color: '#fff' }; // 莫兰迪蓝
-        case 3: return { background: '#b7afc6', color: '#fff' }; // 莫兰迪紫
-        case 4: return { background: '#e6c1c5', color: '#fff' }; // 莫兰迪粉
-        case 5: return { background: '#e9d7a5', color: '#fff' }; // 莫兰迪黄
-        case 6: return { background: '#b4b8ab', color: '#fff' }; // 莫兰迪灰
-        default: return { background: '#b5c9b8', color: '#fff' };
+        case 1: return { background: '#b5c9b8', color: '#fff' };
+        case 2: return { background: '#b5c9b8', color: '#fff' };
+        case 3: return { background: '#b7afc6', color: '#fff' };
+        case 4: return { background: '#e6c1c5', color: '#fff' };
+        case 5: return { background: '#e9d7a5', color: '#fff' };
+        case 6: return { background: '#b4b8ab', color: '#fff' };
+        default: return { background: '#a7c7e7', color: '#fff' };
       }
     },
     hoverNavStyle() {
       switch (this.skinNum) {
-        case 1: return { background: '#b5c9b8', color: '#fff' }; // 莫兰迪绿加深
-        case 2: return { background: '#a7c7e7', color: '#fff' }; // 莫兰迪蓝加深
-        case 3: return { background: '#b7afc6', color: '#fff' }; // 莫兰迪紫加深
-        case 4: return { background: '#e6c1c5', color: '#fff' }; // 莫兰迪粉加深
-        case 5: return { background: '#e9d7a5', color: '#fff' }; // 莫兰迪黄加深
-        case 6: return { background: '#b4b8ab', color: '#fff' }; // 莫兰迪灰加深
+        case 1: return { background: '#b5c9b8', color: '#fff' };
+        case 2: return { background: '#a7c7e7', color: '#fff' };
+        case 3: return { background: '#b7afc6', color: '#fff' };
+        case 4: return { background: '#e6c1c5', color: '#fff' };
+        case 5: return { background: '#e9d7a5', color: '#fff' };
+        case 6: return { background: '#b4b8ab', color: '#fff' };
         default: return { background: '#b5c9b8', color: '#fff' };
       }
-    },
+    }
   },
   methods: {
     // 获取用户信息
     getUser() {
+      if (!this.$api || !this.$api.home || !this.$api.home.getUserinfo) return;
       this.$api.home
         .getUserinfo()
         .then(data => {
@@ -140,31 +142,92 @@ export default {
           this.$store.commit('changeId', data.data.id);
         })
         .catch(err => {
-          this.$messageError(err.message);
+          this.$messageError && this.$messageError(err.message);
         });
     },
     // 跳转路由刷新
     refresh(path) {
-      if (this.$route.path.indexOf(path) > -1) {
-        this.reload();
+      if (this.$route && this.$route.path && this.$route.path.indexOf(path) > -1) {
+        this.reload && this.reload();
       } else {
-        this.$router.push({
-          path: path
-        });
+        this.$router && this.$router.push && this.$router.push({ path: path });
       }
+    },
+    // stub：避免未定义调用导致异常
+    updateThemeVars(newVal) {
+      // 如果有主题变量需要应用，这里安全处理
+      // 例如：document.documentElement.style.setProperty('--theme-color', ...)
+      if (typeof window === 'undefined') return;
+      try {
+        // 示例：根据 skinNum 改变 css 变量（按需修改）
+        // document.documentElement.style.setProperty('--theme-color', this.headerStyle.background);
+      } catch (e) {
+        // quiet
+      }
+    },
+    updateActiveByRoute(path) {
+      // 简单实现：根据 path 设置 activeNav（按需扩展）
+      if (!path) return;
+      if (path.indexOf('/behalf/baseInfo') > -1) this.activeNav = '/behalf/baseInfo';
+      else if (path.indexOf('/audit/audit') > -1) this.activeNav = '/audit/audit';
+      else if (path.indexOf('/rollout/everyday') > -1) this.activeNav = '/rollout/everyday';
+      else if (path.indexOf('/main/home') > -1) this.activeNav = '/main/home';
+      else this.activeNav = path;
     }
   },
-  mounted() {
-    console.log(this.$route);
-    this.name = this.$route.name;
-  },
   created() {
+    // 安全读取 localStorage（防止 SSR 或者 localStorage 不可用导致异常）
+    try {
+      if (typeof window !== 'undefined' && window.localStorage && localStorage.getItem) {
+        const v = Number(localStorage.getItem('skinNum'));
+        this.skinNum = Number.isNaN(v) ? 0 : v;
+      }
+    } catch (e) {
+      this.skinNum = 0;
+    }
+
+    // 注册并保存回调引用，便于 beforeDestroy 时移除
+    if (this.$root && this.$root.$on) {
+      this._onSkinChange = (num) => {
+        // 防护：只在组件实例存在时赋值
+        try {
+          if (this && typeof this === 'object') {
+            this.skinNum = Number(num) || 0;
+          }
+        } catch (ex) {
+          // ignore
+        }
+      };
+      this.$root.$on('skin-change', this._onSkinChange);
+    }
+
     this.getUser();
+  },
+  beforeDestroy() {
+    if (this.$root && this.$root.$off && this._onSkinChange) {
+      this.$root.$off('skin-change', this._onSkinChange);
+      this._onSkinChange = null;
+    }
+  },
+  watch: {
+    '$route.path'(newPath) {
+      // 防护调用
+      this.updateActiveByRoute && this.updateActiveByRoute(newPath || (this.$route && this.$route.path));
+    },
+    skinNum(newVal, oldVal) {
+      // 仅当方法存在时调用，避免未定义错误
+      if (typeof this.updateThemeVars === 'function') {
+        this.updateThemeVars(newVal, oldVal);
+      }
+    }
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
 .main {
   position: relative;
   padding-top: 60px;

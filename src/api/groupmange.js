@@ -100,6 +100,26 @@ export default {
       headers: { Authorization: 'Bearer ' + header }
     });
   },
+  // 微信密保下拉
+  async getWxmbTemplates(params) {
+    let header = await mgr();
+    return api({
+      url: '/api/WxUserValid/GetWxmbTemplates',
+      method: 'get',
+      params: params,
+      headers: { Authorization: 'Bearer ' + header }
+    });
+  },
+  // 获取微信二维码模板
+  async getQrcodeTemplates(params) {
+    let header = await mgr();
+    return api({
+      url: '/api/WxUserValid/GetQrcodeTemplates',
+      method: 'get',
+      params: params,
+      headers: { Authorization: 'Bearer ' + header }
+    });
+  },
   // 批量删除分区管理
   async delAreas(params) {
     let header = await mgr();
@@ -167,6 +187,37 @@ export default {
       url: '/api/PartitionsManager/CheckPartitionStatus',
       method: 'get',
       params: params,
+      headers: { Authorization: 'Bearer ' + header }
+    });
+  },
+  // 新增二维码模版
+  async addQrcodeTemplate(params) {
+    let header = await mgr();
+    return api({
+      url: '/api/WxUserValid/AddQrcodeTemplate',
+      method: 'post',
+      data: params,
+      headers: { Authorization: 'Bearer ' + header }
+    });
+  },
+
+  // 新增微信密保模版
+  async addWxmbTemplate(params) {
+    let header = await mgr();
+    return api({
+      url: '/api/WxUserValid/AddWxmbTemplate',
+      method: 'post',
+      data: params,
+      headers: { Authorization: 'Bearer ' + header }
+    });
+  },
+  // 获取二维码模版-不分页
+  async getAllQrcodeTemplates(params) {
+    let header = await mgr();
+    return api({
+      url: '/api/WxUserValid/GetQrcodeTemplates',
+      method: 'get',
+      data: params,
       headers: { Authorization: 'Bearer ' + header }
     });
   }

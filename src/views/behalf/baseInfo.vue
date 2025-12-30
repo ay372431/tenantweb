@@ -7,7 +7,7 @@
  -->
 <template>
   <div class="wrap-box">
-    <div class="sonbar" style="background-color: #72c9f5;"><img src="../../assets/img/san.png" /><span style="color: white;">基本资料</span></div>
+    <div class="gs_title"><span style="color: white;">基本资料</span></div>
     <div class="wrap-box-c">
       <el-row :gutter="20">
         <el-col :span="16">
@@ -140,32 +140,33 @@
 </template>
 
 <script>
-import mgr from "../../assets/js/securityapi";
-import api from "../../assets/js/apiRequestHandler";
-import { netUrl } from "../../assets/js/version";
+import mgr from '../../assets/js/securityapi';
+import api from '../../assets/js/apiRequestHandler';
+import { netUrl } from '../../assets/js/version';
 export default {
   data() {
     return {
       dialogConfig: false,
-      amount: "",
-      ips: "",
+      amount: '',
+      ips: '',
       result: {},
-      downurl: netUrl + "/api/Upload/ShowFileNew?name=代付示例",
+      downurl: netUrl + '/api/Upload/ShowFileNew?name=代付示例'
     };
   },
   created() {
     this.getBaseinfo();
-    this.getIp()
+    this.getIp();
+    // this.getSkin();
   },
   methods: {
     async getBaseinfo() {
       let header = await mgr();
       api
-        .get("/api/TenantPaid/GetAccountOverview", {
+        .get('/api/TenantPaid/GetAccountOverview', {
           headers: {
-            Authorization: "Bearer " + header,
+            Authorization: 'Bearer ' + header
           },
-          params: {},
+          params: {}
         })
         .then((res) => {
           this.result = res.data;
@@ -173,24 +174,24 @@ export default {
     },
     async chongzhi() {
       let header = await mgr();
-      if (this.amount === "") {
-        this.$message.error("金额不能为空");
+      if (this.amount === '') {
+        this.$message.error('金额不能为空');
         return;
       }
       if (this.amount > this.result.maxRechargeAmount) {
-        this.$message.error("金额超过最大余额");
+        this.$message.error('金额超过最大余额');
         return;
       }
       api
         .post(
-          "/api/TenantPaid/Recharge",
+          '/api/TenantPaid/Recharge',
           {
-            amount: this.amount,
+            amount: this.amount
           },
           {
             headers: {
-              Authorization: "Bearer " + header,
-            },
+              Authorization: 'Bearer ' + header
+            }
           }
         )
         .then((res) => {
@@ -204,44 +205,48 @@ export default {
     },
     async getIp() {
       let header = await mgr();
-      api.get("/api/TenantPaid/GetWhiteList",{
-          headers: {
-            Authorization: "Bearer " + header,
-          },
-        }).then(res => {
-          if (res.status === 200) {
+      api.get('/api/TenantPaid/GetWhiteList', {
+        headers: {
+          Authorization: 'Bearer ' + header
+        }
+      }).then(res => {
+        if (res.status === 200) {
           //  console.log(res.data)
-           this.ips = res.data.join('\n')
-          }
-        })
+          this.ips = res.data.join('\n');
+        }
+      })
         .catch(err => {
           this.$messageError(err.message);
         });
     },
+
     async addIp() {
       let header = await mgr();
-      let ip = this.ips.split("\n");
-      if (this.ips === "") {
-        this.$message.error("ip不能为空");
+      let ip = this.ips.split('\n');
+      if (this.ips === '') {
+        this.$message.error('ip不能为空');
         return;
       }
       api
-        .post("/api/TenantPaid/AddWhiteList", ip, {
+        .post('/api/TenantPaid/AddWhiteList', ip, {
           headers: {
-            Authorization: "Bearer " + header,
-          },
+            Authorization: 'Bearer ' + header
+          }
         })
         .then((res) => {
-          this.$message.success("保存成功");
+          this.$message.success('保存成功');
         }).catch(err => {
           this.$messageError(err.message);
         });
-    },
-  },
+    }
+  }
 };
 </script>
 
 <style scoped>
+.gs_title {
+  background: var(--theme-color);
+}
 .wrap-box {
   min-height: 800px;
   background-color: #fff;

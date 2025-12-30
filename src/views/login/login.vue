@@ -32,6 +32,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
 .loginHome {
   position: relative;
   height: 100%;

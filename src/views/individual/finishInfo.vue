@@ -140,29 +140,29 @@
 export default {
   data() {
     return {
-      secondPassword: "", // 二级密码
-      surePassword: "", // 确认二级密码
-      bank: "", // 开户银行
+      secondPassword: '', // 二级密码
+      surePassword: '', // 确认二级密码
+      bank: '', // 开户银行
       bankdrow: [], // 银行下拉
-      bankacount: "", // 银行帐号
-      person: "", // 收款人
-      local: "", // 所在地区
-      domain: "", // 域名
-      siteName: "", // 网站名称
-      idNumber: "",
+      bankacount: '', // 银行帐号
+      person: '', // 收款人
+      local: '', // 所在地区
+      domain: '', // 域名
+      siteName: '', // 网站名称
+      idNumber: ''
     };
   },
   computed: {
     bankName: function () {
-      if (this.bank === "") {
-        return "";
+      if (this.bank === '') {
+        return '';
       } else {
         let arr = this.bankdrow.filter((item) => {
           return item.bankMark === this.bank;
         });
         return arr[0].bankName;
       }
-    },
+    }
   },
   methods: {
     // 开户银行下拉
@@ -178,32 +178,32 @@ export default {
     },
     // 修改二级密码和账号
     setPersonInfo() {
-      if (this.secondPassword === "") {
-        this.$messageError("请输入二级密码");
+      if (this.secondPassword === '') {
+        this.$messageError('请输入二级密码');
         return;
       } else if (this.secondPassword !== this.surePassword) {
-        this.$messageError("两次密码输入不一致！");
+        this.$messageError('两次密码输入不一致！');
         return;
-      } else if (this.bank === "") {
-        this.$messageError("请选择开户银行！");
+      } else if (this.bank === '') {
+        this.$messageError('请选择开户银行！');
         return;
-      } else if (this.idNumber === "") {
-        this.$messageError("请输入身份证号！");
+      } else if (this.idNumber === '') {
+        this.$messageError('请输入身份证号！');
         return;
-      } else if (this.bankacount === "") {
-        this.$messageError("请输入银行卡号！");
+      } else if (this.bankacount === '') {
+        this.$messageError('请输入银行卡号！');
         return;
-      } else if (this.person === "") {
-        this.$messageError("请输入开户人！");
+      } else if (this.person === '') {
+        this.$messageError('请输入开户人！');
         return;
-      } else if (this.local === "") {
-        this.$messageError("请输入所在地区！");
+      } else if (this.local === '') {
+        this.$messageError('请输入所在地区！');
         return;
-      } else if (this.domain === "") {
-        this.$messageError("请输入域名！");
+      } else if (this.domain === '') {
+        this.$messageError('请输入域名！');
         return;
-      } else if (this.siteName === "") {
-        this.$messageError("请输入网站名称！");
+      } else if (this.siteName === '') {
+        this.$messageError('请输入网站名称！');
         return;
       }
       this.$api.personCenter
@@ -216,17 +216,17 @@ export default {
             realName: this.person,
             domain: this.domain,
             siteName: this.siteName,
-            idNumber: this.idNumber,
+            idNumber: this.idNumber
           },
           secondaryPasswordParameters: {
             password: this.secondPassword,
-            confirmPassword: this.surePassword,
-          },
+            confirmPassword: this.surePassword
+          }
         })
         .then((data) => {
           if (data.status === 200) {
-            this.$messageSuccess("完善成功！");
-            this.$router.replace({ path: "/main/home" });
+            this.$messageSuccess('完善成功！');
+            this.$router.replace({ path: '/main/home' });
           }
         })
         .catch((err) => {
@@ -238,8 +238,8 @@ export default {
         .getUserBankDetails()
         .then((data) => {
           if (data.status === 200) {
-            this.domain= data.data.domain;
-            this.local = data.data.bankBranch;          
+            this.domain = data.data.domain;
+            this.local = data.data.bankBranch;
             this.bank = data.data.bankMark;
             this.bankacount = data.data.bankNumber;
             this.person = data.data.realName;
@@ -251,16 +251,19 @@ export default {
         .catch((err) => {
           this.$messageError(err.message);
         });
-    },
+    }
   },
   created() {
     this.bankDrowList();
     this.getUserBankDetails();
-  },
+  }
 };
 </script>
 
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
 .tip_red {
   color: #3c8dbc;
   padding: 10px 0px;

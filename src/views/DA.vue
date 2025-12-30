@@ -206,9 +206,9 @@
                 <li>
                   <span class='tit'>日期：</span>
                   <!-- <el-date-picker style="width:338px;" v-model="tab4.time" size="small" type="datetimerange" :default-time="['00:00:00', '23:59:59']" value-format="yyyy-MM-dd HH:mm:ss" range-separator="至" start-placeholder="起始时间" end-placeholder="结束时间"></el-date-picker> -->
-                  <el-date-picker style="width:190px;" v-model="tab4.time1" size="small" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期">
+                  <el-date-picker style="width:190px;" v-model="tab7.time1" size="small" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期">
                   </el-date-picker> <span style="font-size:14px;">至 </span>
-                  <el-date-picker style="width:190px;" v-model="tab4.time2" size="small" default-time="23:59:59" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期">
+                  <el-date-picker style="width:190px;" v-model="tab7.time2" size="small" default-time="23:59:59" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期">
                   </el-date-picker>
                 </li>
                 <!-- <li v-if="tab4.switchBtn">
@@ -223,10 +223,10 @@
               </ul>
               <div class="tablebox pdb15 pdt20">
                 <div class="gs_tablebox">
-                  <el-table ref="moduleTable" size="mini" :data="tab4.tableData" border style="width: 100%" stripe>
+                  <el-table ref="moduleTable" size="mini" :data="tab7.tableData" border style="width: 100%" stripe>
                     <el-table-column type="index" label="序号" width="65">
                     </el-table-column>
-                    <el-table-column prop="groupName" label="模版名称">
+                    <el-table-column prop="templateName" label="模版名称">
                     </el-table-column>
                     <el-table-column label="充值金额">
                       <template slot-scope="scope">
@@ -248,7 +248,7 @@
                   </el-table>
                 </div>
                 <div class="mgt15 pdl20">
-                  <el-pagination @size-change="handleSizeChange7" @current-change="handleCurrentChange4" background :page-sizes="[10, 20, 30, 40]" :current-page="tab4.pageIndex" :page-size="tab4.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="tab4.total">
+                  <el-pagination @size-change="handleSizeChange7" @current-change="handleCurrentChange4" background :page-sizes="[10, 20, 30, 40]" :current-page="tab7.pageIndex" :page-size="tab7.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="tab7.total">
                   </el-pagination>
                 </div>
               </div>
@@ -374,7 +374,7 @@
                   <el-date-picker style="width:190px;" v-model="tab8.time2" size="small" default-time="23:59:59" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期">
                   </el-date-picker>
                 </li>
-                <el-button size="small" type="primary" @click="getlist6">查询</el-button>
+                <el-button size="small" type="primary" @click="getlist8">查询</el-button>
               </ul>
               <div class="tablebox pdb15 pdt20">
                 <div class="gs_tablebox">
@@ -402,56 +402,12 @@
                   </el-table>
                 </div>
                 <div class="mgt15 pdl20">
-                  <el-pagination @size-change="handleSizeChange6" @current-change="handleCurrentChange6" background :page-sizes="[10, 20, 30, 40]" :current-page="tab8.pageIndex" :page-size="tab6.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="tab6.total">
+                  <el-pagination @size-change="handleSizeChange8" @current-change="handleCurrentChange8" background :page-sizes="[10, 20, 30, 40]" :current-page="tab8.pageIndex" :page-size="tab8.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="tab8.total">
                   </el-pagination>
                 </div>
               </div>
             </div>
           </el-tab-pane>
-          <!-- <el-tab-pane label="来源统计" name="8">
-            <div class="opeartbox">
-              <ul class="clearfix">
-                <li>
-                  <span class='tit'>日期：</span>
-                  <el-date-picker style="width:190px;" v-model="tab6.time1" size="small" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期">
-                  </el-date-picker> <span style="font-size:14px;">至 </span>
-                  <el-date-picker style="width:190px;" v-model="tab6.time2" size="small" default-time="23:59:59" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期">
-                  </el-date-picker>
-                </li>
-                <el-button size="small" type="primary" @click="getlist6">查询</el-button>
-              </ul>
-              <div class="tablebox pdb15 pdt20">
-                <div class="gs_tablebox">
-                  <el-table ref="moduleTable" size="mini" :data="tab6.tableData" border style="width: 100%" stripe>
-                    <el-table-column type="index" label="序号" width="65">
-                    </el-table-column>
-                    <el-table-column prop="domain" label="域名">
-                    </el-table-column>
-                    <el-table-column prop="visitNumber" label="访问次数">
-                    </el-table-column>
-                    <el-table-column prop="loginNumber" label="登录次数">
-                    </el-table-column>
-                    <el-table-column prop="orderCount" label="支付笔数">
-                    </el-table-column>
-                    <el-table-column label="充值金额">
-                      <template slot-scope="scope">
-                        <span>{{scope.row.orderMoney.toFixed(2)}}</span>
-                      </template>
-                    </el-table-column>
-                    <el-table-column label="收入">
-                      <template slot-scope="scope">
-                        <span>{{scope.row.profit.toFixed(2)}}</span>
-                      </template>
-                    </el-table-column>
-                  </el-table>
-                </div>
-                <div class="mgt15 pdl20">
-                  <el-pagination @size-change="handleSizeChange8" @current-change="handleCurrentChange8" background :page-sizes="[10, 20, 30, 40]" :current-page="tab6.pageIndex" :page-size="tab6.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="tab6.total">
-                  </el-pagination>
-                </div>
-              </div>
-            </div>
-          </el-tab-pane> -->
         </el-tabs>
       </div>
     </div>
@@ -545,7 +501,7 @@ export default {
     ...mapState(['userType'])
   },
   methods: {
-        // 获取帐户信息
+    // 获取帐户信息
     getAccountInfo() {
       this.$api.home
         .getAccountInfo()
@@ -620,23 +576,28 @@ export default {
         this.tab6.pageSize = 20; // 每页的条数
         this.tab6.total = 0; // 总数据的条数
         this.getlist6();
-      }else if (this.activeName === '7') {
-        this.tab6.time1 = this.getCerentTime(true); // 日期
-        this.tab6.time2 = this.getCerentTime(false); // 日期
-        this.tab6.tableData = [];
-        this.tab6.pageIndex = 1; // 页码
-        this.tab6.pageSize = 20; // 每页的条数
-        this.tab6.total = 0; // 总数据的条数
+      } else if (this.activeName === '7') {
+        this.tab7.time1 = this.getCerentTime(true); // 日期
+        this.tab7.time2 = this.getCerentTime(false); // 日期
+        this.tab7.tableData = [];
+        this.tab7.pageIndex = 1; // 页码
+        this.tab7.pageSize = 20; // 每页的条数
+        this.tab7.total = 0; // 总数据的条数
         this.getlist7();
-      }else if (this.activeName === '8') {
-        if(this.money>=498){
-          //显示isshow
-
-        }else{
+      } else if (this.activeName === '8') {
+        if (this.money >= 498) {
+          // 显示isshow
+          this.tab8.time1 = this.getCerentTime(true); // 日期
+          this.tab8.time2 = this.getCerentTime(false); // 日期
+          this.tab8.tableData = [];
+          this.tab8.pageIndex = 1; // 页码
+          this.tab8.pageSize = 20; // 每页的条数
+          this.tab8.total = 0; // 总数据的条数
+          this.getlist8();
+        } else {
           // $("#ishow").hide();
           this.$messageError('余额不足498.00，请先充值');
-          this.activeName='1';
-          return;
+          this.activeName = '1';
         }
       }
     },
@@ -1439,19 +1400,42 @@ export default {
     },
     getlist7() {
       this.$api.statics
-        .ispStatic({
-          StartTime: this.tab6.time1 ? this.tab6.time1 : '',
-          EndTime: this.tab6.time2 ? this.tab6.time2 : '',
-          PageNumber: this.tab6.pageIndex,
-          PageSize: this.tab6.pageSize
+        .temlStatic({
+          StartTime: this.tab7.time1 ? this.tab7.time1 : '',
+          EndTime: this.tab7.time2 ? this.tab7.time2 : '',
+          PageNumber: this.tab7.pageIndex,
+          PageSize: this.tab7.pageSize
         })
         .then((data) => {
           if (data.status === 204) {
-            this.tab6.tableData = [];
-            this.tab6.total = 0;
+            this.tab7.tableData = [];
+            this.tab7.total = 0;
           } else if (data.status === 200) {
-            this.tab6.tableData = data.data;
-            this.tab6.total = JSON.parse(
+            this.tab7.tableData = data.data;
+            this.tab7.total = JSON.parse(
+              data.headers['x-pagination']
+            ).TotalCount;
+          }
+        })
+        .catch((err) => {
+          this.$messageError(err.message);
+        });
+    },
+    getlist8() {
+      this.$api.statics
+        .deviceStatic({
+          StartTime: this.tab8.time1 ? this.tab8.time1 : '',
+          EndTime: this.tab8.time2 ? this.tab8.time2 : '',
+          PageNumber: this.tab8.pageIndex,
+          PageSize: this.tab8.pageSize
+        })
+        .then((data) => {
+          if (data.status === 204) {
+            this.tab8.tableData = [];
+            this.tab8.total = 0;
+          } else if (data.status === 200) {
+            this.tab8.tableData = data.data;
+            this.tab8.total = JSON.parse(
               data.headers['x-pagination']
             ).TotalCount;
           }
@@ -1466,23 +1450,33 @@ export default {
       this.tab6.pageIndex = 1;
       this.getlist6();
     },
-    handleCurrentChange6(data){
-
+    handleCurrentChange6(data) {
+      this.tab6.pageIndex = data;
+      if (this.tab6.switchBtn) {
+        this.getlistMerchant5();
+      } else {
+        this.getlist6();
+      }
     },
     // 6当前的页码变化时
     handleCurrentChange7(data) {
       this.tab6.pageIndex = data;
-      this.getlist6();
+      this.getlist7();
     },
-    handleSizeChange7(data){
-
+    handleSizeChange7(data) {
+      this.tab7.pageSize = data;
+      this.tab7.pageIndex = 1;
+      this.getlist7();
     },
-    handleSizeChange8(data){
-
+    handleSizeChange8(data) {
+      this.tab8.pageSize = data;
+      this.tab8.pageIndex = 1;
+      this.getlist8();
     },
-    handleCurrentChange8(data){
-
-    },
+    handleCurrentChange8(data) {
+      this.tab8.pageIndex = data;
+      this.getlist8();
+    }
   },
   created() {
     this.gameareaDrow();
@@ -1496,6 +1490,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
 .tabbox {
   width: 100%;
 }

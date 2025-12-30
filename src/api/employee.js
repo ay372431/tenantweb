@@ -20,6 +20,16 @@ export default {
       headers: { Authorization: 'Bearer ' + header }
     });
   },
+  // 下属子账户列表
+  async submerchantListz(params) {
+    let header = await mgr();
+    return api({
+      url: '/api/HomePage/GetEmployeeZListAsync',
+      method: 'get',
+      params: params,
+      headers: { Authorization: 'Bearer ' + header }
+    });
+  },
 
   // 添加员工
   async addMerchant(params) {
@@ -31,16 +41,16 @@ export default {
       headers: { Authorization: 'Bearer ' + header }
     });
   },
-// 添加分组
-async addteam(params) {
-  let header = await mgr();
-  return api({
-    url: '/api/UserManage/AddEmployeeTeamAsync',
-    method: 'post',
-    data: params,
-    headers: { Authorization: 'Bearer ' + header }
-  });
-},
+  // 添加分组
+  async addteam(params) {
+    let header = await mgr();
+    return api({
+      url: '/api/UserManage/AddEmployeeTeamAsync',
+      method: 'post',
+      data: params,
+      headers: { Authorization: 'Bearer ' + header }
+    });
+  },
   // 删除下属员工
   async delMerchant(params) {
     let header = await mgr();
@@ -51,6 +61,34 @@ async addteam(params) {
       headers: { Authorization: 'Bearer ' + header }
     });
   },
-  
-  
+  // 添加角色
+  async addRole(params) {
+    let header = await mgr();
+    return api({
+      url: '/api/UserManage/SaveRole',
+      method: 'post',
+      data: params,
+      headers: { Authorization: 'Bearer ' + header }
+    });
+  },
+  // 获取角色
+  async getRole(params) {
+    let header = await mgr();
+    return api({
+      url: '/api/UserManage/RolePage',
+      method: 'get',
+      params: params,
+      headers: { Authorization: 'Bearer ' + header }
+    });
+  },
+  // 删除角色
+  async delRole(params) {
+    let header = await mgr();
+    return api({
+      url: '/api/UserManage/DeleteRole',
+      method: 'post',
+      data: params,
+      headers: { Authorization: 'Bearer ' + header }
+    });
+  }
 };

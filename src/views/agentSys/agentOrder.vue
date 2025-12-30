@@ -16,9 +16,11 @@
             <li>
               <span class='tit'>起始时间：</span>
               <!-- <el-date-picker style="width:338px;" v-model="agentOrder.time" size="small" type="datetimerange" :default-time="['00:00:00', '23:59:59']" value-format="yyyy-MM-dd HH:mm:ss" range-separator="至" start-placeholder="起始时间" end-placeholder="结束时间"></el-date-picker> -->
-              <el-date-picker style="width:190px;" v-model="agentOrder.time1" size="small" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期">
+              <el-date-picker style="width:190px;" v-model="agentOrder.time1" size="small" type="datetime"
+                value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期">
               </el-date-picker> <span style="font-size:14px;">至 </span>
-              <el-date-picker style="width:190px;" v-model="agentOrder.time2" size="small" default-time="23:59:59" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期">
+              <el-date-picker style="width:190px;" v-model="agentOrder.time2" size="small" default-time="23:59:59"
+                type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期">
               </el-date-picker>
             </li>
             <li>
@@ -36,15 +38,18 @@
             <li>
               <span class='tit'>订单金额：</span>
               <span class="txtbox" style="width: 190px;">
-                <el-input style="width:83px;" size="small" type="number" v-model="agentOrder.minvalue" placeholder="0"></el-input> --
-                <el-input style="width:83px;" size="small" type="number" v-model="agentOrder.maxvalue" placeholder="999"></el-input>
+                <el-input style="width:83px;" size="small" type="number" v-model="agentOrder.minvalue"
+                  placeholder="0"></el-input> --
+                <el-input style="width:83px;" size="small" type="number" v-model="agentOrder.maxvalue"
+                  placeholder="999"></el-input>
               </span>
             </li>
             <li>
               <span class='tit'>支付方式：</span>
               <span class="txtbox" style="width: 130px;">
                 <el-select v-model="agentOrder.paytype" clearable size="small" placeholder="请选择">
-                  <el-option v-for="(item,i) in agentOrder.payDraw" :key="'modeofpayment'+i" :label="item.name" :value="item.id"></el-option>
+                  <el-option v-for="(item, i) in agentOrder.payDraw" :key="'modeofpayment' + i" :label="item.name"
+                    :value="item.id"></el-option>
                 </el-select>
               </span>
             </li>
@@ -52,7 +57,8 @@
               <span class='tit'>下属商户：</span>
               <span class="txtbox" style="width: 140px;">
                 <el-select v-model="agentOrder.submerchant" size="small" clearable placeholder="请选择">
-                  <el-option v-for="(item,i) in agentOrder.submerchantDraw" :key="'gameGroup'+i" :label="item.userName" :value="item.merchantId"></el-option>
+                  <el-option v-for="(item, i) in agentOrder.submerchantDraw" :key="'gameGroup' + i" :label="item.userName"
+                    :value="item.merchantId"></el-option>
                 </el-select>
               </span>
             </li>
@@ -60,7 +66,8 @@
               <span class='tit'>订单状态：</span>
               <span class="txtbox" style="width: 140px;">
                 <el-select v-model="agentOrder.orderState" size="small" clearable placeholder="请选择">
-                  <el-option v-for="(item,i) in agentOrder.orderStateDraw" :key="'gameGroup'+i" :label="item.text" :value="item.value"></el-option>
+                  <el-option v-for="(item, i) in agentOrder.orderStateDraw" :key="'gameGroup' + i" :label="item.text"
+                    :value="item.value"></el-option>
                 </el-select>
               </span>
             </li>
@@ -72,11 +79,48 @@
             </div>
             <div class="mgt10">
               <el-button size="small" type="success" @click="tomorrowTime">下一天</el-button>
-              <el-button size="small" type="primary" @click="()=>{agentOrder.pageIndex=1;getlist();orderStatic()}">查询</el-button>
+              <el-button size="small" type="primary"
+                @click="() => { agentOrder.pageIndex = 1; getlist(); orderStatic() }">查询</el-button>
             </div>
           </div>
         </div>
-        <div class="orderForm">
+        <div style="padding: 30px 20px;border: 1px solid #facd89;margin: 10px 20px;">
+          <ul style="display: flex;justify-content: space-around;text-align: center;">
+            <li>
+              <p class="tit" style="margin-bottom: 15px;">昨日支付金额</p>
+              <p class="num" style="color: #00b066;">{{ agentOrder.yesterday.payaccount.toFixed(2) }}</p>
+            </li>
+            <li>
+              <p class="tit" style="margin-bottom: 15px;">充值总金额</p>
+              <p class="num" style="color: #FF5722;">{{ agentOrder.today.payaccount.toFixed(2) }}</p>
+            </li>
+            <li>
+              <p class="tit" style="margin-bottom: 15px;">昨日商户总利润</p>
+              <p class="num" style="color: goldenrod;">{{ agentOrder.yesterday.profit.toFixed(2) }}</p>
+            </li>
+            <li>
+              <p class="tit" style="margin-bottom: 15px;">充值总利润</p>
+              <p class="num" style="color: #00b066;">{{ agentOrder.today.profit.toFixed(2) }}</p>
+            </li>
+            <li>
+              <p class="tit" style="margin-bottom: 15px;">昨日代理利润</p>
+              <p class="num" style="color: #FF5722;">{{ agentOrder.yesterday.agentProfit.toFixed(2) }}</p>
+            </li>
+            <li>
+              <p class="tit" style="margin-bottom: 15px;">代理总利润</p>
+              <p class="num" style="color: goldenrod;">{{ agentOrder.today.agentProfit.toFixed(2) }}</p>
+            </li>
+            <li>
+              <p class="tit" style="margin-bottom: 15px;">昨日成功笔数</p>
+              <p class="num" style="color: #FF5722;">{{ agentOrder.yesterday.count }}</p>
+            </li>
+            <li>
+              <p class="tit" style="margin-bottom: 15px;">总成功笔数</p>
+              <p class="num" style="color: goldenrod;">{{ agentOrder.today.count }}</p>
+            </li>
+          </ul>
+        </div>
+        <!-- <div class="orderForm">
           <table style="width: 100%;text-align: center;">
             <tr>
               <td></td>
@@ -100,7 +144,7 @@
               <td style="color:#468847">{{agentOrder.today.count}}</td>
             </tr>
           </table>
-        </div>
+        </div> -->
         <!-- <div class="progressBox">
               <span class="textbox">{{(agentOrder.today.successRate*100).toFixed(2)}} %</span>
               <div class="progressBar" :style="{'width':(agentOrder.today.successRate*100).toFixed(2)+'%'}"></div>
@@ -110,14 +154,14 @@
             <el-table ref="moduleTable" size="mini" :data="agentOrder.tableData" border style="width: 100%" stripe>
               <el-table-column prop="orderDate" label="创建时间">
                 <template slot-scope="scope">
-                  <p style="height:18px;">{{scope.row.orderDate?scope.row.orderDate.split(' ')[0]:''}}</p>
-                  <p style="height:18px;color:#999;">{{scope.row.orderDate?scope.row.orderDate.split(' ')[1]:''}}</p>
+                  <p style="height:18px;">{{ scope.row.orderDate ? scope.row.orderDate.split(' ')[0] : '' }}</p>
+                  <p style="height:18px;color:#999;">{{ scope.row.orderDate ? scope.row.orderDate.split(' ')[1] : '' }}</p>
                 </template>
               </el-table-column>
               <el-table-column label="订单号" width="170">
                 <template slot-scope="scope">
                   <el-tooltip class="item" effect="dark" content="点击查看订单详情" placement="bottom">
-                    <span class="checkdetail" @click="orderDetail(scope.row.id)">{{scope.row.orderNumber}}</span>
+                    <span class="checkdetail" @click="orderDetail(scope.row.id)">{{ scope.row.orderNumber }}</span>
                   </el-tooltip>
                 </template>
               </el-table-column>
@@ -127,17 +171,17 @@
               </el-table-column>
               <el-table-column prop="amount" label="订单金额">
                 <template slot-scope="scope">
-                  <span>{{scope.row.amount?scope.row.amount.toFixed(2):'0.00'}}</span>
+                  <span>{{ scope.row.amount ? scope.row.amount.toFixed(2) : '0.00' }}</span>
                 </template>
               </el-table-column>
               <el-table-column label="商户利润">
                 <template slot-scope="scope">
-                  <span>{{scope.row.merchantProfit?scope.row.merchantProfit.toFixed(2):'0.00'}}</span>
+                  <span>{{ scope.row.merchantProfit ? scope.row.merchantProfit.toFixed(2) : '0.00' }}</span>
                 </template>
               </el-table-column>
               <el-table-column label="代理利润">
                 <template slot-scope="scope">
-                  <span style="color:#00b066;">{{scope.row.agentProfit?scope.row.agentProfit.toFixed(2):'0.00'}}</span>
+                  <span style="color:#00b066;">{{ scope.row.agentProfit ? scope.row.agentProfit.toFixed(2) : '0.00' }}</span>
                 </template>
               </el-table-column>
               <el-table-column prop="partitionName" label="所属分区">
@@ -146,69 +190,73 @@
               </el-table-column>
               <el-table-column label="订单状态">
                 <template slot-scope="scope">
-                  <span class="stateColor" :class="'color'+scope.row.state">{{scope.row.state|fstate}}</span>
+                  <span class="stateColor" :class="'color' + scope.row.state">{{ scope.row.state | fstate }}</span>
                 </template>
               </el-table-column>
             </el-table>
           </div>
           <div class="mgt15 pdl20">
-            <el-pagination @size-change="handleSizeChange1" @current-change="handleCurrentChange1" background :page-sizes="[10, 20, 30, 40]" :current-page="agentOrder.pageIndex" :page-size="agentOrder.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="agentOrder.total">
+            <el-pagination @size-change="handleSizeChange1" @current-change="handleCurrentChange1" background
+              :page-sizes="[10, 20, 30, 40]" :current-page="agentOrder.pageIndex" :page-size="agentOrder.pageSize"
+              layout="total, sizes, prev, pager, next, jumper" :total="agentOrder.total">
             </el-pagination>
           </div>
         </div>
       </div>
     </div>
     <!-- 订单详情弹框 -->
-    <el-dialog title="订单详情" :visible.sync="agentOrder.dialog.show" @close="orderInit" custom-class="gs_dialog" width="800px">
+    <el-dialog title="订单详情" :visible.sync="agentOrder.dialog.show" @close="orderInit" custom-class="gs_dialog"
+      width="800px">
       <div class="dialogOrder">
         <table>
           <tr>
             <td class="tit">订单号</td>
-            <td>{{agentOrder.dialog.orderNum}}</td>
+            <td>{{ agentOrder.dialog.orderNum }}</td>
             <td class="tit">支付方式</td>
-            <td>{{agentOrder.dialog.paytype}}</td>
+            <td>{{ agentOrder.dialog.paytype }}</td>
           </tr>
           <tr>
             <td class="tit">玩家账号</td>
-            <td>{{agentOrder.dialog.playAccount}}</td>
+            <td>{{ agentOrder.dialog.playAccount }}</td>
             <td class="tit">游戏分区</td>
-            <td>{{agentOrder.dialog.gamearea}}</td>
+            <td>{{ agentOrder.dialog.gamearea }}</td>
           </tr>
           <tr>
             <td class="tit">订单金额</td>
-            <td style="color:#FF5722;">{{agentOrder.dialog.orderMoney.toFixed(2)}}</td>
+            <td style="color:#FF5722;">{{ agentOrder.dialog.orderMoney.toFixed(2) }}</td>
             <td class="tit">下单时间</td>
-            <td>{{agentOrder.dialog.orderTime}}</td>
+            <td>{{ agentOrder.dialog.orderTime }}</td>
           </tr>
           <tr>
             <td class="tit">付款金额</td>
-            <td style="color:#00b066;">{{agentOrder.dialog.payMoney.toFixed(2)}}</td>
+            <td style="color:#00b066;">{{ agentOrder.dialog.payMoney.toFixed(2) }}</td>
             <td class="tit">付款时间</td>
-            <td>{{agentOrder.dialog.payTime}}</td>
+            <td>{{ agentOrder.dialog.payTime }}</td>
           </tr>
           <tr>
             <td class="tit">赠送金额</td>
-            <td>{{agentOrder.dialog.giveMoney.toFixed(2)}}</td>
+            <td>{{ agentOrder.dialog.giveMoney.toFixed(2) }}</td>
             <td class="tit">玩家QQ</td>
-            <td>{{agentOrder.dialog.playerQQ}}</td>
+            <td>{{ agentOrder.dialog.playerQQ }}</td>
           </tr>
           <tr>
             <td class="tit">红包赠送</td>
-            <td>{{agentOrder.dialog.givebag.toFixed(2)}}</td>
+            <td>{{ agentOrder.dialog.givebag.toFixed(2) }}</td>
             <td class="tit">玩家电话</td>
-            <td>{{agentOrder.dialog.playerPhone}}</td>
+            <td>{{ agentOrder.dialog.playerPhone }}</td>
           </tr>
           <tr>
             <td class="tit">玩家 IP</td>
-            <td>{{agentOrder.dialog.playerIp}}</td>
+            <td>{{ agentOrder.dialog.playerIp }}</td>
             <td class="tit">订单状态</td>
             <td>
-              <span v-if="agentOrder.dialog.show" class="stateColor" :class="'color'+agentOrder.dialog.orderState">{{agentOrder.dialog.orderState|fstate}}</span>
+              <span v-if="agentOrder.dialog.show" class="stateColor"
+                :class="'color' + agentOrder.dialog.orderState">{{ agentOrder.dialog.orderState | fstate }}</span>
             </td>
           </tr>
           <tr>
             <td class="tit">下发道具</td>
-            <td colspan="3">{{agentOrder.dialog.props}}</td>
+            <td colspan="3">{{ agentOrder.dialog.props }}</td>
           </tr>
         </table>
       </div>
@@ -277,7 +325,7 @@ export default {
     };
   },
   filters: {
-    fstate: function(data) {
+    fstate: function (data) {
       let sta = '';
       switch (data) {
         case 0:
@@ -503,20 +551,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
+
 .gs_tabbox {
   .tabbox {
     float: none;
   }
 }
+
 .opeartbox {
   padding: 15px 150px 5px 20px;
   position: relative;
   background: #fff;
+
   .btnBox {
     position: absolute;
     right: 10px;
     top: 16px;
   }
+
   &.titwidth {
     ul {
       li {
@@ -527,22 +582,26 @@ export default {
       }
     }
   }
+
   ul {
     li {
       float: left;
       margin-right: 9px;
       margin-bottom: 10px;
+
       .tit {
         font-size: 14px;
         color: #2d2d2d;
         margin-right: 5px;
       }
+
       .txtbox {
         display: inline-block;
       }
     }
   }
 }
+
 .orderForm {
   // margin-top: 10px;
   background: #fff;
@@ -552,11 +611,13 @@ export default {
   background-color: #d9edf7;
   color: #999;
 }
+
 .font {
   color: #06859a;
   font-size: 15px;
   // font-weight: bold;
 }
+
 .weight {
   width: 18%;
   padding-bottom: 5px;
@@ -564,18 +625,22 @@ export default {
   font-size: 15px;
   // font-weight: bold;
 }
+
 @keyframes progress-bar-stripes {
   from {
     background-position: 40px 0;
   }
+
   to {
     background-position: 0 0;
   }
 }
+
 .progressBox {
   height: 16px;
   background: #bbb;
   position: relative;
+
   .textbox {
     position: absolute;
     top: 0;
@@ -584,28 +649,29 @@ export default {
     line-height: 16px;
     color: #fff;
   }
+
   .progressBar {
     height: 100%;
     width: 0;
     background: #67c23a;
-    background-image: linear-gradient(
-      45deg,
-      rgba(255, 255, 255, 0.2) 25%,
-      transparent 25%,
-      transparent 50%,
-      rgba(255, 255, 255, 0.2) 50%,
-      rgba(255, 255, 255, 0.2) 75%,
-      transparent 75%,
-      transparent
-    );
+    background-image: linear-gradient(45deg,
+        rgba(255, 255, 255, 0.2) 25%,
+        transparent 25%,
+        transparent 50%,
+        rgba(255, 255, 255, 0.2) 50%,
+        rgba(255, 255, 255, 0.2) 75%,
+        transparent 75%,
+        transparent);
     background-size: 40px 40px;
     animation: progress-bar-stripes 2s linear infinite;
     transition: all ease-out 0.3s;
   }
 }
+
 .roadlist {
   border: 1px solid #ccc;
   width: 753px;
+
   li {
     float: left;
     width: 250px;
@@ -614,9 +680,11 @@ export default {
     border-bottom: 1px solid #ccc;
     border-right: 1px solid #ccc;
     margin-bottom: -1px;
+
     &:nth-child(3n + 2) {
       border-right: none;
     }
+
     .tit {
       display: inline-block;
       vertical-align: middle;
@@ -624,6 +692,7 @@ export default {
       line-height: 40px;
       text-align: center;
     }
+
     .content {
       display: inline-block;
       vertical-align: middle;
@@ -634,6 +703,7 @@ export default {
     }
   }
 }
+
 .stateColor {
   background: red;
   // margin-left: 20px;
@@ -643,15 +713,19 @@ export default {
   position: relative;
   height: 22px;
   line-height: 22px;
+
   &.color1 {
     background: green;
+
     &:after {
       border-color: green;
     }
+
     &:before {
       border-right-color: green;
     }
   }
+
   &:after {
     content: '';
     position: absolute;
@@ -661,6 +735,7 @@ export default {
     right: -10px;
     border-right-color: transparent !important;
   }
+
   &:before {
     content: '';
     position: absolute;
@@ -671,23 +746,29 @@ export default {
     border-right-color: red;
   }
 }
+
 .checkdetail {
   cursor: pointer;
+
   &:hover {
     color: #0099ff;
     text-decoration: underline;
   }
 }
+
 .dialogOrder {
   padding-bottom: 20px;
+
   table {
     width: 100%;
+
     tr {
       td {
         border: 1px solid #ccc;
         text-align: center;
         height: 40px;
         color: #008194;
+
         &.tit {
           background: #edfdff;
           color: #6f6f6f;

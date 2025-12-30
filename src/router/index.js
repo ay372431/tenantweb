@@ -1,969 +1,1107 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
+import Vue from 'vue';
+import VueRouter from 'vue-router';
 // import CallBack from '../views/callback';
 // import Mgr from '../assets/js/SecurityService';
 Vue.use(VueRouter);
 // let mgr = new Mgr();
 const routes = [
   {
-    path: "/",
-    redirect: "login/loginHome"
+    path: '/',
+    redirect: 'login/loginHome'
   },
   {
-    path: "/loading",
-    name: "loading",
+    path: '/loading',
+    name: 'loading',
     component: resolve => {
-      require(["../views/login/loading"], resolve);
+      require(['../views/login/loading'], resolve);
     }
   },
   {
-    path: "/callback",
-    name: "callback",
+    path: '/callback',
+    name: 'callback',
     component: resolve => {
-      require(["../views/callback"], resolve);
+      require(['../views/callback'], resolve);
     }
   },
   {
-    path: "/dashboard",
-    name: "dashboard",
-    redirect: "/dashboard/login",
+    path: '/dashboard',
+    name: 'dashboard',
+    redirect: '/dashboard/login',
     component: resolve => {
-      require(["../views/dashboard"], resolve);
+      require(['../views/dashboard'], resolve);
     },
     children: [
       {
-        path: "login",
-        name: "DashboardLogin",
+        path: 'login',
+        name: 'DashboardLogin',
         component: resolve => {
-          require(["../views/dashboard/login.vue"], resolve);
+          require(['../views/dashboard/login.vue'], resolve);
         }
       },
       {
-        path: "register",
-        name: "DashboardRegister",
+        path: 'register',
+        name: 'DashboardRegister',
         component: resolve => {
-          require(["../views/dashboard/register.vue"], resolve);
+          require(['../views/dashboard/register.vue'], resolve);
         }
       },
       {
-        path: "contactus",
-        name: "contactus",
+        path: 'contactus',
+        name: 'contactus',
         component: resolve => {
-          require(["../views/dashboard/contactus.vue"], resolve);
+          require(['../views/dashboard/contactus.vue'], resolve);
         }
       },
       {
-        name: "rate",
-        path: "rate",
+        name: 'rate',
+        path: 'rate',
         component: resolve => {
-          require(["../views/dashboard/rate.vue"], resolve);
+          require(['../views/dashboard/rate.vue'], resolve);
         }
       },
       {
-        path: "tools",
-        name: "dashboardTools",
+        path: 'tools',
+        name: 'dashboardTools',
         component: resolve => {
-          require(["../views/dashboard/tools"], resolve);
+          require(['../views/dashboard/tools'], resolve);
         }
       }
     ]
   },
   {
-    path: "/login",
-    name: "login",
-    redirect: "/login/loginHome",
+    path: '/login',
+    name: 'login',
+    redirect: '/login/loginHome',
     component: resolve => {
-      require(["../views/login/login"], resolve);
+      require(['../views/login/login'], resolve);
     },
     children: [
       {
-        path: "loginHome",
-        name: "loginHome",
+        path: 'loginHome',
+        name: 'loginHome',
         component: resolve => {
-          require(["../views/login/loginHome"], resolve);
+          require(['../views/login/loginHome'], resolve);
         }
       },
       {
-        path: "logincontact",
-        name: "logincontact",
+        path: 'logincontact',
+        name: 'logincontact',
         component: resolve => {
-          require(["../views/login/contact"], resolve);
+          require(['../views/login/contact'], resolve);
         }
       },
       {
-        path: "loginregister",
-        name: "loginregister",
+        path: 'loginregister',
+        name: 'loginregister',
         component: resolve => {
-          require(["../views/login/registered"], resolve);
+          require(['../views/login/registered'], resolve);
         }
       },
       {
-        path: "loginRecharge",
-        name: "loginRecharge",
+        path: 'loginRecharge',
+        name: 'loginRecharge',
         component: resolve => {
-          require(["../views/login/recharges"], resolve);
+          require(['../views/login/recharges'], resolve);
         }
       },
       {
-        path: "unloading",
-        name: "unloading",
+        path: 'unloading',
+        name: 'unloading',
         component: resolve => {
-          require(["../views/login/unloading"], resolve);
+          require(['../views/login/unloading'], resolve);
         }
       },
       {
-        path: "iplimited",
-        name: "iplimited",
+        path: 'iplimited',
+        name: 'iplimited',
         component: resolve => {
-          require(["../views/login/iplimited"], resolve);
+          require(['../views/login/iplimited'], resolve);
         }
       },
       {
-        path: "deleted",
-        name: "deleted",
+        path: 'deleted',
+        name: 'deleted',
         component: resolve => {
-          require(["../views/login/deleted"], resolve);
+          require(['../views/login/deleted'], resolve);
         }
       },
       {
-        path: "ipsecurity",
-        name: "ipsecurity",
+        path: 'ipsecurity',
+        name: 'ipsecurity',
         component: resolve => {
-          require(["../views/login/ipsecurity"], resolve);
+          require(['../views/login/ipsecurity'], resolve);
         }
       },
       {
-        path: "disabled",
-        name: "disabled",
+        path: 'disabled',
+        name: 'disabled',
         component: resolve => {
-          require(["../views/login/disabled"], resolve);
+          require(['../views/login/disabled'], resolve);
         }
       },
       {
-        path: "loginTool",
-        name: "loginTool",
+        path: 'loginTool',
+        name: 'loginTool',
         component: resolve => {
-          require(["../views/login/tool"], resolve);
+          require(['../views/login/tool'], resolve);
+        }
+      },
+      {
+        path: 'brows',
+        name: 'brows',
+        component: resolve => {
+          require(['../views/login/brows'], resolve);
         }
       }
     ]
   },
   {
-    path: "/main",
-    name: "main",
-    redirect: "/main/home",
+    path: '/main',
+    name: 'main',
+    redirect: '/main/home',
     component: resolve => {
-      require(["../views/main"], resolve);
+      require(['../views/main'], resolve);
     },
     children: [
       {
-        path: "home",
-        name: "home",
+        path: 'home',
+        name: 'home',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/home"], resolve);
+          require(['../views/home'], resolve);
         }
       },
       {
-        path: "partmodules",
-        name: "partmodules",
+        path: 'partmodules',
+        name: 'partmodules',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/partmodule"], resolve);
+          require(['../views/partmodule'], resolve);
         }
       },
       {
-        path: "partinstalls",
-        name: "partinstalls",
+        path: 'transfer',
+        name: 'transfer',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/partinstall"], resolve);
+          require(['../views/individual/transfer'], resolve);
         }
       },
       {
-        path: "partmoduleEdit",
-        name: "partmoduleEdit",
+        path: 'ranchResults',
+        name: 'ranchResults',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/partmoduleEdit"], resolve);
+          require(['../views/RanchResults'], resolve);
         }
       },
       {
-        path: "Replacementofrecords",
-        name: "Replacementofrecords",
+        path: 'partinstalls',
+        name: 'partinstalls',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/Replacementofrecords"], resolve);
+          require(['../views/partinstall'], resolve);
         }
       },
       {
-        path: "Groupmanagement",
-        name: "Groupmanagement",
+        path: 'partmoduleEdit',
+        name: 'partmoduleEdit',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/Groupmanagement"], resolve);
+          require(['../views/partmoduleEdit'], resolve);
         }
       },
       {
-        path: "MobileGameDown",
-        name: "MobileGameDown",
+        path: 'Replacementofrecords',
+        name: 'Replacementofrecords',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/mobileGameDown"], resolve);
+          require(['../views/Replacementofrecords'], resolve);
         }
       },
       {
-        path: "fenyong",
-        name: "fenyong",
+        path: 'Groupmanagement',
+        name: 'Groupmanagement',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/fenyong"], resolve);
+          require(['../views/Groupmanagement'], resolve);
         }
       },
       {
-        path: "Zoningmanagement",
-        name: "Zoningmanagement",
+        path: 'MobileGameDown',
+        name: 'MobileGameDown',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/Zoningmanagement"], resolve);
+          require(['../views/mobileGameDown'], resolve);
         }
       },
       {
-        path: "Withdrawalrecords",
-        name: "Withdrawalrecords",
+        path: 'fenyong',
+        name: 'fenyong',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/Withdrawalrecords"], resolve);
+          require(['../views/fenyong'], resolve);
         }
       },
       {
-        path: "Orderreissue",
-        name: "Orderreissue",
+        path: 'Zoningmanagement',
+        name: 'Zoningmanagement',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/Orderreissue"], resolve);
+          require(['../views/Zoningmanagement'], resolve);
         }
       },
       {
-        path: "handOrder",
-        name: "handOrder",
+        path: 'Withdrawalrecords',
+        name: 'Withdrawalrecords',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/handOrder"], resolve);
+          require(['../views/Withdrawalrecords'], resolve);
         }
       },
       {
-        path: "Ordermanagement",
-        name: "Ordermanagement",
+        path: 'Orderreissue',
+        name: 'Orderreissue',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/Ordermanagement"], resolve);
+          require(['../views/Orderreissue'], resolve);
         }
       },
       {
-        path: "partinstallmod",
-        name: "partinstallmod",
+        path: 'BetchOrderreissue',
+        name: 'BetchOrderreissue',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/partinstallmod"], resolve);
+          require(['../views/BetchOrderreissue'], resolve);
         }
       },
       {
-        path: "gaincode",
-        name: "gaincode",
+        path: 'handOrder',
+        name: 'handOrder',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/gaincode"], resolve);
+          require(['../views/handOrder'], resolve);
         }
       },
       {
-        path: "DA",
-        name: "DA",
+        path: 'Ordermanagement',
+        name: 'Ordermanagement',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/DA"], resolve);
+          require(['../views/Ordermanagement'], resolve);
         }
       },
       {
-        path: "partinstallEdit",
-        name: "partinstallEdit",
+        path: 'partinstallmod',
+        name: 'partinstallmod',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/partinstallEdit"], resolve);
+          require(['../views/partinstallmod'], resolve);
         }
       },
       {
-        path: "partinstallClone",
-        name: "partinstallClone",
+        path: 'gaincode',
+        name: 'gaincode',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/partinstallClone"], resolve);
+          require(['../views/gaincode'], resolve);
         }
       },
       {
-        path: "rateList",
-        name: "rateList",
+        path: 'DA',
+        name: 'DA',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/rateList"], resolve);
+          require(['../views/DA'], resolve);
         }
       },
       {
-        path: "message",
-        name: "message",
+        path: 'partinstallEdit',
+        name: 'partinstallEdit',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/mailMessage"], resolve);
+          require(['../views/partinstallEdit'], resolve);
         }
       },
       {
-        path: "withdrawapply",
-        name: "withdrawapply",
+        path: 'partinstallClone',
+        name: 'partinstallClone',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/Withdrawapply"], resolve);
+          require(['../views/partinstallClone'], resolve);
         }
       },
       {
-        path: "agentSys",
-        name: "agentSys",
+        path: 'rateList',
+        name: 'rateList',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/agentSys"], resolve);
+          require(['../views/rateList'], resolve);
         }
       },
       {
-        path: "partmoduleClone",
-        name: "partmoduleClone",
+        path: 'message',
+        name: 'message',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/partmoduleClone"], resolve);
+          require(['../views/mailMessage'], resolve);
         }
       },
       {
-        path: "orderInterval",
-        name: "orderInterval",
+        path: 'withdrawapply',
+        name: 'withdrawapply',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/OrderInterval"], resolve);
+          require(['../views/Withdrawapply'], resolve);
         }
       },
       {
-        path: "employee",
-        name: "employee",
+        path: 'agentSys',
+        name: 'agentSys',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/employee"], resolve);
+          require(['../views/agentSys'], resolve);
         }
       },
       {
-        path: "conectKey",
-        name: "conectKey",
+        path: 'partmoduleClone',
+        name: 'partmoduleClone',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/individual/conectKey"], resolve);
+          require(['../views/partmoduleClone'], resolve);
         }
       },
       {
-        path: "Userlogs",
-        name: "Userlogs",
+        path: 'orderInterval',
+        name: 'orderInterval',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/individual/Userlogs"], resolve);
+          require(['../views/OrderInterval'], resolve);
         }
       },
       {
-        path: "wechat",
-        name: "wechat",
+        path: 'employee',
+        name: 'employee',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/individual/wechat"], resolve);
-        }
-      },
-    ]
-  },
-  {
-    path: "/employeemain",
-    name: "employeemain",
-    redirect: "/employeemain/employeehome",
-    component: resolve => {
-      require(["../views/employeemain"], resolve);
-    },
-    children: [
-      {
-        path: "employeehome",
-        name: "employeehome",
-        meta: {
-          requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
-        },
-        component: resolve => {
-          require(["../views/employeehome"], resolve);
+          require(['../views/employee'], resolve);
         }
       },
       {
-        path: "employeeOrdermanagement",
-        name: "employeeOrdermanagement",
+        path: 'conectKey',
+        name: 'conectKey',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/employeeOrdermanagement"], resolve);
-        }
-      },
-    ]
-  },
-  {
-    path: "/personal",
-    name: "personal",
-    redirect: "/personal/baseInfo",
-    component: resolve => {
-      require(["../views/individual/main"], resolve);
-    },
-    children: [
-      {
-        path: "baseInfo",
-        name: "baseInfo",
-        meta: {
-          requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
-        },
-        component: resolve => {
-          require(["../views/individual/baseInfo"], resolve);
+          require(['../views/individual/conectKey'], resolve);
         }
       },
       {
-        path: "password",
-        name: "password",
+        path: 'Userlogs',
+        name: 'Userlogs',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/individual/password"], resolve);
+          require(['../views/individual/Userlogs'], resolve);
         }
       },
       {
-        path: "weixin",
-        name: "weixin",
+        path: 'wechat',
+        name: 'wechat',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/individual/weixin"], resolve);
-        }
-      },
-      {
-        path: "wechat",
-        name: "wechat",
-        meta: {
-          requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
-        },
-        component: resolve => {
-          require(["../views/individual/wechat"], resolve);
-        }
-      },
-      {
-        path: "recoder",
-        name: "recoder",
-        meta: {
-          requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
-        },
-        component: resolve => {
-          require(["../views/individual/recoder"], resolve);
-        }
-      },
-      {
-        path: "Userlogs",
-        name: "Userlogs",
-        meta: {
-          requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
-        },
-        component: resolve => {
-          require(["../views/individual/Userlogs"], resolve);
-        }
-      },
-      {
-        path: "conectKey",
-        name: "conectKey",
-        meta: {
-          requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
-        },
-        component: resolve => {
-          require(["../views/individual/conectKey"], resolve);
-        }
-      },
-      {
-        path: "acountsafe",
-        name: "acountsafe",
-        meta: {
-          requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
-        },
-        component: resolve => {
-          require(["../views/individual/acountsafe"], resolve);
-        }
-      },
-      {
-        path: "finishInfo",
-        name: "finishInfo",
-        meta: {
-          requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
-        },
-        component: resolve => {
-          require(["../views/individual/finishInfo"], resolve);
-        }
-      },
-      {
-        path: "elecsign",
-        name: "elecsign",
-        meta: {
-          requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
-        },
-        component: resolve => {
-          require(["../views/individual/elecSign"], resolve);
-        }
-      },
-      {
-        path: "Withdrawalrecords",
-        name: "Withdrawalrecords",
-        meta: {
-          requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
-        },
-        component: resolve => {
-          require(["../views/Withdrawalrecords"], resolve);
-        }
-      },
-      {
-        path: "orderInterval",
-        name: "orderInterval",
-        meta: {
-          requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
-        },
-        component: resolve => {
-          require(["../views/OrderInterval"], resolve);
-        }
-      },
-      {
-        path: "fenyong",
-        name: "fenyong",
-        meta: {
-          requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
-        },
-        component: resolve => {
-          require(["../views/fenyong"], resolve);
-        }
-      },
-      {
-        path: "rateList",
-        name: "rateList",
-        meta: {
-          requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
-        },
-        component: resolve => {
-          require(["../views/rateList"], resolve);
-        }
-      },
-      {
-        path: "sharedetails",
-        name: "sharedetails",
-        meta: {
-          requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
-        },
-        component: resolve => {
-          require(["../views/individual/sharedetails"], resolve);
-        }
-      },
-    ]
-  },
-  {
-    path: "/agentsystem",
-    name: "agentsystem",
-    redirect: "/agentsystem/setting",
-    component: resolve => {
-      require(["../views/agentSys/main"], resolve);
-    },
-    children: [
-      {
-        path: "merchant",
-        name: "merchant",
-        meta: {
-          requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
-        },
-        component: resolve => {
-          require(["../views/agentSys/merchant"], resolve);
-        }
-      },
-      {
-        path: "setting",
-        name: "setting",
-        meta: {
-          requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
-        },
-        component: resolve => {
-          require(["../views/agentSys/setting"], resolve);
-        }
-      },
-      {
-        path: "deductedlog",
-        name: "deductedlog",
-        meta: {
-          requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
-        },
-        component: resolve => {
-          require(["../views/agentSys/deductedlog"], resolve);
-        }
-      },
-      {
-        path: "agentOrder",
-        name: "agentOrder",
-        meta: {
-          requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
-        },
-        component: resolve => {
-          require(["../views/agentSys/agentOrder"], resolve);
-        }
-      },
-      {
-        path: "userGroup",
-        name: "userGroup",
-        meta: {
-          requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
-        },
-        component: resolve => {
-          require(["../views/agentSys/userGroup"], resolve);
-        }
-      },
-      {
-        path: "Statistics",
-        name: "Statistics",
-        meta: {
-          requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
-        },
-        component: resolve => {
-          require(["../views/agentSys/Statistics"], resolve);
-        }
-      },
-      {
-        path: "agentManagement",
-        name: "agentManagement",
-        meta: {
-          requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
-        },
-        component: resolve => {
-          require(["../views/agentSys/agentManagement"], resolve);
+          require(['../views/individual/wechat'], resolve);
         }
       }
     ]
   },
   {
-    path: "/accessdenied",
-    name: "accessdenied",
+    path: '/employee',
+    name: 'employee',
+    redirect: '/employee/setting',
+    component: resolve => {
+      require(['../views/employee/main'], resolve);
+    },
+    children: [
+      {
+        path: 'setting',
+        name: 'employeeSetting',
+        meta: {
+          requiresAuth: true,
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
+        },
+        component: resolve => {
+          require(['../views/employee'], resolve);
+        }
+      },
+      {
+        path: 'roles',
+        name: 'employeeRoles',
+        meta: {
+          requiresAuth: true,
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
+        },
+        component: resolve => {
+          require(['../views/employee/roles'], resolve);
+        }
+      },
+      {
+        path: 'permissions',
+        name: 'employeePermissions',
+        meta: {
+          requiresAuth: true,
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
+        },
+        component: resolve => {
+          require(['../views/employee/permissions'], resolve);
+        }
+      }
+    ]
+  },
+  {
+    path: '/employeemain',
+    name: 'employeemain',
+    redirect: '/employeemain/employeehome',
+    component: resolve => {
+      require(['../views/employeemain'], resolve);
+    },
+    children: [
+      {
+        path: 'employeehome',
+        name: 'employeehome',
+        meta: {
+          requiresAuth: true,
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
+        },
+        component: resolve => {
+          require(['../views/employeehome'], resolve);
+        }
+      },
+      {
+        path: 'employeeOrdermanagement',
+        name: 'employeeOrdermanagement',
+        meta: {
+          requiresAuth: true,
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
+        },
+        component: resolve => {
+          require(['../views/employeeOrdermanagement'], resolve);
+        }
+      }
+    ]
+  },
+  {
+    path: '/personal',
+    name: 'personal',
+    redirect: '/personal/baseInfo',
+    component: resolve => {
+      require(['../views/individual/main'], resolve);
+    },
+    children: [
+      {
+        path: 'baseInfo',
+        name: 'baseInfo',
+        meta: {
+          requiresAuth: true,
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
+        },
+        component: resolve => {
+          require(['../views/individual/baseInfo'], resolve);
+        }
+      },
+      {
+        path: 'withdrawapply',
+        name: 'withdrawapply',
+        meta: {
+          requiresAuth: true,
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
+        },
+        component: resolve => {
+          require(['../views/Withdrawapply'], resolve);
+        }
+      },
+      {
+        path: 'withdrawapply1',
+        name: 'withdrawapply1',
+        meta: {
+          requiresAuth: true,
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
+        },
+        component: resolve => {
+          require(['../views/Withdrawapply1'], resolve);
+        }
+      },
+      {
+        path: 'password',
+        name: 'password',
+        meta: {
+          requiresAuth: true,
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
+        },
+        component: resolve => {
+          require(['../views/individual/password'], resolve);
+        }
+      },
+      {
+        path: 'weixin',
+        name: 'weixin',
+        meta: {
+          requiresAuth: true,
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
+        },
+        component: resolve => {
+          require(['../views/individual/weixin'], resolve);
+        }
+      },
+      {
+        path: 'wechat',
+        name: 'wechat',
+        meta: {
+          requiresAuth: true,
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
+        },
+        component: resolve => {
+          require(['../views/individual/wechat'], resolve);
+        }
+      },
+      {
+        path: 'recoder',
+        name: 'recoder',
+        meta: {
+          requiresAuth: true,
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
+        },
+        component: resolve => {
+          require(['../views/individual/recoder'], resolve);
+        }
+      },
+      {
+        path: 'Userlogs',
+        name: 'Userlogs',
+        meta: {
+          requiresAuth: true,
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
+        },
+        component: resolve => {
+          require(['../views/individual/Userlogs'], resolve);
+        }
+      },
+      {
+        path: 'Gift',
+        name: 'Gift',
+        meta: {
+          requiresAuth: true,
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
+        },
+        component: resolve => {
+          require(['../views/individual/Gift'], resolve);
+        }
+      },
+      {
+        path: 'conectKey',
+        name: 'conectKey',
+        meta: {
+          requiresAuth: true,
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
+        },
+        component: resolve => {
+          require(['../views/individual/conectKey'], resolve);
+        }
+      },
+      {
+        path: 'acountsafe',
+        name: 'acountsafe',
+        meta: {
+          requiresAuth: true,
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
+        },
+        component: resolve => {
+          require(['../views/individual/acountsafe'], resolve);
+        }
+      },
+      {
+        path: 'finishInfo',
+        name: 'finishInfo',
+        meta: {
+          requiresAuth: true,
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
+        },
+        component: resolve => {
+          require(['../views/individual/finishInfo'], resolve);
+        }
+      },
+      {
+        path: 'elecsign',
+        name: 'elecsign',
+        meta: {
+          requiresAuth: true,
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
+        },
+        component: resolve => {
+          require(['../views/individual/elecSign'], resolve);
+        }
+      },
+      {
+        path: 'Withdrawal',
+        name: 'Withdrawal',
+        meta: {
+          requiresAuth: true,
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
+        },
+        component: resolve => {
+          require(['../views/Withdrawalrecords1'], resolve);
+        }
+      },
+      {
+        path: 'Withdrawalrecords',
+        name: 'Withdrawalrecords',
+        meta: {
+          requiresAuth: true,
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
+        },
+        component: resolve => {
+          require(['../views/Withdrawalrecords'], resolve);
+        }
+      },
+      {
+        path: 'orderInterval',
+        name: 'orderInterval',
+        meta: {
+          requiresAuth: true,
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
+        },
+        component: resolve => {
+          require(['../views/OrderInterval'], resolve);
+        }
+      },
+      {
+        path: 'fenyong',
+        name: 'fenyong',
+        meta: {
+          requiresAuth: true,
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
+        },
+        component: resolve => {
+          require(['../views/fenyong'], resolve);
+        }
+      },
+      {
+        path: 'rateList',
+        name: 'rateList',
+        meta: {
+          requiresAuth: true,
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
+        },
+        component: resolve => {
+          require(['../views/rateList'], resolve);
+        }
+      },
+      {
+        path: 'sharedetails',
+        name: 'sharedetails',
+        meta: {
+          requiresAuth: true,
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
+        },
+        component: resolve => {
+          require(['../views/individual/sharedetails'], resolve);
+        }
+      },
+      {
+        path: 'employee',
+        name: 'employee',
+        meta: {
+          requiresAuth: true,
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
+        },
+        component: resolve => {
+          require(['../views/employee/employee'], resolve);
+        }
+      }
+    ]
+  },
+  {
+    path: '/agentsystem',
+    name: 'agentsystem',
+    redirect: '/agentsystem/setting',
+    component: resolve => {
+      require(['../views/agentSys/main'], resolve);
+    },
+    children: [
+      {
+        path: 'merchant',
+        name: 'merchant',
+        meta: {
+          requiresAuth: true,
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
+        },
+        component: resolve => {
+          require(['../views/agentSys/merchant'], resolve);
+        }
+      },
+      {
+        path: 'setting',
+        name: 'setting',
+        meta: {
+          requiresAuth: true,
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
+        },
+        component: resolve => {
+          require(['../views/agentSys/merchant'], resolve);
+        }
+      },
+      {
+        path: 'deductedlog',
+        name: 'deductedlog',
+        meta: {
+          requiresAuth: true,
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
+        },
+        component: resolve => {
+          require(['../views/agentSys/deductedlog'], resolve);
+        }
+      },
+      {
+        path: 'agentOrder',
+        name: 'agentOrder',
+        meta: {
+          requiresAuth: true,
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
+        },
+        component: resolve => {
+          require(['../views/agentSys/agentOrder'], resolve);
+        }
+      },
+      {
+        path: 'userGroup',
+        name: 'userGroup',
+        meta: {
+          requiresAuth: true,
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
+        },
+        component: resolve => {
+          require(['../views/agentSys/userGroup'], resolve);
+        }
+      },
+      {
+        path: 'Statistics',
+        name: 'Statistics',
+        meta: {
+          requiresAuth: true,
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
+        },
+        component: resolve => {
+          require(['../views/agentSys/Statistics'], resolve);
+        }
+      },
+      {
+        path: 'agentManagement',
+        name: 'agentManagement',
+        meta: {
+          requiresAuth: true,
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
+        },
+        component: resolve => {
+          require(['../views/agentSys/agentManagement'], resolve);
+        }
+      }
+    ]
+  },
+  {
+    path: '/accessdenied',
+    name: 'accessdenied',
     meta: {
       requiresAuth: false,
-      role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+      role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
     },
     component: resolve => {
-      require(["../views/login/accessdenied"], resolve);
+      require(['../views/login/accessdenied'], resolve);
     }
   },
   {
-    path: "/forbidden",
-    name: "forbidden",
+    path: '/forbidden',
+    name: 'forbidden',
     meta: {
       requiresAuth: false,
-      role: ["Tenant", "Agent"]
+      role: ['Tenant', 'Agent']
     },
     component: resolve => {
-      require(["../views/login/forbidden"], resolve);
+      require(['../views/login/forbidden'], resolve);
     }
   },
   {
-    path: "/agentLogin",
-    name: "agentLogin",
+    path: '/agentLogin',
+    name: 'agentLogin',
     meta: {
       requiresAuth: false,
-      role: ["Tenant", "Agent"]
+      role: ['Tenant', 'Agent', 'Admin']
     },
     component: resolve => {
-      require(["../views/agentLogin"], resolve);
+      require(['../views/agentLogin'], resolve);
     }
   },
   {
-    path: "/behalf",
-    name: "behalf",
-    redirect: "/behalf/baseInfo",
+    path: '/behalf',
+    name: 'behalf',
+    redirect: '/behalf/baseInfo',
     component: resolve => {
-      require(["../views/behalf/main"], resolve);
+      require(['../views/behalf/main'], resolve);
     },
     children: [
       {
-        path: "baseInfo",
-        name: "baseInfo",
+        path: 'baseInfo',
+        name: 'baseInfo',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/behalf/baseInfo"], resolve);
+          require(['../views/behalf/baseInfo'], resolve);
         }
       },
       {
-        path: "version",
-        name: "version",
+        path: 'version',
+        name: 'version',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/behalf/version"], resolve);
+          require(['../views/behalf/version'], resolve);
         }
       },
       {
-        path: "detail",
-        name: "detail",
+        path: 'detail',
+        name: 'detail',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/behalf/detail"], resolve);
+          require(['../views/behalf/detail'], resolve);
         }
       },
       {
-        path: "editVersion",
-        name: "editVersion",
+        path: 'editVersion',
+        name: 'editVersion',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/behalf/editVersion"], resolve);
+          require(['../views/behalf/editVersion'], resolve);
         }
       }
     ]
   },
   {
-    path: "/audit",
-    name: "audit",
-    redirect: "/audit/audit",
+    path: '/audit',
+    name: 'audit',
+    redirect: '/audit/audit',
     component: resolve => {
-      require(["../views/behalf/main_audit"], resolve);
+      require(['../views/behalf/main_audit'], resolve);
     },
     children: [
       {
-        path: "audit",
-        name: "audit",
+        path: 'audit',
+        name: 'audit',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/behalf/audit"], resolve);
+          require(['../views/behalf/audit'], resolve);
         }
       },
       {
-        path: "success",
-        name: "success",
+        path: 'success',
+        name: 'success',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/behalf/success"], resolve);
+          require(['../views/behalf/success'], resolve);
         }
       },
       {
-        path: "task",
-        name: "task",
+        path: 'task',
+        name: 'task',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/behalf/task"], resolve);
+          require(['../views/behalf/task'], resolve);
         }
       },
       {
-        path: "error",
-        name: "error",
+        path: 'error',
+        name: 'error',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/behalf/error"], resolve);
+          require(['../views/behalf/error'], resolve);
         }
       },
       {
-        path: "blacklist",
-        name: "blacklist",
+        path: 'blacklist',
+        name: 'blacklist',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/behalf/blacklist"], resolve);
+          require(['../views/behalf/blacklist'], resolve);
         }
       }
     ]
   },
   {
-    path: "/rollout",
-    name: "rollout",
-    redirect: "/rollout/everyday",
+    path: '/rollout',
+    name: 'rollout',
+    redirect: '/rollout/everyday',
     component: resolve => {
-      require(["../views/behalf/main_out"], resolve);
+      require(['../views/behalf/main_out'], resolve);
     },
     children: [
       {
-        path: "everyday",
-        name: "everyday",
+        path: 'everyday',
+        name: 'everyday',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/behalf/everyday"], resolve);
+          require(['../views/behalf/everyday'], resolve);
         }
       },
       {
-        path: "partition",
-        name: "partition",
+        path: 'partition',
+        name: 'partition',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/behalf/partition"], resolve);
+          require(['../views/behalf/partition'], resolve);
         }
       },
       {
-        path: "role",
-        name: "role",
+        path: 'role',
+        name: 'role',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/behalf/role"], resolve);
+          require(['../views/behalf/role'], resolve);
         }
       },
       {
-        path: "alipay",
-        name: "alipay",
+        path: 'alipay',
+        name: 'alipay',
         meta: {
           requiresAuth: true,
-          role: ["SuperAdmin", "Admin", "Tenant", "Agent","Employee"]
+          role: ['SuperAdmin', 'Admin', 'Tenant', 'Agent', 'Employee']
         },
         component: resolve => {
-          require(["../views/behalf/alipay"], resolve);
+          require(['../views/behalf/alipay'], resolve);
         }
-      }     
+      }
     ]
   }
 ];

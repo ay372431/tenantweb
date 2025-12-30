@@ -738,219 +738,222 @@
 <script>
 import Mgr from '../../assets/js/SecurityService';
 export default {
-    data() {
-        return {
-            account: '', // 登录帐号
-            checkflag1: true,
-            niceName: '', // 商户昵称
-            checkflag2: true,
-            password: '', // 账户密码
-            checkflag3: true,
-            saferank: 0,
-            surePassword: '', // 确认密码
-            qq: '', // QQ
-            mails: '', // QQ
-            checkflag4: true,
-            phone: '', // 手机号码
-            checkflag5: true,
-            sureChecked: false, // 是否同意协议
-            checkflag6: true,
-            dialog: {
-                show: false
-            },
-            serverQQ: [], // 客服QQ
-            randomCode: ' ',
-            validcode: '',
-            validKey: '',
-            centerDialogVisible: false
-        }
+  data() {
+    return {
+      account: '', // 登录帐号
+      checkflag1: true,
+      niceName: '', // 商户昵称
+      checkflag2: true,
+      password: '', // 账户密码
+      checkflag3: true,
+      saferank: 0,
+      surePassword: '', // 确认密码
+      qq: '', // QQ
+      mails: '', // QQ
+      checkflag4: true,
+      phone: '', // 手机号码
+      checkflag5: true,
+      sureChecked: false, // 是否同意协议
+      checkflag6: true,
+      dialog: {
+        show: false
+      },
+      serverQQ: [], // 客服QQ
+      randomCode: ' ',
+      validcode: '',
+      validKey: '',
+      centerDialogVisible: false
+    };
+  },
+  created() {
+    this.getinfo();
+    this.getRandomCode();
+  },
+  methods: {
+    // 登录
+    singin() {
+      let mgr = new Mgr();
+      mgr.signIn();
     },
-    created() {
-        this.getinfo();
-        this.getRandomCode();
+    // 校验帐号
+    checkAccount() {
+      if (this.account.length > 10) {
+        this.account = this.account.substr(0, 10);
+      }
     },
-    methods: {
-        // 登录
-        singin() {
-            let mgr = new Mgr();
-            mgr.signIn();
-        },
-        // 校验帐号
-        checkAccount() {
-            if (this.account.length > 10) {
-                this.account = this.account.substr(0, 10);
-            }
-        },
-        checkAccount1() {
-            let reg = /^[a-zA-Z0-9]{3,10}$/;
-            this.checkflag1 = reg.test(this.account);
-        },
-        // 校验昵称
-        checkniceName() {
-            if (this.niceName.length > 8) {
-                this.niceName = this.niceName.substr(0, 8);
-            }
-        },
-        checkniceName1() {
-            if (this.niceName.length < 2) {
-                this.checkflag2 = false;
-            } else {
-                this.checkflag2 = true;
-            }
-        },
-        // 校验密码
-        checkpassword() {
-            if (this.password.length > 20) {
-                this.password = this.password.substr(0, 20);
-            }
-            this.saferank = 0;
-            // 正则表达式验证符合要求的
-            if (this.password.length < 6) return this.saferank;
-            if (/\d/.test(this.password)) this.saferank++; // 数字
-            if (/[a-zA-Z]/.test(this.password)) this.saferank++; // 小写
-            // if (/[A-Z]/.test(this.password)) modes++; // 大写
-            if (/\W/.test(this.password)) this.saferank++; // 特殊字符
-        },
-        checkpassword1() {
-            let reg = /^[a-zA-Z0-9_]{6,20}$/;
-            this.checkflag3 = reg.test(this.password);
-        },
-        // 校验邮箱
-        checkmail() {
-            let reg = /^([a-zA-Z0-9._-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/;
-            this.checkflag4 = reg.test(this.mails);
-        },
-        // 校验手机号
-        checkphone() {
-            let reg = /^(?:\+86)?(?:13[4-9]|14[5]|15[0-9]|16[0-9]|17[0-9]|18[0-9]|19[8-9])\d{8}$/;
-            this.checkflag5 = reg.test(this.phone);
-        },
-        // 校验
-        checkbankcode() {
-            let reg = /^([1-9]{1})(\d{14}|\d{18})$/;
-            this.checkflag6 = reg.test(this.bankcode);
-        },
-        // 提交注册
-        submit() {
-            console.log(this.$route.query.uuid, '2222');
-            if (this.account === '') {
-                this.$messageError('请输入帐号！');
-                return;
-            } else if (!this.checkflag1) {
-                this.$messageError('请正确输入帐号！');
-                return;
-            } else if (this.niceName === '') {
-                this.$messageError('请输入商户昵称！');
-                return;
-            } else if (!this.checkflag2) {
-                this.$messageError('请正确输入商户昵称！');
-                return;
-            } else if (this.password === '') {
-                this.$messageError('请输入密码！');
-                return;
-            } else if (!this.checkflag3) {
-                this.$messageError('请正确输入密码！');
-                return;
-            } else if (this.password !== this.surePassword) {
-                this.$messageError('两次密码输入不一致！');
-                return;
-            } else if (this.mails === '') {
-                this.$messageError('请输入邮箱！');
-                return;
-            } else if (!this.checkflag4) {
-                this.$messageError('请正确输入邮箱！');
-                return;
-            } else if (this.phone === '') {
-                this.$messageError('请输入手机号码！');
-                return;
-            } else if (!this.checkflag5) {
-                this.$messageError('请正确输入手机号码！');
-                return;
-            } else if (!this.checkflag6) {
-                this.$messageError('请正确银行卡号！');
-                return;
-            } else if (!this.sureChecked) {
-                this.$messageError('请勾选协议内容！');
-                return;
-            } else if (this.validcode === '') {
-                this.$messageError('验证码不能为空！');
-                return;
-            }
-            this.$api.login
-                .register({
-                    loginName: this.account,
-                    nickname: this.niceName,
-                    password: this.password,
-                    confirmPassword: this.surePassword,
-                    qqNumber: this.qq,
-                    phoneNumber: this.phone,
-                    email: this.mails,
-                    uuid: this.$route.query.uuid ? this.$route.query.uuid : null,
-                    validateKey: this.validKey,
-                    validateCode: this.validcode
-                })
-                .then(data => {
-                    if (data.status === 200) {
-                        this.$messageSuccess('注册成功！');
-                        this.datainit();
-                        if (data.data === 'InAuth') {
-                            this.dialog.show = true;
-                        }
-                    }
-                })
-                .catch(err => {
-                    this.$messageError(err.message);
-                });
-        },
-        // 注册成功后的数据初始化
-        datainit() {
-            this.account = ''; // 登录帐号
-            this.checkflag1 = true;
-            this.niceName = ''; // 商户昵称
-            this.checkflag2 = true;
-            this.password = ''; // 账户密码
-            this.checkflag3 = true;
-            this.saferank = 0;
-            this.surePassword = ''; // 确认密码
-            this.qq = ''; // QQ
-            this.mails = ''; // QQ
-            this.checkflag4 = true;
-            this.phone = ''; // 手机号码
-            this.checkflag5 = true;
-            this.sureChecked = false; // 是否同意协议
-        },
-        // 获取客服的联系QQ
-        getinfo() {
-            this.$api.login
-                .contactinfo()
-                .then(data => {
-                    if (data.status === 200) {
-                        this.serverQQ = JSON.parse(data.data.serviceQq).filter(item => {
-                            return item.type === 0;
-                        });
-                    }
-                })
-                .catch(err => {
-                    this.$messageError(err.message);
-                });
-        },
-        getRandomCode() {
-            this.$api.login
-                .getRandomCode()
-                .then(data => {
-                    if (data.status === 200) {
-                        this.randomCode = data.data.imageData;
-                        this.validKey = data.data.validateKey;
-                    }
-                })
-                .catch(err => {
-                    this.$messageError(err.message);
-                });
-        }
+    checkAccount1() {
+      let reg = /^[a-zA-Z0-9]{3,10}$/;
+      this.checkflag1 = reg.test(this.account);
     },
-}
+    // 校验昵称
+    checkniceName() {
+      if (this.niceName.length > 8) {
+        this.niceName = this.niceName.substr(0, 8);
+      }
+    },
+    checkniceName1() {
+      if (this.niceName.length < 2) {
+        this.checkflag2 = false;
+      } else {
+        this.checkflag2 = true;
+      }
+    },
+    // 校验密码
+    checkpassword() {
+      if (this.password.length > 20) {
+        this.password = this.password.substr(0, 20);
+      }
+      this.saferank = 0;
+      // 正则表达式验证符合要求的
+      if (this.password.length < 6) return this.saferank;
+      if (/\d/.test(this.password)) this.saferank++; // 数字
+      if (/[a-zA-Z]/.test(this.password)) this.saferank++; // 小写
+      // if (/[A-Z]/.test(this.password)) modes++; // 大写
+      if (/\W/.test(this.password)) this.saferank++; // 特殊字符
+    },
+    checkpassword1() {
+      let reg = /^[a-zA-Z0-9_]{6,20}$/;
+      this.checkflag3 = reg.test(this.password);
+    },
+    // 校验邮箱
+    checkmail() {
+      let reg = /^([a-zA-Z0-9._-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/;
+      this.checkflag4 = reg.test(this.mails);
+    },
+    // 校验手机号
+    checkphone() {
+      let reg = /^(?:\+86)?(?:13[4-9]|14[5]|15[0-9]|16[0-9]|17[0-9]|18[0-9]|19[8-9])\d{8}$/;
+      this.checkflag5 = reg.test(this.phone);
+    },
+    // 校验
+    checkbankcode() {
+      let reg = /^([1-9]{1})(\d{14}|\d{18})$/;
+      this.checkflag6 = reg.test(this.bankcode);
+    },
+    // 提交注册
+    submit() {
+      console.log(this.$route.query.uuid, '2222');
+      if (this.account === '') {
+        this.$messageError('请输入帐号！');
+        return;
+      } else if (!this.checkflag1) {
+        this.$messageError('请正确输入帐号！');
+        return;
+      } else if (this.niceName === '') {
+        this.$messageError('请输入商户昵称！');
+        return;
+      } else if (!this.checkflag2) {
+        this.$messageError('请正确输入商户昵称！');
+        return;
+      } else if (this.password === '') {
+        this.$messageError('请输入密码！');
+        return;
+      } else if (!this.checkflag3) {
+        this.$messageError('请正确输入密码！');
+        return;
+      } else if (this.password !== this.surePassword) {
+        this.$messageError('两次密码输入不一致！');
+        return;
+      } else if (this.mails === '') {
+        this.$messageError('请输入邮箱！');
+        return;
+      } else if (!this.checkflag4) {
+        this.$messageError('请正确输入邮箱！');
+        return;
+      } else if (this.phone === '') {
+        this.$messageError('请输入手机号码！');
+        return;
+      } else if (!this.checkflag5) {
+        this.$messageError('请正确输入手机号码！');
+        return;
+      } else if (!this.checkflag6) {
+        this.$messageError('请正确银行卡号！');
+        return;
+      } else if (!this.sureChecked) {
+        this.$messageError('请勾选协议内容！');
+        return;
+      } else if (this.validcode === '') {
+        this.$messageError('验证码不能为空！');
+        return;
+      }
+      this.$api.login
+        .register({
+          loginName: this.account,
+          nickname: this.niceName,
+          password: this.password,
+          confirmPassword: this.surePassword,
+          qqNumber: this.qq,
+          phoneNumber: this.phone,
+          email: this.mails,
+          uuid: this.$route.query.uuid ? this.$route.query.uuid : null,
+          validateKey: this.validKey,
+          validateCode: this.validcode
+        })
+        .then(data => {
+          if (data.status === 200) {
+            this.$messageSuccess('注册成功！');
+            this.datainit();
+            if (data.data === 'InAuth') {
+              this.dialog.show = true;
+            }
+          }
+        })
+        .catch(err => {
+          this.$messageError(err.message);
+        });
+    },
+    // 注册成功后的数据初始化
+    datainit() {
+      this.account = ''; // 登录帐号
+      this.checkflag1 = true;
+      this.niceName = ''; // 商户昵称
+      this.checkflag2 = true;
+      this.password = ''; // 账户密码
+      this.checkflag3 = true;
+      this.saferank = 0;
+      this.surePassword = ''; // 确认密码
+      this.qq = ''; // QQ
+      this.mails = ''; // QQ
+      this.checkflag4 = true;
+      this.phone = ''; // 手机号码
+      this.checkflag5 = true;
+      this.sureChecked = false; // 是否同意协议
+    },
+    // 获取客服的联系QQ
+    getinfo() {
+      this.$api.login
+        .contactinfo()
+        .then(data => {
+          if (data.status === 200) {
+            this.serverQQ = JSON.parse(data.data.serviceQq).filter(item => {
+              return item.type === 0;
+            });
+          }
+        })
+        .catch(err => {
+          this.$messageError(err.message);
+        });
+    },
+    getRandomCode() {
+      this.$api.login
+        .getRandomCode()
+        .then(data => {
+          if (data.status === 200) {
+            this.randomCode = data.data.imageData;
+            this.validKey = data.data.validateKey;
+          }
+        })
+        .catch(err => {
+          this.$messageError(err.message);
+        });
+    }
+  }
+};
 </script>
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
 .container {
     .line {
         border-bottom: #eee 1px solid;

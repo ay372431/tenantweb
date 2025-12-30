@@ -82,6 +82,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
 .passwordList {
   background: #fff;
   padding: 70px 20px 30px;

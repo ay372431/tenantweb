@@ -77,9 +77,9 @@
               <p style="color:#999;height:20px;">{{scope.row.reissueDate.split(' ')[1]}}</p>
             </template>
           </el-table-column>
-          <el-table-column prop="serialNumber" label="业务流水" width="220">
+          <el-table-column prop="serialNumber" label="业务流水" width="200">
           </el-table-column>
-          <el-table-column prop="partitionsName" label="所属分区" width="270">
+          <el-table-column prop="partitionsName" label="所属分区" width="170">
           </el-table-column>
           <el-table-column prop="playerAccount" label="玩家账号">
           </el-table-column>
@@ -239,6 +239,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
 .opeartbox {
   padding: 5px 500px 5px 20px;
   background: #fff;

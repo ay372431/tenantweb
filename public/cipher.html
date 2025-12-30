@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>二维码查看</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  html,body{height:100%;margin:0;background:#fff}
+  .wrap{display:flex;align-items:center;justify-content:center;flex-direction:column;height:100%}
+  img{max-width:90%;max-height:80%}
+  .err{color:#f56c6c;font-size:16px;margin-top:12px}
+  .caption{margin-top:8px;color:#666;text-align:center;font-size:14px;}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.min.js"></script>
+</head>
+<body>
+  <div class="wrap">
+    <div id="container">加载中...</div>
+  </div>
+<script>
+(function(){
+  function getParams() {
+    // 1. 尝试 pathname（例如 /<cipher>?p=...）
+    var path = location.pathname || '/';
+    if (path && path.length > 1) {
+      var cipherFromPath = path.replace(/^\//, ''); // 不 decode，下面统一 decodeURIComponent
+      var p = new URLSearchParams(location.search).get('p') || '';
+      return { cipher: cipherFromPath, pass: p };
+    }
+    // 2. 尝试 query (cipher 和 p) 例如 /cipher.html?c=...&p=...
+    var qs = new URLSearchParams(location.search);
+    if (qs.get('c')) return { cipher: qs.get('c'), pass: qs.get('p') || '' };
+    // 3. 尝试 hash 例如 #c=...&p=...
+    var h = location.hash.replace(/^#/, '');
+    var hs = new URLSearchParams(h);
+    if (hs.get('c')) return { cipher: hs.get('c'), pass: hs.get('p') || '' };
+    return { cipher: '', pass: '' };
+  }
+  try {
+    var params = getParams();
+    if (!params.cipher) {
+      document.getElementById('container').innerHTML = '<div class="err">无密文</div>';
+      return;
+    }
+    if (!params.pass) {
+      document.getElementById('container').innerHTML = '<div class="err">无 appSecret</div>';
+      return;
+    }
+    var decodedPass = decodeURIComponent(params.pass);
+    var decodedCipher = decodeURIComponent(params.cipher);
+    var key = CryptoJS.MD5(decodedPass);
+    var iv  = CryptoJS.MD5(decodedPass + '_iv');
+    var decrypted = CryptoJS.AES.decrypt(decodedCipher, key, { iv: iv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7 }).toString(CryptoJS.enc.Utf8);
+    if (!decrypted) {
+      document.getElementById('container').innerHTML = '<div class="err">解密失败</div>';
+      return;
+    }
+    var img = document.createElement('img');
+    img.src = decrypted;
+    img.alt = '二维码';
+    var container = document.getElementById('container');
+    container.innerHTML = '';
+    container.appendChild(img);
+    var p = document.createElement('p');
+    p.className = 'caption';
+    p.textContent = '请保存该二维码，并配置到游戏中';
+    container.appendChild(p);
+  } catch (e) {
+    document.getElementById('container').innerHTML = '<div class="err">错误: ' + (e.message || e) + '</div>';
+  }
+})();
+</script>
+</body>
+</html>

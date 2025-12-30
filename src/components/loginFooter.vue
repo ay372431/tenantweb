@@ -1,20 +1,15 @@
 <template>
   <div class="footerbox">
     <p>
-    抵制不良游戏　拒绝盗版游戏　注意自我保护　谨防受骗上当　适度游戏益脑　沉迷游戏伤身　合理安排时间　享受健康生活
+    {{ about }}
     </p>
     <p>
-      {{ copyright }} Copyright 2021-2030  All Rights Reserved |
-      <!-- <span
-        ><a href="http://beian.miit.gov.cn/" target="_blank">
-          赣ICP备2024033288号-1</a
-        ></span
-      > -->
-      |
-     
+      {{ copyright }}
     </p>
-    
-    <p>本站严禁一切钓鱼、色情、赌博、私彩及违反国家法律法规等使用.</p>
+    <div style="padding-bottom: 25px;">
+      <img src="../assets/newLogin/sm.png" />
+      <img src="../assets/newLogin/m2.jpg" />
+    </div>
     <el-backtop target=".contentBox"></el-backtop>
   </div>
 </template>
@@ -24,7 +19,9 @@ export default {
   data() {
     return {
       webName: '', // 网站信息
-      copyright: '' // 版权
+      copyright: '', // 版权
+      // serviceQq: []
+      about: ''
     };
   },
   methods: {
@@ -36,6 +33,8 @@ export default {
           if (data.status === 200) {
             this.webName = data.data.webName;
             this.copyright = data.data.copyright;
+            this.serviceQq = data.data.serviceQq;
+            this.about = data.data.about;
           }
         })
         .catch(err => {
@@ -51,15 +50,20 @@ export default {
 
 <style scoped>
 .footerbox {
-  background-color: #f9f9f9;
-  height: 340px;
+  background-color: #3e3e3e;
+  /* height: 340px; */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-top: 180px;
 }
 .footerbox p {
-  margin: 15px 0;
-  color: #3a3a3a;
+  /* margin: 15px 0; */
+  padding-top: 25px;
+  /* padding-bottom: 30px; */
+  color: #bbbbbb;
+  line-height: 20px;
+  font-size: 14px;
 }
 </style>

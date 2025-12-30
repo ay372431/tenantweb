@@ -937,7 +937,7 @@ export default {
                       this.$messageError('分区检测失败！');
                     }
                   });
-              }, 3000);
+              }, 500);
             }
           })
           .catch(() => {
@@ -1009,6 +1009,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
 .topinfo {
   float: right;
   width: 784px;

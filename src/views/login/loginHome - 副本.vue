@@ -81,6 +81,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
 .container {
   background: url(../../assets/images/login/bj.jpg) no-repeat center -2px;
   .content {

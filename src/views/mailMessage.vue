@@ -204,6 +204,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
 .messageBox {
   padding-bottom: 20px;
   max-height: 500px;

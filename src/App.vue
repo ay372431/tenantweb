@@ -6,11 +6,14 @@
 
 <script>
 import Mgr from './assets/js/SecurityService';
+import { getAuthHeaders } from './assets/js/securityapi';
+// import axios from 'axios';
 export default {
   name: 'App',
   provide() {
     return {
-      reload: this.reload
+      reload: this.reload,
+      getAuthHeaders: getAuthHeaders
     };
   },
   data() {
@@ -26,9 +29,25 @@ export default {
       this.$nextTick(() => {
         this.signedIn = true;
       });
+    },
+    async getIp() {
+      try {
+        // 假设你用 axios 获取
+        const resp = await fetch('https://v4.ident.me');
+        if (resp.ok) {
+          const txt = (await resp.text()).trim();
+          if (/^\d{1,3}(\.\d{1,3}){3}$/.test(txt)) localStorage.setItem('user_ip', txt);
+        }
+        // localStorage.setItem('user_ip', res);
+      } catch (e) {
+        // 失败时可选处理
+        localStorage.setItem('user_ip', '');
+      }
     }
   },
-  mounted() {},
+  mounted() {
+    this.getIp();
+  },
   created() {}
 };
 </script>

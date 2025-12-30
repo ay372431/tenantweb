@@ -39,6 +39,15 @@ export default {
       headers: { Authorization: 'Bearer ' + header }
     });
   },
+  async GetRanchResults(params) {
+    let header = await mgr();
+    return api({
+      url: '/api/UserCenter/GetRanchResults',
+      method: 'get',
+      params: params,
+      headers: { Authorization: 'Bearer ' + header }
+    });
+  },
   // 获取账户余额
   async getAccountInfo(params) {
     let header = await mgr();
@@ -99,7 +108,17 @@ export default {
       headers: { Authorization: 'Bearer ' + header }
     });
   },
-  //设置通道排序
+  // 微信订单通知off/on
+  async wechatOff(params) {
+    let header = await mgr();
+    return api({
+      url: '/api/HomePage/WeChatOrderNotificationStateUpdateAsync',
+      method: 'post',
+      data: params,
+      headers: { Authorization: 'Bearer ' + header }
+    });
+  },
+  // 设置通道排序
   async setPayTypeState(params) {
     let header = await mgr();
     return api({
@@ -109,7 +128,7 @@ export default {
       headers: { Authorization: 'Bearer ' + header }
     });
   },
-  //设置充值角色名
+  // 设置充值角色名
   async SetGameName(params) {
     let header = await mgr();
     return api({
@@ -230,6 +249,27 @@ export default {
       headers: { Authorization: 'Bearer ' + header }
     });
   },
+  // 转账申请
+  async TransferUsingPaid(params) {
+    let header = await mgr();
+    return api({
+      url: '/api/UserCenter/TransferUsingPaid',
+      method: 'post',
+      data: params,
+      headers:
+        { Authorization: 'Bearer ' + header }
+    });
+  },
+  // 获取二维码
+  async getQrCode(params) {
+    let header = await mgr();
+    return api({
+      url: '/api/WxUserValid/GetWxValidInfo',
+      method: 'get',
+      params: params,
+      headers: { Authorization: 'Bearer ' + header }
+    });
+  },
   // 退出时调用接口
   async loginOut(params) {
     let header = await mgr();
@@ -327,6 +367,16 @@ export default {
       url: '/api/UserCenter/GetFileAsync',
       method: 'get',
       params: params,
+      headers: { Authorization: 'Bearer ' + header }
+    });
+  },
+  // 添加礼品订单
+  async addEmsOrder(params) {
+    let header = await mgr();
+    return api({
+      url: '/api/HomePage/AddEmsOrder',
+      method: 'post',
+      data: params,
       headers: { Authorization: 'Bearer ' + header }
     });
   }

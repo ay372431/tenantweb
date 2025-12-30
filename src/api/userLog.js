@@ -28,5 +28,35 @@ export default {
       data: params,
       headers: { Authorization: 'Bearer ' + header }
     });
+  },
+  // 获取礼品列表
+  async getGiftList(params) {
+    let header = await mgr();
+    return api({
+      url: '/api/MerchantLogs/GetGiftOrderPageList',
+      method: 'get',
+      params: params,
+      headers: { Authorization: 'Bearer ' + header }
+    });
+  },
+  // 获取转区点用户记录
+  async getWeChatLogList(params) {
+    let header = await mgr();
+    return api({
+      url: '/api/WxUserValid/GetTransferUsers',
+      method: 'get',
+      params: params,
+      headers: { Authorization: 'Bearer ' + header }
+    });
+  },
+  // 获取转区点日志
+  async getWeChatOperationLogList(params) {
+    let header = await mgr();
+    return api({
+      url: '/api/WxUserValid/GetTransferLogs',
+      method: 'get',
+      params: params,
+      headers: { Authorization: 'Bearer ' + header }
+    });
   }
 };

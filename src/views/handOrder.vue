@@ -344,6 +344,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
 .opeartbox {
   padding: 15px 20px 5px;
   background: #fff;

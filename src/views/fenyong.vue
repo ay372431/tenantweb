@@ -109,7 +109,6 @@ export default {
       if (!regex.test(value)) {
         // 如果输入不符合要求，可以清除输入或者给予用户提示
         this.PaidAmount = '';
-
       }
     },
     FenYongPaid() {
@@ -160,6 +159,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
 .passwordList {
   background: #fff;
   padding: 70px 20px 30px;

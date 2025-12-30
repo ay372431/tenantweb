@@ -20,8 +20,8 @@
         </dl>
       </div>
       <p class="mgt15" style="padding-left: 150px">
-        <el-button size="small" type="primary" @click="elecSign"
-          >开始签约</el-button
+        <el-button :disabled="disabled" size="small" type="primary" @click="elecSign"
+          >{{text}}</el-button
         >
       </p>
     </div>
@@ -31,21 +31,23 @@
 <script>
 export default {
   data() {
-    return {   
-      person: "", // 收款人    
-      idNumber: "",
+    return {
+      person: '', // 收款人
+      idNumber: '',
+      text: '开始签约',
+      disabled: false
     };
   },
   methods: {
-   
+
     // 电子签名
-    elecSign() {     
+    elecSign() {
       this.$api.personCenter
         .elecSign()
         .then((data) => {
           if (data.status === 200) {
-             this.$messageError("发起签约成功，请到新打开页面中继续操作");
-             window.open(data.data, "_blank");
+            this.$messageError('发起签约成功，请到新打开页面中继续操作');
+            window.open(data.data, '_blank');
           }
         })
         .catch((err) => {
@@ -56,23 +58,51 @@ export default {
       this.$api.personCenter
         .getUserBankDetails()
         .then((data) => {
-          if (data.status === 200) {           
-            this.person = data.data.realName;        
+          console.log(data.data);
+          if (data.status === 200) {
+            this.person = data.data.realName;
             this.idNumber = data.data.idNumber;
+            if (data.data.state === 1 || data.data.state === 2 || data.data.state === 3) {
+              this.text = '签署中';
+              this.disabled = true;
+            }
+            if (data.data.state === 4 || data.data.state === 5) {
+              this.text = '已签署';
+              this.disabled = true;
+            }
+            if (data.data.state === 0) {
+              this.text = '开始签约';
+              this.disabled = false;
+            }
+            if (data.data.state === 6) {
+              this.text = '签署失败，请重新签署';
+              this.disabled = false;
+            }
+            if (data.data.state === 7) {
+              this.text = '已过期，请重新签署';
+              this.disabled = false;
+            }
+            if (data.data.state === 8 || data.data.state === 9) {
+              this.text = '已作废，请重新签署';
+              this.disabled = false;
+            }
           }
         })
         .catch((err) => {
           this.$messageError(err.message);
         });
-    },
+    }
   },
-  created() {    
+  created() {
     this.getUserBankDetails();
-  },
+  }
 };
 </script>
 
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
 .tip_red {
   color: #3c8dbc;
   padding: 10px 0px;

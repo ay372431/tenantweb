@@ -54,8 +54,8 @@
           <el-tab-pane label="传世" name="2"></el-tab-pane>
           <el-tab-pane label="传奇三" name="3"></el-tab-pane>
           <el-tab-pane label="SQL通用" name="4"></el-tab-pane>
-          <el-tab-pane label="Web通讯" name="5"></el-tab-pane>         
-          <el-tab-pane label="奇迹MU" name="6"></el-tab-pane>         
+          <el-tab-pane label="Web通讯" name="5"></el-tab-pane>
+          <el-tab-pane label="奇迹MU" name="6"></el-tab-pane>
         </el-tabs>
       </div> -->
       <!-- <div class="btnsbox fr mgt10">
@@ -85,13 +85,13 @@
           </el-table-column>
           <el-table-column prop="scriptPath" label="路径">
           </el-table-column>
-          <el-table-column prop="scriptPath" label="收否通区" width='80'>
+          <el-table-column prop="scriptPath" label="是否通区" width='80'>
             <template slot-scope="scope">
               <span v-if="scope.row.tongqu">是</span>
               <span v-else>否</span>
             </template>
           </el-table-column>
-          <el-table-column prop="name" label="操作" width='300'>
+          <el-table-column prop="name" label="操作" width='340'>
             <template slot-scope="scope">
               <el-button-group>
                 <el-button size="mini" type="primary" @click="rechargeTeam(scope.row.uuid)">充值</el-button>
@@ -139,15 +139,15 @@ export default {
     return {
       activeName: '0', // tab
       options: [{
-          value: '0',
-          label: '全部'
-        }, {
-          value: '1',
-          label: '传奇'
-        }, {
-          value: '2',
-          label: '传世'
-        }
+        value: '0',
+        label: '全部'
+      }, {
+        value: '1',
+        label: '传奇'
+      }, {
+        value: '2',
+        label: '传世'
+      }
       ],
       checkflag: true, // 检测的flag
       checkIndex: '', // 检测的Index
@@ -160,14 +160,14 @@ export default {
       pageSize: 20, // 每页的条数
       total: 0, // 总数据的条数
       tableData: [],
-      
+
       timer: null, // 检测时的定时器
       dialog: {
         show: false,
         checked: 1,
         id: '',
         ids: [] // 新增
-      },
+      }
     };
   },
   methods: {
@@ -179,13 +179,46 @@ export default {
       this.tableData = [];
       this.getlist();
     },
+    // 在加载前执行检测，返回 Promise（检测成功 resolve，失败 reject）
+    checkBeforeLoad(id) {
+      return new Promise((resolve, reject) => {
+        let indexNum = 0;
+        this.$api.groupmange
+          .checkLink({ partitionId: id })
+          .then((data) => {
+            if (data.status === 200) {
+              const keyValue = data.data;
+              const timer = setInterval(() => {
+                this.$api.groupmange
+                  .timerCheck({ checkKey: keyValue })
+                  .then(() => {
+                    clearInterval(timer);
+                    resolve();
+                  })
+                  .catch(() => {
+                    indexNum++;
+                    if (indexNum > 6) {
+                      clearInterval(timer);
+                      reject(new Error('检测超时'));
+                    }
+                  });
+              }, 500);
+            } else {
+              reject(new Error('检测失败'));
+            }
+          })
+          .catch(() => {
+            reject(new Error('检测失败'));
+          });
+      });
+    },
     // 获取列表
     getlist() {
       this.$api.groupmange
         .arealist({
           Type: this.activeName,
           GroupNameID: this.belongTeam === '' ? (this.$route.query.groupId || 0) : this.belongTeam,
-          TemplatesID: this.gameMoudle === '' ?  (this.$route.query.tempId || 0) : this.gameMoudle,
+          TemplatesID: this.gameMoudle === '' ? (this.$route.query.tempId || 0) : this.gameMoudle,
           PageNumber: this.pageIndex,
           PageSize: this.pageSize
         })
@@ -293,7 +326,7 @@ export default {
     },
     // 充值
     rechargeTeam(uuid) {
-      var url = "";
+      var url = '';
       this.$api.groupmange
         .rechargeteam({
           typeId: 0
@@ -321,20 +354,35 @@ export default {
     editarea(id) {
       this.$router.push({ path: '/main/partinstallEdit', query: { id: id } });
     },
-    // 加载
-    showdialog(id) {
-      this.dialog.id = id;
-      this.dialog.show = true;
+    // 显示加载弹窗：先检测单个分区，检测成功才打开弹窗
+    async showdialog(id) {
+      try {
+        await this.checkBeforeLoad(id);
+        this.dialog.id = id;
+        this.dialog.show = true;
+      } catch (err) {
+        this.$messageError(err.message || '网关检测失败，无法加载分区');
+      }
     },
     // 加载所选分区
-    handleLoad(selc) {
+    async handleLoad(selc) {
       if (!selc || selc.length === 0) {
         this.$messageError('请先选择要加载的分区');
         return;
       }
-      this.dialog.ids = selc.map(item => item.id); // 记录所有选中分区id
-      this.dialog.id = ''; // 清空单个id
-      this.dialog.show = true;
+      const ids = selc.map(item => item.id);
+      try {
+        // 顺序检测每个分区，任一失败即中止
+        for (const id of ids) {
+          await this.checkBeforeLoad(id);
+        }
+        // 全部检测通过，打开加载弹窗并记录 ids
+        this.dialog.ids = ids;
+        this.dialog.id = '';
+        this.dialog.show = true;
+      } catch (err) {
+        this.$messageError(err.message || '网关检测失败，无法加载');
+      }
     },
     // 加载分区（循环调用单个接口）
     async loadingArea() {
@@ -413,7 +461,7 @@ export default {
                       this.$messageError('检测失败！');
                     }
                   });
-              }, 3000);
+              }, 500);
             }
           })
           .catch(() => {
@@ -433,8 +481,8 @@ export default {
     handleCurrentChange(data) {
       this.pageIndex = data;
       this.getlist();
-    },
-    
+    }
+
   },
   created() {
     if (this.$route.query.groupId) {
@@ -446,11 +494,19 @@ export default {
     this.getlist();
     this.belongDrow();
     this.gameDrow();
+    console.log(this.$store.state.settlementType);
+    console.log(this.$store.state);
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
+.gs_title {
+  background: var(--theme-color);
+}
 .el-button--mini, .el-button--mini.is-round {
     padding: 7px 8px;
 }

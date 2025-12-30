@@ -1,314 +1,157 @@
 /* eslint-disable */
-import Oidc from 'oidc-client-zqy';
-import 'babel-polyfill';
 import axios from 'axios';
-import {
-  url,netUrl,loginUrl,authUrl
-} from '../js/version';
+// import AxiosInstance from './apiRequestHandler';
+import { url, authUrl } from '../js/version';
 
-var mgr = new Oidc.UserManager({
- authority: authUrl,
-  client_id: "tenantvuejs",
-  // redirect_uri: window.location.origin + '/static/callback.html',
-  redirect_uri: loginUrl +'/#/CallBack/?',
-  response_type: 'id_token token',
-  scope: "openid profile role tenant.api",
-  userStore: new Oidc.WebStorageStateStore({ store: window.localStorage }),
-  post_logout_redirect_uri: loginUrl +'',
-  silent_redirect_uri: loginUrl +'/static/silent-renew.html',
-  accessTokenExpiringNotificationTime: 5,
-  automaticSilentRenew: true,
-  filterProtocolClaims: true,
-  extraQueryParams:{InAuth:loginUrl +'/#/login/unloading',
-  Disabled:loginUrl +'/#/login/disabled',
-  IpLimited:loginUrl +'/#/login/iplimited',
-  AccessDenied:loginUrl +'/#/accessdenied',
-  IpSecurity:loginUrl +'/#/login/ipsecurity',
-  Deleted:loginUrl +'/#/login/deleted'},
-  // loadUserInfo: true,
-  // revokeAccessTokenOnSignout:true
-})
-
-
-
-Oidc.Log.logger = console;
-Oidc.Log.level = Oidc.Log.INFO;
-
-// mgr.events.addUserLoaded(function (user) {
-//   console.log('New User Loaded：', arguments);
-//  // console.log('Acess_token: ', user.access_token)
-// });
-
-// mgr.events.addAccessTokenExpiring(function () {
-//   console.log('AccessToken Expiring：', arguments);
-// });
-
-// mgr.events.addAccessTokenExpired(function () {
-//   //  alert('会话超时，请重新登录!');
-//   mgr.signoutRedirect().then(function (resp) {
-//     console.log('signed out', resp);
-//   }).catch(function (err) {
-//     console.log(err)
-//   })
-//    });
-
-// mgr.events.addSilentRenewError(function () {
-//   console.error('Silent Renew Error：', arguments);
-// });
-
-// mgr.events.addUserSignedOut(function () {
-//   // alert('signedOut');
-//   // console.log('登出成功');
-//   //  mgr.signoutRedirect().then(function (resp) {
-//   //   console.log('signed out', resp);
-//   // }).catch(function (err) {
-//   //   console.log(err)
-//   // })
-  
-// });
+// 本地存储 key
+const TOKEN_KEY = 'access_token';
+const USER_INFO_KEY = 'user_info';
 
 export default class SecurityService {
+  /**
+   * 使用账号密码 + 验证码登录：
+   * 1. 调后端 /Account/LoginApi 做验证码/账号状态校验并登录
+   * 2. 后端直接返回 access_token + 用户信息
+   * 3. 存 token + 用户信息 到 sessionStorage，并设置 axios 默认头
+   */
+  async loginByPassword({ username, password, code, checkKey, rememberLogin = true, clientIp = null }) {
+    const payload = {
+      Username: username,
+      Password: password,
+      RememberLogin: rememberLogin,
+      Code: code,
+      CheckKey: checkKey
+    };
+    const config = {};
+    if (clientIp) {
+      config.headers = { 'X-Real-IP': clientIp };
+    }
+    
+    const loginRes = await axios.post(authUrl + '/Account/LoginApi', payload, config);
+    const loginData = loginRes.data;
 
-  // Renew the token manually
-  renewToken() {
-    var self = this
-    return new Promise((resolve, reject) => {
-      mgr.signinSilent().then(function (user) {
-        if (user == null) {
-          self.signIn(null)
-        } else {
-          return resolve(user)
-        }
-      }).catch(function (err) {
-        console.log(err)
-        return reject(err)
-      });
-    })
+    if (!loginData || loginData.success === false) {
+      throw new Error(loginData?.message || '登录失败');
+    }
+
+    const userInfo = {
+      userId: loginData.userId,
+      username: loginData.username,
+      roles: loginData.roles,
+      state: loginData.state
+    };
+    // this.$store.commit('setId', userInfo.userId); // 你的 Vuex 里有 setId 方法
+    if (!loginData.access_token) {
+      throw new Error('后台未返回 access_token');
+    }
+
+    sessionStorage.setItem(TOKEN_KEY, loginData.access_token);
+    sessionStorage.setItem(USER_INFO_KEY, JSON.stringify(userInfo));
+    // AxiosInstance.defaults.headers.common['Authorization'] = 'Bearer ' + loginData.access_token;
+    // 全局 axios 带上 Token
+    // axios.defaults.headers.common['Authorization'] = 'Bearer ' + loginData.access_token;
+
+    return {
+      token: loginData.access_token,
+      user: userInfo
+    };
   }
 
-  // Get the user who is logged in
-  getUser() {
-    var self = this
-    return new Promise((resolve, reject) => {
-      mgr.getUser().then(function (user) {
-        if (user == null) {
-          self.signIn()
-          return resolve(null)
-        } else {
-          return resolve(user)
-        }
-      }).catch(function (err) {
-        console.log(err)
-        return reject(err)
-      });
-    })
-  }
+  // === 统一基于本地存储的辅助方法 ===
 
-  // Check if there is any user logged in
-  getSignedIn() {
-    var self = this
-    return new Promise((resolve, reject) => {
-      mgr.getUser().then(function (user) {
-        if (user == null||user.expired) {
-          // self.signIn()
-        //  window.location.href = '../';
-          return resolve(false)
-        } else {
-          return resolve(true)
-        }
-      }).catch(function (err) {
-        console.log(err)
-        return reject(err)
-      });
-    })
-  }
-
-  // Redirect of the current window to the authorization endpoint.
-  signIn() {
-    mgr.signinRedirect().catch(function (err) {
-      console.log(err)
-    })
-  }
-
-  // Redirect of the current window to the end session endpoint
-  signOut() {
-    mgr.signoutRedirect().then(function (resp) {
-    }).catch(function (err) {
-      console.log(err);
-    })
-  }
-
-
-  // Get the profile of the user logged in
-  getProfile() {
-    var self = this
-    return new Promise((resolve, reject) => {
-      mgr.getUser().then(function (user) {
-        if (user == null) {
-          self.signIn()
-          return resolve(null)
-        } else {
-          return resolve(user.profile)
-        }
-      }).catch(function (err) {
-        console.log(err)
-        return reject(err)
-      });
-    })
-  }
-
-  // Get the token id
-  getIdToken() {
-    var self = this
-    return new Promise((resolve, reject) => {
-      mgr.getUser().then(function (user) {
-        if (user == null) {
-          self.signIn()
-          return resolve(null)
-        } else {
-          return resolve(user.id_token)
-        }
-      }).catch(function (err) {
-        console.log(err)
-        return reject(err)
-      });
-    })
-  }
-
-  // Get the session state
-  getSessionState() {
-    var self = this
-    return new Promise((resolve, reject) => {
-      mgr.getUser().then(function (user) {
-        if (user == null) {
-          self.signIn()
-          return resolve(null)
-        } else {
-          return resolve(user.session_state)
-        }
-      }).catch(function (err) {
-        console.log(err)
-        return reject(err)
-      });
-    })
-  }
-
-  // Get the access token of the logged in user
   getAcessToken() {
-    var self = this
-    return new Promise((resolve, reject) => {
-      mgr.getUser().then(function (user) {
-        if (user == null) {
-          self.signIn()
-          return resolve(null)
-        } else {
-          return resolve(user.access_token)
-        }
-      }).catch(function (err) {
-        console.log(err)
-        return reject(err)
-      });
-    })
+    return Promise.resolve(sessionStorage.getItem(TOKEN_KEY) || null);
   }
 
-  // Takes the scopes of the logged in user
-  getScopes() {
-    var self = this
-    return new Promise((resolve, reject) => {
-      mgr.getUser().then(function (user) {
-        if (user == null) {
-          self.signIn()
-          return resolve(null)
-        } else {
-          return resolve(user.scopes)
-        }
-      }).catch(function (err) {
-        console.log(err)
-        return reject(err)
-      });
-    })
-  }
-
-  // Get the user roles logged in
-  // Get the user roles logged in
-  getRole() {
-    var self = this;
-    return new Promise((resolve, reject) => {
-      mgr.getUser().then(function (user) {
-        // console.log('获取用户角色',user)
-        if (!user ||user.expired) {
-          self.signIn().then(rsq => {
-            if (!user || !user.profile || !user.profile.role) {
-              return resolve(null)
-            } else {
-              return resolve(user.profile.role)
-            }
-          }).catch(err => {
-            return resolve(null)
-          })
-        } else {    
-            return resolve(user.profile.role)          
-        }
-      }).catch(function (err) {
-        console.log(err)
-        return reject(err)
-      });
-    })
-  }
-
-  isAuthToMeatch() {
-    return new Promise((resolve, reject) => {
-      this.getAcessToken().then(
-        accessToken => {
-         axios.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken
-         axios.get(url+'api/HomePage/GetHomePageOrdersTodayListAsync').then(rep => {   
-          console.log('请求响应',rep)  
-         return resolve(true);
-         } ).catch(err => {
-          return resolve(false);
-         });
-       }, err => {
-         console.log('dddd',err);
-         return resolve(false);
-       } ).catch(er=>{
-         console.log('dddd',er);
-         return resolve(false);
-       });
-    })     
-  }
-
-  getReturnUrl(){
-    return new Promise((resolve,reject) => {
-      mgr.getSigninRedirectUrl().then(u=>{       
-        return resolve(u);
-      }).catch(err=>{
-        return reject(err);
-      });
+  getSignedIn() {
+    return new Promise((resolve) => {
+      const token = sessionStorage.getItem(TOKEN_KEY);
+      const userInfoStr = sessionStorage.getItem(USER_INFO_KEY);
+      if (!token || !userInfoStr) return resolve('');
+      try {
+        const user = JSON.parse(userInfoStr);
+        return resolve(user);
+      } catch (e) {
+        return resolve('');
+      }
     });
-   
   }
 
-  popupLayer(){
-    var self = this;
-    mgr.getSigninRedirectUrl().then(u=>{
-      layer.open({
-        type: 2,
-        title: '',
-        shadeClose: true,
-        shade: 0.5,
-        area: ['584px', '674px'],
-        id:'login',
-        content: u,//iframe的url
-        end: function(){
-          self.getSignedIn().then(result => {
-            if(result){
-              window.location.href='../#/main';
-            }
-          });
-          
+  getUser() {
+    return this.getSignedIn();
+  }
+
+  getProfile() {
+    return this.getSignedIn().then(u => u || null);
+  }
+
+  getRole() {
+    return new Promise((resolve) => {
+      const userInfoStr = sessionStorage.getItem(USER_INFO_KEY);
+      if (!userInfoStr) return resolve(null);
+      try {
+        const user = JSON.parse(userInfoStr);
+        const roles = user.roles || [];
+        if (user.state === 'CustomRole' || roles.includes('CustomRole')) {
+          return resolve('CustomRole');
         }
-      }); 
-    })
+        return resolve(roles[0] || null);
+      } catch (e) {
+        return resolve(null);
+      }
+    });
   }
 
+  // 旧接口兼容：直接返回当前 token
+  renewToken() {
+    return this.getAcessToken().then(token => ({ access_token: token }));
+  }
+
+  signIn() {
+    // 旧的重定向登录逻辑废弃，保留空实现避免旧代码报错
+    return;
+  }
+
+  signOut() {
+    sessionStorage.removeItem(TOKEN_KEY);
+    sessionStorage.removeItem(USER_INFO_KEY);
+    delete axios.defaults.headers.common['Authorization'];
+  }
+
+  getIdToken() {
+    return Promise.resolve(null);
+  }
+
+  getSessionState() {
+    return Promise.resolve(null);
+  }
+
+  getScopes() {
+    return Promise.resolve(null);
+  }
+
+  // 简单鉴权检查：尝试请求一个需要登录的接口
+  isAuthToMeatch() {
+    return new Promise((resolve) => {
+      this.getAcessToken()
+        .then((accessToken) => {
+          if (!accessToken) return resolve(false);
+          axios.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
+          axios
+            .get(url + 'api/HomePage/GetHomePageOrdersTodayListAsync')
+            .then(() => resolve(true))
+            .catch(() => resolve(false));
+        })
+        .catch(() => resolve(false));
+    });
+  }
+
+  // 旧 OIDC ReturnUrl 保留空实现
+  getReturnUrl() {
+    return Promise.resolve('');
+  }
+
+  popupLayer() {
+    return;
+  }
 }

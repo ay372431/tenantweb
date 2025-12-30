@@ -151,6 +151,9 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
 .tablebox {
   background: #fff;
 }

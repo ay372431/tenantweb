@@ -78,5 +78,25 @@ export default {
       params: params,
       headers: { Authorization: 'Bearer ' + header }
     });
+  },
+  // 更新游戏账号
+  async updatePlayerAccount(params) {
+    let header = await mgr();
+    return api({
+      url: '/api/Orders/UpdateOrder',
+      method: 'get',
+      params: params,
+      headers: { Authorization: 'Bearer ' + header }
+    });
+  },
+  // 查询订单账号更新情况
+  async checkOrderAccount(params) {
+    let header = await mgr();
+    return api({
+      url: '/api/Orders/GetUpdateOrderInfoAsync',
+      method: 'get',
+      params: params,
+      headers: { Authorization: 'Bearer ' + header }
+    });
   }
 };

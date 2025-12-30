@@ -19,6 +19,16 @@ export default {
       headers: { Authorization: 'Bearer ' + header }
     });
   },
+  // 获取银行信息
+  async getbankInfo(params) {
+    let header = await mgr();
+    return api({
+      url: '/api/HomePage/GetMerchantBankInfoAsync',
+      method: 'get',
+      params: params,
+      headers: { Authorization: 'Bearer ' + header }
+    });
+  },
   // 获取银行下拉
   async bankDrow(params) {
     let header = await mgr();
@@ -34,6 +44,16 @@ export default {
     let header = await mgr();
     return api({
       url: '/api/HomePage/SecretKeyUpdateAsync',
+      method: 'post',
+      data: params,
+      headers: { Authorization: 'Bearer ' + header }
+    });
+  },
+  // 更换通讯密钥
+  async changeSignKey(params) {
+    let header = await mgr();
+    return api({
+      url: '/api/HomePage/SignKeyUpdateAsync',
       method: 'post',
       data: params,
       headers: { Authorization: 'Bearer ' + header }
@@ -165,7 +185,7 @@ export default {
   async isbindWeixin(params) {
     let header = await mgr();
     return api({
-      url: '/api/Weixin/GetAlreadyBoundWxs',
+      url: '/api/WxUserValid/GetAlreadyBoundWxs',
       method: 'get',
       params: params,
       headers: { Authorization: 'Bearer ' + header }
@@ -223,7 +243,28 @@ export default {
   async CreateAccountAsync(params) {
     let header = await mgr();
     return api({
-      url: '/api/UserCenter/CreateAccountAsync',
+      url: '/api/UserCenter/CreateAccountsForAllGatewaysAsync',
+      method: 'post',
+      data: params,
+      headers: { Authorization: 'Bearer ' + header }
+    });
+  },
+  // 修改银行信息
+  async updateBankInfo(params) {
+    let header = await mgr();
+    return api({
+      url: '/api/UserCenter/ModifyAccountsForAllGatewaysAsync',
+      method: 'post',
+      data: params,
+      headers:
+        { Authorization: 'Bearer ' + header }
+    });
+  },
+  // 提交银行信息
+  async ModifyAccountsAsync(params) {
+    let header = await mgr();
+    return api({
+      url: '/api/UserCenter/ModifyAccountsAsync',
       method: 'post',
       data: params,
       headers: { Authorization: 'Bearer ' + header }
@@ -232,7 +273,112 @@ export default {
   async elecSign(params) {
     let header = await mgr();
     return api({
-      url: '/api/HomePage/SendElectronicSign',
+      url: '/api/HomePage/SendFaDaDaElectronicSign',
+      method: 'post',
+      data: params,
+      headers: { Authorization: 'Bearer ' + header }
+    });
+  },
+  async sendEmailCode(params) {
+    let header = await mgr();
+    return api({
+      url: '/api/HomePage/SendEmailCode',
+      method: 'post',
+      data: params,
+      headers: { Authorization: 'Bearer ' + header }
+    });
+  },
+  async sendPhoneCode(params) {
+    let header = await mgr();
+    return api({
+      url: '/api/HomePage/SendSmsCode',
+      method: 'post',
+      data: params,
+      headers: { Authorization: 'Bearer ' + header }
+    });
+  },
+  async bindEmail(params) {
+    let header = await mgr();
+    return api({
+      url: '/api/HomePage/UpdateEmailAsync',
+      method: 'post',
+      data: params,
+      headers: { Authorization: 'Bearer ' + header }
+    });
+  },
+  async bindPhone(params) {
+    let header = await mgr();
+    return api({
+      url: '/api/HomePage/UpdatePhoneAsync',
+      method: 'post',
+      data: params,
+      headers: { Authorization: 'Bearer ' + header }
+    });
+  },
+  // 修改nickName
+  async changeNickName(params) {
+    let header = await mgr();
+    return api({
+      url: '/api/HomePage/UpdateNickNameAsync',
+      method: 'post',
+      data: params,
+      headers: { Authorization: 'Bearer ' + header }
+    });
+  },
+  // 修改QQ号
+  async changeQQ(params) {
+    let header = await mgr();
+    return api({
+      url: '/api/HomePage/UpdateQqNumberAsync',
+      method: 'post',
+      data: params,
+      headers: { Authorization: 'Bearer ' + header }
+    });
+  },
+  // 把 userId 放到路径段
+  async CheckWxQr(userId) {
+    let header = await mgr();
+    return api({
+      url: `/api/WxUserValid/CheckWxQr/${userId}`,
+      method: 'get',
+      headers: { Authorization: 'Bearer ' + header }
+    });
+  },
+  // 获取系统设置中的银行信息
+  async getSystemBankInfo(params) {
+    let header = await mgr();
+    return api({
+      url: '/api/UserCenter/GetSystemBankInfo',
+      method: 'get',
+      params: params,
+      headers: { Authorization: 'Bearer ' + header }
+    });
+  },
+  // 上传文件
+  async uploadprofit(params) {
+    let header = await mgr();
+    return api({
+      url: '/api/UserCenter/UploadFile',
+      method: 'post',
+      data: params,
+      headers: { Authorization: 'Bearer ' + header }
+    });
+  },
+  // 带路径的上传文件
+  async uploadprofits(params) {
+    let header = await mgr();
+    return api({
+      url: '/api/UserCenter/UploadFilesAsync',
+      method: 'post',
+      data: params,
+      headers: { Authorization: 'Bearer ' + header }
+    });
+  },
+  // 提交收货地址
+  async submitShAddress(params) {
+    let header = await mgr();
+    return api({
+      url: '/api/UserCenter/SubmitReceivingAddress',
       method: 'post',
       data: params,
       headers: { Authorization: 'Bearer ' + header }

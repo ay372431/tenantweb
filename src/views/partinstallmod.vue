@@ -13,45 +13,6 @@
       <div class="gs_title cursor bg_eee" @click="collspa.show1 = !collspa.show1">基本信息<span class="arrow" :class="{'active':collspa.show1}"></span></div>
       <el-collapse-transition>
         <div v-show="collspa.show1" class="gs_listcontainer">
-          <!-- <dl class="clearfix">
-            <dt>模板类型：</dt>
-            <dd>
-              <ul class="areaContainer clearfix">
-                <li :class="{on:baseInfo.type===1}" @click="typeChange(1)">
-                  <el-tooltip class="item" effect="dark" content="热血传奇" placement="bottom">
-                    <img src="../assets/images/index.png" alt="">
-                  </el-tooltip>
-                </li>
-                <li :class="{on:baseInfo.type===2}" @click="typeChange(2)">
-                  <el-tooltip class="item" effect="dark" content="传奇世界" placement="bottom">
-                    <img src="../assets/images/cs.png" alt="">
-                  </el-tooltip>
-                </li>
-                <li :class="{on:baseInfo.type===3}" @click="typeChange(3)">
-                  <el-tooltip class="item" effect="dark" content="传奇三" placement="bottom">
-                    <img src="../assets/images/cq3.png" alt="">
-                  </el-tooltip>
-                </li>
-                <li :class="{on:baseInfo.type===4}" @click="typeChange(4)">
-                  <el-tooltip class="item" effect="dark" content="SQL通用" placement="bottom">
-                    <img src="../assets/images/sql.png" alt="">
-                  </el-tooltip>
-                </li>
-                 <li :class="{on:baseInfo.type===5}" @click="typeChange(5)">
-                  <el-tooltip class="item" effect="dark" content="Web通讯" placement="bottom">
-                    <img src="../assets/images/web.png" alt="">
-                  </el-tooltip>
-                </li>
-                <li :class="{on:baseInfo.type===6}" @click="typeChange(6)">
-                  <el-tooltip class="item" effect="dark" content="奇迹" placement="bottom">
-                    <img src="../assets/images/qiji.png" style="width: 96px;" alt="">
-                  </el-tooltip>
-                </li>
-
-                
-              </ul>
-            </dd>
-          </dl> -->
           <dl class="clearfix">
             <dt>模板名称：</dt>
             <dd>
@@ -59,6 +20,15 @@
                 <el-input size="small" ref="baseName" v-model="baseInfo.name" placeholder="请输入模板名称"></el-input>
               </span>
               <span class="line_tip">1-16个字，请勿输入特殊符号</span>
+            </dd>
+          </dl>
+          <dl class="clearfix">
+            <dt>风控金额：</dt>
+            <dd>
+              <span class="inputbox">
+                <el-input size="small" ref="baseName" v-model="baseInfo.safetyMoney"></el-input>
+              </span>
+              <span class="line_tip">额外赠送金额，请输入数字，0为不赠送</span>
             </dd>
           </dl>
           <dl class="clearfix" v-if="baseInfo.type===4">
@@ -79,6 +49,17 @@
                   <el-radio :label="1">金币</el-radio>
                   <el-radio :label="3" v-if="baseInfo.type===2">金元</el-radio>
                   <el-radio :label="2">自定义</el-radio>
+                </el-radio-group>
+              </span>
+            </dd>
+          </dl>
+          <dl class="clearfix">
+            <dt>游戏中展示：</dt>
+            <dd>
+              <span class="inputbox pdt5">
+                <el-radio-group v-model="baseInfo.isShowGlod">
+                  <el-radio :label="0">是</el-radio>
+                  <el-radio :label="1">否</el-radio>
                 </el-radio-group>
               </span>
             </dd>
@@ -175,10 +156,8 @@
             <dt>游戏引擎：</dt>
             <dd>
               <span class="inputbox">
-                <el-select size="small" v-model="baseInfo.gameEngine" ref="baseGameEngine" placeholder="请选择" @change="gameEngineChange">
+                <el-select size="small" popper-class="custom-select" v-model="baseInfo.gameEngine" ref="baseGameEngine" placeholder="请选择" @change="gameEngineChange">
                   <el-option v-for="(item,i) in gameEnginedrow" :key="'yq'+i" :label="item.engine" :value="item.engine">
-                  </el-option>
-                  <el-option label="自定义引擎" :value="''">
                   </el-option>
                 </el-select>
               </span>
@@ -195,6 +174,48 @@
             </dd>
           </dl>
           <dl class="clearfix">
+            <dt>扫码支付：</dt>
+            <dd>
+              <span class="inputbox">
+                <el-checkbox v-model="baseInfo.isScan">开启游戏内扫码支付</el-checkbox>
+              </span>
+              <span class="line_tip">开启后玩家可以直接在游戏内扫码支付</span>
+            </dd>
+          </dl>
+          <dl class="clearfix" v-if="baseInfo.isScan">
+            <dt>模 板：</dt>
+            <dd>
+              <span class="inputbox">
+                <el-select style="width:250px;" size="small" ref="scanModel" v-model="scanModel" placeholder="请选择">
+                  <el-option v-for="(item) in scanModelDrow" :key="item.id" :label="item.title" :value="item.id">
+                  </el-option>
+                </el-select>
+                <el-button style="margin-left: 15px;" size="small" type="primary" @click="openQrcodeDialog(false)">创建二维码模版</el-button>
+              </span>
+            </dd>
+          </dl>
+          <dl class="clearfix">
+            <dt>微信密保：</dt>
+            <dd>
+              <span class="inputbox">
+                <el-checkbox v-model="baseInfo.isWxmb">开启微信密保功能</el-checkbox>
+              </span>
+            </dd>
+          </dl>
+          <dl class="clearfix" v-if="baseInfo.isWxmb">
+            <dt>模 板：</dt>
+            <dd>
+              <span class="inputbox">
+                <el-select style="width:250px;" size="small" ref="installModel" v-model="installModel"
+                  placeholder="请选择">
+                  <el-option v-for="(item) in modelDrow" :key="item.id" :label="item.name" :value="item.id">
+                  </el-option>
+                </el-select>
+                <el-button style="margin-left: 15px;" size="small" type="primary" @click="openWxmbDialog(false, null, '热血传奇')">创建微信密保模版</el-button>
+              </span>
+            </dd>
+          </dl>
+          <dl class="clearfix" style="display: none;">
             <dt>最小金额：</dt>
             <dd>
               <span class="inputbox">
@@ -203,7 +224,7 @@
               <span class="line_tip">单笔订单允许最小充值金额{{baseInfo.sysMinMoney}}</span>
             </dd>
           </dl>
-          <dl class="clearfix">
+          <dl class="clearfix" style="display: none;">
             <dt>最大金额：</dt>
             <dd>
               <span class="inputbox">
@@ -212,7 +233,7 @@
               <span class="line_tip">单笔订单允许最大充值金额{{baseInfo.sysMaxMoney}}</span>
             </dd>
           </dl>
-          <dl class="clearfix">
+          <dl class="clearfix" style="display: none;">
             <dt>固定金额：</dt>
             <dd>
               <span class="inputbox">
@@ -233,7 +254,7 @@
               <span class="line_tip">注意:通区同注册账号会出现相互领取,重复加载可能导致正在充值掉单情况</span>
             </dd>
           </dl>
-          <dl class="clearfix">
+          <dl class="clearfix"  v-if="baseInfo.isTongQu">
             <dt>目录类别：</dt>
             <dd>
               <span class="inputbox pdt5">
@@ -242,6 +263,34 @@
                   <el-radio :label="1">不同盘符</el-radio>
                 </el-radio-group>
                 <span class="line_tip" style="color: red;font-weight: bold;">通区目录与游戏引擎是否在同一个盘符上！</span>
+              </span>
+            </dd>
+          </dl>
+          <dl class="clearfix" v-if="baseInfo.isTongQu">
+            <dt>有测试区：</dt>
+            <dd>
+              <span class="inputbox pdt5">
+                <el-radio-group v-model="baseInfo.isTest">
+                  <el-radio :label="true">是</el-radio>
+                  <el-radio :label="false">否</el-radio>
+                </el-radio-group>
+              </span>
+            </dd>
+          </dl>
+          <dl class="clearfix" v-if="baseInfo.isTongQu && baseInfo.isTest">
+            <dt>额外补发：</dt>
+            <dd>
+              <span class="inputbox">
+                <el-input size="small" ref="baseGameMing" v-model="baseInfo.betch"></el-input>
+              </span>
+              <span class="line_tip">%</span>
+            </dd>
+          </dl>
+          <dl class="clearfix" v-if="baseInfo.isTongQu && baseInfo.isTest">
+            <dt>补发选项：</dt>
+            <dd>
+              <span class="inputbox">
+                <el-checkbox v-model="baseInfo.isBetch">额外补发只补发主货币</el-checkbox>
               </span>
             </dd>
           </dl>
@@ -301,7 +350,7 @@
                         <td>
                           <el-input size="small" :ref="'attachName'+i" v-model="item.name"></el-input>
                         </td>
-                        
+
                         <td>
                           <el-input size="small" :ref="'attachCommand'+i" v-model="item.command"></el-input>
                         </td>
@@ -720,6 +769,192 @@
     <p class="tc mgt15">
       <el-button type="primary" @click="submit" :loading="!editFlag">保存</el-button>
     </p>
+    <!-- 新增/编辑二维码模版弹窗 -->
+    <el-dialog :title="qrcodeDialog.isEdit ? '编辑二维码模版' : '新增二维码模版'" :visible.sync="qrcodeDialog.visible" width="480px"
+      :close-on-click-modal="false" @close="closeQrcodeDialog">
+      <el-form ref="qrcodeForm" :model="qrcodeDialog.form" :rules="qrcodeDialog.rules" label-width="80px" size="small"
+        style="padding-right:12px;" @submit.native.prevent="saveQrcodeTemplate">
+        <el-form-item label="标题" prop="title">
+          <el-input v-model="qrcodeDialog.form.title" placeholder="请输入标题" maxlength="30" />
+        </el-form-item>
+        <el-form-item label="Wii编号" prop="resourceCode">
+          <el-input v-model="qrcodeDialog.form.resourceCode" placeholder="请输入WII编号" maxlength="20" />
+        </el-form-item>
+        <el-form-item label="图片序号" prop="imageCode">
+          <el-input v-model="qrcodeDialog.form.imageCode" placeholder="请输入图片序号" maxlength="20" />
+        </el-form-item>
+        <el-form-item label="尺寸" prop="serial">
+          <el-select v-model="qrcodeDialog.form.serial" placeholder="请选择" style="width:100%;">
+            <el-option :value="1" label="小" />
+            <el-option :value="2" label="中" />
+            <el-option :value="3" label="大" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="坐标X" prop="xOffset">
+          <el-input v-model="qrcodeDialog.form.xOffset" placeholder="请输入坐标X" maxlength="10" />
+        </el-form-item>
+        <el-form-item label="坐标Y" prop="yOffset">
+          <el-input v-model="qrcodeDialog.form.yOffset" placeholder="请输入坐标Y" maxlength="10" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="closeQrcodeDialog">取消</el-button>
+        <el-button type="danger" :loading="qrcodeDialog.loading" @click="saveQrcodeTemplate">确定</el-button>
+      </div>
+    </el-dialog>
+    <!-- 新增/编辑微信密保模版弹窗 -->
+    <el-dialog :title="wxmbDialog.isEdit ? '编辑微信密保模版' : '新增微信密保模版'" :visible.sync="wxmbDialog.visible" width="900px"
+      :close-on-click-modal="false" @close="closeWxmbDialog">
+      <div class="wxmb-dialog-scroll">
+        <el-form ref="wxmbForm" :model="wxmbDialog.form" :rules="wxmbDialog.rules" label-width="160px" size="small"
+          style="padding-right:12px;" @submit.native.prevent="saveWxmbTemplate">
+          <el-form-item label="模版名称" prop="name">
+            <el-input v-model="wxmbDialog.form.name" placeholder="请输入模版名称" maxlength="30" />
+          </el-form-item>
+          <el-form-item label="二维码模版" prop="qrcodeType" style="margin-top:18px;">
+            <el-select v-model="wxmbDialog.form.qrcodeType" placeholder="请选择二维码模版" style="width:100%;">
+              <el-option v-for="item in qrcodeTemplatesList" :key="item.id" :label="item.title" :value="item.id" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="是否进行强制验证" prop="isForce">
+            <el-radio-group v-model="wxmbDialog.form.isForce">
+              <el-radio :label="true">是</el-radio>
+              <el-radio :label="false">否</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="验证密保地图ID" prop="mbMapId">
+            <el-input v-model="wxmbDialog.form.mbMapId" placeholder="请输入验证密保地图ID" />
+          </el-form-item>
+          <el-form-item label="验证完成传送地图ID" prop="finishMapId" style="margin-top:18px;">
+            <el-input v-model="wxmbDialog.form.finishMapId" placeholder="请输入验证完成传送地图ID" />
+          </el-form-item>
+          <el-form-item label="机器码变量" prop="machineVar">
+            <el-input v-model="wxmbDialog.form.machineVar" placeholder="请输入机器码变量" />
+          </el-form-item>
+          <el-form-item label="微信openid变量" prop="openidVar">
+            <el-input v-model="wxmbDialog.form.openidVar" placeholder="请输入微信openid变量" />
+          </el-form-item>
+          <el-form-item label="微信保留ID变量" prop="wxVar">
+            <el-input v-model="wxmbDialog.form.wxVar" placeholder="请输入微信保留ID变量" />
+          </el-form-item>
+          <el-divider content-position="left">密保NPC</el-divider>
+          <el-form-item label="NPC名称" prop="npcName">
+            <el-input v-model="wxmbDialog.form.npcName" placeholder="如：游戏密保认证" />
+          </el-form-item>
+          <el-form-item style="margin-top:18px;">
+            <el-row :gutter="10">
+              <el-col :span="6"><strong>地图ID</strong></el-col>
+              <el-col :span="4"><strong>x坐标</strong></el-col>
+              <el-col :span="4"><strong>y坐标</strong></el-col>
+              <el-col :span="6"><strong>外观ID</strong></el-col>
+              <el-col :span="4"><strong>操作</strong></el-col>
+            </el-row>
+            <div v-for="(npc, idx) in wxmbDialog.form.npcs" :key="idx" style="margin-bottom:8px;">
+              <el-row :gutter="10">
+                <el-col :span="6">
+                  <el-input v-model="npc.mapId" placeholder="地图ID" />
+                </el-col>
+                <el-col :span="4">
+                  <el-input v-model="npc.x" placeholder="x坐标" />
+                </el-col>
+                <el-col :span="4">
+                  <el-input v-model="npc.y" placeholder="y坐标" />
+                </el-col>
+                <el-col :span="6">
+                  <el-input v-model="npc.lookId" placeholder="外观ID" />
+                </el-col>
+                <el-col :span="4">
+                  <el-button type="danger" size="mini" @click="removeNpc(idx)">删除</el-button>
+                </el-col>
+              </el-row>
+            </div>
+            <el-button type="text" @click="addNpc">+ 添加一行</el-button>
+          </el-form-item>
+          <el-divider content-position="left">游戏转区</el-divider>
+          <el-form-item>
+            <el-checkbox v-model="wxmbDialog.form.transferEnable">开启转区功能</el-checkbox>
+          </el-form-item>
+          <template v-if="wxmbDialog.form.transferEnable">
+            <el-form-item label="可转区最低金额" prop="transferMinAmount">
+              <el-input v-model="wxmbDialog.form.transferMinAmount" placeholder="请输入最低金额" style="width: 200px;">
+                <template slot="append">元</template>
+              </el-input>
+              <span class="line_tip">玩家最低要充多少钱才可进行转区</span>
+            </el-form-item>
+            <!-- 热血传奇专属：转区变量定义 -->
+            <template v-if="wxmbDialog.form.gameType !== '传奇世界'">
+              <el-divider content-position="left">转区变量定义</el-divider>
+              <el-row :gutter="10">
+                <el-col :span="10">
+                  <el-form-item label="充值转区点" prop="transferRechargeVar">
+                    <el-input v-model="wxmbDialog.form.transferRechargeVar" placeholder="如：U46" />
+                  </el-form-item>
+                </el-col>
+                <el-col :span="10">
+                  <el-form-item label="已用转区点" prop="transferUsedVar">
+                    <el-input v-model="wxmbDialog.form.transferUsedVar" placeholder="如：U47" />
+                  </el-form-item>
+                </el-col>
+                <el-col :span="10">
+                  <el-form-item label="角色是否已转区" prop="transferFlagVar">
+                    <el-input v-model="wxmbDialog.form.transferFlagVar" placeholder="如：U48" />
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row :gutter="10">
+                <el-col :span="10">
+                  <el-form-item label="通区货币" prop="transferCoinVar">
+                    <el-input v-model="wxmbDialog.form.transferCoinVar" placeholder="如：U49" />
+                  </el-form-item>
+                </el-col>
+                <el-col :span="10">
+                  <el-form-item label="通区货币名称" prop="transferCoinName">
+                    <el-input v-model="wxmbDialog.form.transferCoinName" placeholder="如：游戏币" />
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </template>
+            <el-divider content-position="left">转区NPC</el-divider>
+            <el-form-item label="NPC名称" prop="transferNpcName">
+              <el-input v-model="wxmbDialog.form.transferNpcName" placeholder="如：自助转区服务" />
+            </el-form-item>
+            <el-form-item style="margin-top:18px;">
+              <el-row :gutter="10">
+                <el-col :span="6"><strong>地图ID</strong></el-col>
+                <el-col :span="4"><strong>x坐标</strong></el-col>
+                <el-col :span="4"><strong>y坐标</strong></el-col>
+                <el-col :span="6"><strong>外观ID</strong></el-col>
+                <el-col :span="4"><strong>操作</strong></el-col>
+              </el-row>
+              <div v-for="(npc, idx) in wxmbDialog.form.transferNpcs" :key="idx" style="margin-bottom:8px;">
+                <el-row :gutter="10">
+                  <el-col :span="6">
+                    <el-input v-model="npc.mapId" placeholder="地图ID" />
+                  </el-col>
+                  <el-col :span="4">
+                    <el-input v-model="npc.x" placeholder="x坐标" />
+                  </el-col>
+                  <el-col :span="4">
+                    <el-input v-model="npc.y" placeholder="y坐标" />
+                  </el-col>
+                  <el-col :span="6">
+                    <el-input v-model="npc.lookId" placeholder="外观ID" />
+                  </el-col>
+                  <el-col :span="4">
+                    <el-button type="danger" size="mini" @click="removeTransferNpc(idx)">删除</el-button>
+                  </el-col>
+                </el-row>
+              </div>
+              <el-button type="text" @click="addTransferNpc">+ 添加一行</el-button>
+            </el-form-item>
+          </template>
+        </el-form>
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="closeWxmbDialog">取消</el-button>
+        <el-button type="danger" :loading="wxmbDialog.loading" @click="saveWxmbTemplate">确定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -738,6 +973,11 @@ export default {
         show6: false,
         show7: false
       },
+      modelDrow: [], // 微信密保模版下拉
+      scanModelDrow: [], // 扫码支付模版下拉
+      scanModel: '', // 扫码模版
+      installModel: '', // 微信密保模版
+      qrcodeTemplatesList: [], // 获取二维码模版，不分页
       baseInfo: {
         // 基本信息
         type: 1, // 模板类型
@@ -746,12 +986,13 @@ export default {
         gameMoney: 0, // 游戏币
         chargetype: '游戏帐号', // 充值方式
         gameName: '元宝', // 游戏币名称
+        isShowGlod: 0, // 是否显示游戏币
         color: 0, // 币种的颜色值
         command: 'GAMEGOLD + ', // 脚本命令
         rate: 1, // 兑换比例
-        tongQuDir: '通区充值', // 通区目录
-        dir: [],//充值脚本路径盘符
-        payDir:'7XPAY充值元宝',//充值脚本路径
+        tongQuDir: 'D:\\通区目录', // 通区目录
+        dir: [], // 充值脚本路径盘符
+        payDir: '7XPAY充值元宝', // 充值脚本路径
         DirType: false, // 领取路径
         chargeNpc: [
           {
@@ -776,12 +1017,16 @@ export default {
         webCommand: '', // 浏览器指令
         minMoney: 0, // 最小金额
         maxMoney: 10000, // 最大金额
-        fixedMoney: '',//固定金额
+        fixedMoney: '', // 固定金额
         isTongQu: false,
         sysMinMoney: 0, // 系统最小金额
         sysMaxMoney: 0, // 系统最大金额
         isDir: 0, // 目录类别   0同盘符  1不同盘符
-        giveOptionState: 0 // 计算选项  0按充值金额计算  1充值金额+渠道赠送
+        giveOptionState: 0, // 计算选项  0按充值金额计算  1充值金额+渠道赠送
+        safetyMoney: 0, // 安全金额
+        isTest: true, // 是否测试服
+        betch: 20, // 补发比例
+        isBetch: false // 是否开启额外补发
       },
       inciteInfo: {
         // 激励详情
@@ -858,14 +1103,14 @@ export default {
           {
             name: '元宝消费',
             show: false,
-            file: '',
+            file: '..\\QuestDiary\\7XPAY充值元宝\\充值积分\\元宝消费Save.txt',
             ratio: 1,
             type: 0
           },
           {
             name: '消费积分',
             show: false,
-            file: '',
+            file: '..\\QuestDiary\\7XPAY充值元宝\\充值积分\\消费积分Save.txt',
             ratio: 1,
             type: 0
           }
@@ -894,6 +1139,70 @@ export default {
         select: 0, // 选项
         oneSet: true, // 一键设置
         redNPC: [] // 赠送详情
+      },
+      qrcodeDialog: {
+        visible: false,
+        isEdit: false,
+        loading: false,
+        form: {
+          title: '',
+          resourceCode: '',
+          imageCode: '',
+          serial: 3,
+          xOffset: '',
+          yOffset: ''
+        },
+        rules: {
+          title: [
+            { required: true, message: '请输入标题', trigger: 'blur' },
+            { max: 30, message: '标题长度不能超过30个字符' }
+          ],
+          resourceCode: [
+            { required: true, message: '请输入WII编号', trigger: 'blur' },
+            { max: 20, message: 'WII编号长度不能超过20个字符' }
+          ],
+          imageCode: [
+            { required: true, message: '请输入图片序号', trigger: 'blur' },
+            { max: 20, message: '图片序号长度不能超过20个字符' }
+          ],
+          serial: [
+            { required: true, message: '请选择尺寸', trigger: 'change' }
+          ],
+          xOffset: [
+            { required: true, message: '请输入坐标X', trigger: 'blur' }
+          ],
+          yOffset: [
+            { required: true, message: '请输入坐标Y', trigger: 'blur' }
+          ]
+        }
+      },
+      wxmbDialog: {
+        visible: false,
+        isEdit: false,
+        loading: false,
+        form: {
+          name: '',
+          gameType: '',
+          qrcodeType: '',
+          isForce: true,
+          mbMapId: '',
+          finishMapId: '',
+          machineVar: '',
+          openidVar: '',
+          wxVar: '',
+          transferNpcs: [{ mapId: '', x: 0, y: 0, lookId: '' }]
+        },
+        rules: {
+          name: [{ required: true, message: '请输入模版名称', trigger: 'blur' }],
+          gameType: [{ required: true, message: '请选择游戏类型', trigger: 'change' }],
+          qrcodeType: [{ required: true, message: '请选择二维码模版', trigger: 'change' }],
+          isForce: [{ required: true, message: '请选择是否强制', trigger: 'change' }],
+          mbMapId: [{ required: true, message: '请输入验证密保地图ID', trigger: 'blur' }],
+          finishMapId: [{ required: true, message: '请输入验证完成传送地图ID', trigger: 'blur' }],
+          machineVar: [{ required: true, message: '请输入机器码变量', trigger: 'blur' }],
+          openidVar: [{ required: true, message: '请输入微信openid变量', trigger: 'blur' }],
+          wxVar: [{ required: true, message: '请输入微信保留ID变量', trigger: 'blur' }]
+        }
       }
     };
   },
@@ -935,6 +1244,9 @@ export default {
     this.getproductlist();
     this.gameEngineDrow();
     this.getMimicharge();
+    this.getWxmbTemplates();
+    this.getScanTemplates();
+    this.getAllQrcodeTemplates();
   },
   computed: {
     gameEnginedrow() {
@@ -953,133 +1265,160 @@ export default {
     }
   },
   methods: {
-    //监听目录类别变化
+    // 构建积分文件路径，自动处理 payDir 为空、通区与盘符差异
+    buildIntegralFile(name) {
+      const paySegment = this.baseInfo.payDir ? `${this.baseInfo.payDir}\\` : '';
+      if (this.baseInfo.isTongQu) {
+        if (this.baseInfo.isDir === 0) {
+          const tong = (this.baseInfo.tongQuDir || '').replace(/^[A-Za-z]:\\/, '');
+          return `..\\..\\..\\..\\${tong}\\Mir200\\Envir\\QuestDiary\\${paySegment}充值积分\\${name}Save.txt`;
+        } else {
+          const tong = (this.baseInfo.tongQuDir || '').replace(/\\$/, '');
+          return `${tong}\\Mir200\\Envir\\QuestDiary\\${paySegment}充值积分\\${name}Save.txt`;
+        }
+      } else {
+        if (this.baseInfo.isDir === 1) {
+          return `${paySegment}充值积分\\${name}Save.txt`;
+        } else {
+          return `..\\QuestDiary\\${paySegment}充值积分\\${name}Save.txt`;
+        }
+      }
+    },
+    // 刷新所有积分文件路径（在 created 与 payDir/通区相关变化时调用）
+    refreshIntegralFiles() {
+      this.integralInfo.integralList.forEach(item => {
+        item.file = this.buildIntegralFile(item.name || '');
+      });
+    },
+    // 监听目录类别变化
     onChangeDir(value) {
       // const item = this.integralInfo.integralList[index];
-      var tongQuDirInfo = this.baseInfo.tongQuDir;
-      if(value == 0){
-        // 同盘符
-        //分割路径，去掉盘符
-        tongQuDirInfo = tongQuDirInfo.replace(/^[A-Za-z]:\\/,'');
-        this.integralInfo.integralList.forEach(item => {
-          if(this.baseInfo.isTongQu)
-            item.file = `..\\..\\..\\..\\${tongQuDirInfo}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
-          else
-            item.file = `..\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
-        });
-      }else{
-        // 不同盘符
-        this.integralInfo.integralList.forEach(item => {
-          item.file = `${this.baseInfo.tongQuDir}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
-        });
-      }
+      // var tongQuDirInfo = this.baseInfo.tongQuDir;
+      // if (value === 0) {
+      //   // 同盘符
+      //   // 分割路径，去掉盘符
+      //   tongQuDirInfo = tongQuDirInfo.replace(/^[A-Za-z]:\\/, '');
+      //   this.integralInfo.integralList.forEach(item => {
+      //     if (this.baseInfo.isTongQu) { item.file = `..\\..\\..\\..\\${tongQuDirInfo}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`; } else { item.file = `..\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`; }
+      //   });
+      // } else {
+      //   // 不同盘符
+      //   this.integralInfo.integralList.forEach(item => {
+      //     item.file = `${this.baseInfo.tongQuDir}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+      //   });
+      // }
+      this.refreshIntegralFiles();
     },
-    //监听积分名称变化
+    // 监听积分名称变化
     onChangeIntegralName(index) {
       const item = this.integralInfo.integralList[index];
-      if (this.baseInfo.isTongQu) {
-        // 通区时
-        if (this.baseInfo.isDir == 0) {
-          // 同盘符，去掉盘符
-          let tongQuDirInfo = this.baseInfo.tongQuDir.replace(/^[A-Za-z]:\\/, '');
-          item.file = `..\\..\\..\\..\\${tongQuDirInfo}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
-        } else {
-          // 不同盘符
-          item.file = `${this.baseInfo.tongQuDir}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
-        }
-      } else {
-        // 非通区时
-        if (this.baseInfo.isDir == 1) {
-          // 不同盘符
-          item.file = `${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
-        } else {
-          // 同盘符
-          item.file = `..\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
-        }
-      }
+      item.file = this.buildIntegralFile(item.name || '');
+      // if (this.baseInfo.isTongQu) {
+      //   // 通区时
+      //   if (this.baseInfo.isDir === 0) {
+      //     // 同盘符，去掉盘符
+      //     let tongQuDirInfo = this.baseInfo.tongQuDir.replace(/^[A-Za-z]:\\/, '');
+      //     item.file = `..\\..\\..\\..\\${tongQuDirInfo}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+      //   } else {
+      //     // 不同盘符
+      //     item.file = `${this.baseInfo.tongQuDir}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+      //   }
+      // } else {
+      //   // 非通区时
+      //   if (this.baseInfo.isDir === 1) {
+      //     // 不同盘符
+      //     item.file = `${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+      //   } else {
+      //     // 同盘符
+      //     item.file = `..\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+      //   }
+      // }
     },
-    //监听通区目录变化
+    // 监听通区目录变化
     onChangeTongQuDir(value) {
-      if (this.baseInfo.isTongQu) {
-        // 通区时，拼接通区路径
-        if(this.baseInfo.dir == 0){
-          // 同盘符
-          value = value.replace(/^[A-Za-z]:\\/,'');
-        }else{
-          // 不同盘符
-          value = value.replace(/\\$/,'');
-        }
-        this.integralInfo.integralList.forEach(item => {
-          item.file = `..\\..\\..\\..\\${value}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
-        });
-      }else{
-        // 非通区时，恢复默认或清空
-        this.integralInfo.integralList.forEach(item => {
-          item.file = `..\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
-        });
-      }
+      // if (this.baseInfo.isTongQu) {
+      //   // 通区时，拼接通区路径
+      //   if (this.baseInfo.dir === 0) {
+      //     // 同盘符
+      //     value = value.replace(/^[A-Za-z]:\\/, '');
+      //   } else {
+      //     // 不同盘符
+      //     value = value.replace(/\\$/, '');
+      //   }
+      //   this.integralInfo.integralList.forEach(item => {
+      //     item.file = `..\\..\\..\\..\\${value}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+      //   });
+      // } else {
+      //   // 非通区时，恢复默认或清空
+      //   this.integralInfo.integralList.forEach(item => {
+      //     item.file = `..\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+      //   });
+      // }
+      this.refreshIntegralFiles();
     },
-    //监听通区变化
+    // 监听通区变化
     onChangeRadio(value) {
-      if (value) {
-        // 通区时
-        if (this.baseInfo.isDir == 0) {
-          // 同盘符
-          let tongQuDirInfo = this.baseInfo.tongQuDir.replace(/^[A-Za-z]:\\/, '');
-          this.integralInfo.integralList.forEach(item => {
-            item.file = `..\\..\\..\\..\\${tongQuDirInfo}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
-          });
-        } else {
-          // 不同盘符
-          this.integralInfo.integralList.forEach(item => {
-            item.file = `${this.baseInfo.tongQuDir}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
-          });
-        }
-      } else {
-        // 非通区时
-        if (this.baseInfo.isDir == 1) {
-          // 不同盘符
-          this.integralInfo.integralList.forEach(item => {
-            item.file = `${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
-          });
-        } else {
-          // 同盘符
-          this.integralInfo.integralList.forEach(item => {
-            item.file = `..\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
-          });
-        }
-      }
+      // if (value) {
+      //   // 通区时
+      //   if (this.baseInfo.isDir === 0) {
+      //     // 同盘符
+      //     let tongQuDirInfo = this.baseInfo.tongQuDir.replace(/^[A-Za-z]:\\/, '');
+      //     this.integralInfo.integralList.forEach(item => {
+      //       item.file = `..\\..\\..\\..\\${tongQuDirInfo}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+      //     });
+      //   } else {
+      //     // 不同盘符
+      //     this.integralInfo.integralList.forEach(item => {
+      //       item.file = `${this.baseInfo.tongQuDir}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+      //     });
+      //   }
+      // } else {
+      //   // 非通区时
+      //   if (this.baseInfo.isDir === 1) {
+      //     // 不同盘符
+      //     this.integralInfo.integralList.forEach(item => {
+      //       item.file = `${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+      //     });
+      //   } else {
+      //     // 同盘符
+      //     this.integralInfo.integralList.forEach(item => {
+      //       item.file = `..\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+      //     });
+      //   }
+      // }
+      this.refreshIntegralFiles();
     },
-    //监听充值脚本路径变化
+    // 监听充值脚本路径变化
     onChangeValue(value) {
-      if (this.baseInfo.isTongQu) {
-        // 通区时
-        if (this.baseInfo.isDir == 0) {
-          // 同盘符，去掉盘符
-          let tongQuDirInfo = this.baseInfo.tongQuDir.replace(/^[A-Za-z]:\\/, '');
-          this.integralInfo.integralList.forEach(item => {
-            item.file = `..\\..\\..\\..\\${tongQuDirInfo}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
-          });
-        } else {
-          // 不同盘符
-          this.integralInfo.integralList.forEach(item => {
-            item.file = `${this.baseInfo.tongQuDir}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
-          });
-        }
-      } else {
-        // 非通区时
-        if (this.baseInfo.isDir == 1) {
-          // 不同盘符
-          this.integralInfo.integralList.forEach(item => {
-            item.file = `${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
-          });
-        } else {
-          // 同盘符
-          this.integralInfo.integralList.forEach(item => {
-            item.file = `..\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
-          });
-        }
-      }
+      // if (this.baseInfo.isTongQu) {
+      //   // 通区时
+      //   if (this.baseInfo.isDir === 0) {
+      //     // 同盘符，去掉盘符
+      //     let tongQuDirInfo = this.baseInfo.tongQuDir.replace(/^[A-Za-z]:\\/, '');
+      //     this.integralInfo.integralList.forEach(item => {
+      //       item.file = `..\\..\\..\\..\\${tongQuDirInfo}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+      //     });
+      //   } else {
+      //     // 不同盘符
+      //     this.integralInfo.integralList.forEach(item => {
+      //       item.file = `${this.baseInfo.tongQuDir}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+      //     });
+      //   }
+      // } else {
+      //   // 非通区时
+      //   if (this.baseInfo.isDir === 1) {
+      //     // 不同盘符
+      //     this.integralInfo.integralList.forEach(item => {
+      //       item.file = `${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+      //     });
+      //   } else {
+      //     // 同盘符
+      //     this.integralInfo.integralList.forEach(item => {
+      //       item.file = `..\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+      //     });
+      //   }
+      // }
+      this.refreshIntegralFiles();
     },
     // 获取充值渠道中的产品
     getproductlist() {
@@ -1133,9 +1472,9 @@ export default {
       this.baseInfo.type = index;
       this.baseInfo.gameEngine = '';
       this.baseInfo.webCommand = '';
-      
-      if(index == 2){
-        this.baseInfo.chargeNpc=[{
+
+      if (index === 2) {
+        this.baseInfo.chargeNpc = [{
           looks: 12,
           map: '3',
           name: '充值使者',
@@ -1143,9 +1482,8 @@ export default {
           xAxis: 470,
           yAxis: 218
         }];
-
-      }else if(index == 1){
-        this.baseInfo.chargeNpc=[{
+      } else if (index === 1) {
+        this.baseInfo.chargeNpc = [{
           looks: 12,
           map: '3',
           name: '充值使者',
@@ -1160,16 +1498,12 @@ export default {
           type: true,
           xAxis: 332,
           yAxis: 264
-        } ];
-        
-      
+        }];
       }
-      
-      
     },
     tongQuChange(val) {
-      if (val == true) {
-        this.integralInfo.integralList =  [
+      if (val === true) {
+        this.integralInfo.integralList = [
           {
             name: '元宝消费',
             show: false,
@@ -1184,9 +1518,9 @@ export default {
             ratio: 1,
             type: 0
           }
-        ] ;// 积分详情;
-      }else{
-        this.integralInfo.integralList =  [
+        ];// 积分详情;
+      } else {
+        this.integralInfo.integralList = [
           {
             name: '元宝消费',
             show: false,
@@ -1201,9 +1535,8 @@ export default {
             ratio: 1,
             type: 0
           }
-        ] ;// 积分详情;
+        ];// 积分详情;
       }
-      
     },
     // 游戏币的切换选项
     gameMoneyChange() {
@@ -1687,6 +2020,7 @@ export default {
           } else if (
             this.redbag.redNPC[i].yAxis === '' ||
             this.redbag.redNPC[i].yAxis.toString().indexOf('.') > -1
+
           ) {
             this.collspa.show6 = true;
             let refName = 'redbagyAxis' + i;
@@ -1939,8 +2273,13 @@ export default {
             rechargeWay: this.baseInfo.chargetype,
             tongQuDir: this.baseInfo.tongQuDir,
             payDir: this.baseInfo.payDir,
-            dir: Array.isArray(this.baseInfo.dir) ? this.baseInfo.dir.join(',') : this.baseInfo.dir,
+            isShowGlod: this.baseInfo.isShowGlod,
+            dir: 'D',
             isDir: this.baseInfo.isDir,
+            safetyMoney: this.baseInfo.safetyMoney,
+            isTest: this.baseInfo.isTest,
+            betch: this.baseInfo.betch,
+            isBetch: this.baseInfo.isBetch,
             // 激励详情
             isContains: this.inciteInfo.checked,
             incentives: this.inciteInfo.giveList,
@@ -1997,12 +2336,189 @@ export default {
         .catch(() => {
           this.$router.push({ path: this.routerLink });
         });
+    },
+    getWxmbTemplates() {
+      this.$api.groupmange.getWxmbTemplates().then(res => {
+        if (res && res.status === 200) {
+          this.modelDrow = res.data || [];
+        }
+      });
+    },
+    getAllQrcodeTemplates() {
+      this.$api.groupmange.getAllQrcodeTemplates().then(res => {
+        if (res && res.status === 200) {
+          this.qrcodeTemplatesList = res.data || [];
+        }
+      });
+    },
+    getScanTemplates() {
+      this.$api.groupmange.getQrcodeTemplates().then(res => {
+        if (res && res.status === 200) {
+          this.scanModelDrow = res.data || [];
+        }
+      });
+    },
+    openQrcodeDialog(isEdit, template) {
+      this.qrcodeDialog.isEdit = isEdit;
+      if (isEdit) {
+        this.qrcodeDialog.form = { ...template };
+      } else {
+        this.qrcodeDialog.form = {
+          title: '',
+          resourceCode: '',
+          imageCode: '',
+          serial: 3,
+          xOffset: '',
+          yOffset: ''
+        };
+      }
+      this.qrcodeDialog.visible = true;
+    },
+    closeQrcodeDialog() {
+      this.qrcodeDialog.visible = false;
+      if (this.$refs.qrcodeForm) this.$refs.qrcodeForm.resetFields();
+    },
+    saveQrcodeTemplate() {
+      this.$refs.qrcodeForm.validate((valid) => {
+        if (!valid) return;
+        this.qrcodeDialog.loading = true;
+        const { isEdit, form } = this.qrcodeDialog;
+        this.$api.groupmange[isEdit ? 'editQrcodeTemplate' : 'addQrcodeTemplate'](form)
+          .then(() => {
+            this.getAllQrcodeTemplates();
+            this.qrcodeDialog.visible = false;
+            this.qrcodeDialog.loading = false;
+          })
+          .catch((err) => {
+            this.$messageError(err.message);
+            this.qrcodeDialog.loading = false;
+          });
+      });
+    },
+    openWxmbDialog(isEdit, row, gameType) {
+      this.getAllQrcodeTemplates();
+      this.wxmbDialog.visible = true;
+      this.wxmbDialog.isEdit = !!isEdit;
+      if (isEdit && row) {
+        this.wxmbDialog.form = { ...row };
+        if (!this.wxmbDialog.form.npcs || !this.wxmbDialog.form.npcs.length) {
+          this.wxmbDialog.form.npcs = [{ mapId: '', x: 0, y: 0, lookId: '' }];
+        }
+        if (!this.wxmbDialog.form.transferNpcs || !this.wxmbDialog.form.transferNpcs.length) {
+          this.wxmbDialog.form.transferNpcs = [{ mapId: '', x: 0, y: 0, lookId: '' }];
+        }
+      } else {
+        if (gameType === '传奇世界') {
+          this.wxmbDialog.form = {
+            name: '',
+            gameType: '传奇世界',
+            qrcodeType: '',
+            isForce: true,
+            mbMapId: '',
+            finishMapId: '',
+            machineVar: '',
+            openidVar: '',
+            wxVar: '',
+            transferNpcs: [{ mapId: '', x: 0, y: 0, lookId: '' }]
+          };
+        } else {
+          this.wxmbDialog.form = {
+            name: '',
+            gameType: '',
+            qrcodeType: '',
+            isForce: true,
+            mbMapId: '',
+            finishMapId: '',
+            machineVar: '',
+            openidVar: '',
+            wxVar: '',
+            transferNpcs: [{ mapId: '', x: 0, y: 0, lookId: '' }]
+          };
+        }
+      }
+      this.$nextTick(() => {
+        if (this.$refs.wxmbForm) this.$refs.wxmbForm.clearValidate();
+      });
+    },
+    closeWxmbDialog() {
+      this.wxmbDialog.visible = false;
+      if (this.$refs.wxmbForm) this.$refs.wxmbForm.resetFields();
+    },
+    saveWxmbTemplate() {
+      this.$refs.wxmbForm.validate((valid) => {
+        if (!valid) return;
+        this.wxmbDialog.loading = true;
+        const { isEdit, form } = this.wxmbDialog;
+        this.$api.groupmange[isEdit ? 'editWxmbTemplate' : 'addWxmbTemplate'](form)
+          .then(() => {
+            this.getWxmbTemplates();
+            this.wxmbDialog.visible = false;
+            this.wxmbDialog.loading = false;
+          })
+          .catch((err) => {
+            this.$messageError(err.message);
+            this.wxmbDialog.loading = false;
+          });
+      });
+    },
+    addNpc() {
+      if (!this.wxmbDialog.form.npcs) this.wxmbDialog.form.npcs = [];
+      this.wxmbDialog.form.npcs.push({ mapId: '', x: 0, y: 0, lookId: '' });
+    },
+    removeNpc(idx) {
+      if (this.wxmbDialog.form.npcs) this.wxmbDialog.form.npcs.splice(idx, 1);
+    },
+    addTransferNpc() {
+      if (!this.wxmbDialog.form.transferNpcs) this.wxmbDialog.form.transferNpcs = [];
+      this.wxmbDialog.form.transferNpcs.push({ mapId: '', x: 0, y: 0, lookId: '' });
+    },
+    removeTransferNpc(idx) {
+      if (this.wxmbDialog.form.transferNpcs) this.wxmbDialog.form.transferNpcs.splice(idx, 1);
     }
   },
+  // eslint-disable-next-line no-dupe-keys
   created() {
+    // 从URL参数获取type
+    const typeParam = this.$route.query.type;
+    if (typeParam !== undefined) {
+      this.baseInfo.type = parseInt(typeParam);
+      // 根据type初始化chargeNpc
+      if (this.baseInfo.type === 2) {
+        this.baseInfo.chargeNpc = [{
+          looks: 12,
+          map: '3',
+          name: '充值使者',
+          type: true,
+          xAxis: 470,
+          yAxis: 218
+        }];
+      } else if (this.baseInfo.type === 1) {
+        this.baseInfo.chargeNpc = [{
+          looks: 12,
+          map: '3',
+          name: '充值使者',
+          type: true,
+          xAxis: 343,
+          yAxis: 338
+        }, {
+          looks: 12,
+          map: '0',
+          name: '充值使者',
+          type: true,
+          xAxis: 332,
+          yAxis: 264
+        }];
+      } else {
+        this.baseInfo.chargeNpc = [];
+      }
+    }
     this.getproductlist();
     this.gameEngineDrow();
     this.getMimicharge();
+    this.getWxmbTemplates();
+    this.getScanTemplates();
+    this.getAllQrcodeTemplates();
+    this.refreshIntegralFiles();
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
@@ -2017,6 +2533,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
 .tablebox {
   width: 680px;
   table {
@@ -2042,7 +2561,7 @@ export default {
       font-size: 14px;
       color: #63aafa;
       float: left;
-      width: 95px;
+      width: 120px;
       height: 30px;
       line-height: 30px;
       text-align: right;
@@ -2240,5 +2759,13 @@ export default {
       }
     }
   }
+}
+.wxmb-dialog-scroll {
+  max-height: 500px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+.custom-select .el-select-dropdown__list {
+  max-height: 500px;
 }
 </style>

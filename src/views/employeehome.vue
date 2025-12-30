@@ -4,23 +4,24 @@
       <div class="userinfo gs_shadow">
         <div class="gs_title">用户信息</div>
         <div class="infobox">
-          <el-upload class="avatar-uploader" accept=".jpg,.jpeg,.png" action="" :http-request="() => { }"
+          <div class="avatar-uploader" accept=".jpg,.jpeg,.png" action="" :http-request="() => { }"
             :before-upload="fileSelect" :show-file-list="false">
-            <img v-if="userInfo.imgurl" :src="userInfo.imgurl" class="avatar">
-            <img v-else src="../assets/images/header.png" class="avatar">
-          </el-upload>
+            <!-- <img v-if="userInfo.imgurl" :src="userInfo.imgurl" class="avatar"> -->
+            <!-- <img v-else src="../assets/images/header.png" class="avatar"> -->
+             <img src="../assets/images/header.png" class="avatar">
+          </div>
           <!-- <div class="textbox">
             <p class="acout">{{ userInfo.userName }}
-             
+
             </p>
             <p class="text">{{ userInfo.id }}</p>
-            
+
           </div> -->
         </div>
-       
+
       </div>
       <div class="topinfo clearfix">
-        
+
         <div class="chargebox gs_shadow">
           <ul>
             <li>
@@ -64,7 +65,7 @@
         </div>
       </div>
     </div>
-   
+
     <div class="tablebox mgt15">
       <div class="gs_title">最新充值订单</div>
       <div class="gs_tablebox">
@@ -95,23 +96,24 @@
               <p style="height:18px;color:#999;">{{ scope.row.orderDate ? scope.row.orderDate.split(' ')[1] : '' }}</p>
             </template>
           </el-table-column>
-          <el-table-column prop="name" label="订单状态" width="100">
+          <el-table-column prop="name" label="订单状态" width="180">
             <template slot-scope="scope">
               <!-- <span v-if="scope.row.state===1" style="color:green;">成功</span> -->
-              <span v-if="scope.row.state === 1" class="stateColor" :class="'color' + scope.row.state">成功</span>
+              <el-button v-if="scope.row.state === 1" size="mini" type="success">成功</el-button>
               <el-tooltip v-else class="item" effect="dark" :content="waitTableFlag ? '请稍后点击下发' : '点击下发'"
                 placement="bottom">
-                <span class="stateColor" style="cursor:pointer;" :class="'color' + scope.row.state"
+                <el-button size="mini" type="warning"
                   @click="waitSent(scope.row.orderNumber, scope.row.partitionId, scope.$index)"><i
-                    :class="{ 'el-icon-loading': waitTableFlag && waitTableIndex === scope.$index }"></i>待发送</span>
+                    :class="{ 'el-icon-loading': waitTableFlag && waitTableIndex === scope.$index }"></i>待发送</el-button>
                 <!-- <span style="color:#f56c6c;cursor:pointer;" @click="waitSent(scope.row.orderNumber,scope.$index)"><i :class="{'el-icon-loading':waitTableFlag&&waitTableIndex===scope.$index}"></i>待发送</span> -->
               </el-tooltip>
+              <el-button size="mini" type="primary" plain @click="handOrder(scope.row.partitionId,scope.row.productId,scope.row.playerAccount)">补发</el-button>
             </template>
           </el-table-column>
         </el-table>
       </div>
     </div>
-  
+
   </div>
 </template>
 
@@ -205,6 +207,32 @@ export default {
     };
   },
   methods: {
+    // 手动补发
+    handOrder(partitionId, productId, playerAccount) {
+      this.$api.reorder
+        .handOrder({
+          partitionId: partitionId,
+          productId: productId,
+          playerAccount: playerAccount,
+          payAmount: 10,
+          Extra: 0,
+          isGiveAmount: false,
+          isRedPacketAmount: false
+        })
+        .then((data) => {
+          if (data.status === 200) {
+            this.$messageSuccess('补发成功！');
+            this.orderList();
+            this.chargeInfo();
+          } else {
+            this.$messageError(data.message);
+          }
+        })
+        .catch((err) => {
+          this.handFlag = false;
+          this.$messageError(err.message);
+        });
+    },
     // 获取用户图像
     getUserProfit() {
       this.$api.home
@@ -249,7 +277,7 @@ export default {
           this.$messageError(err.message);
         });
     },
-   
+
     // 获取充值信息
     chargeInfo() {
       this.$api.home
@@ -274,7 +302,7 @@ export default {
           this.$messageError(err.message);
         });
     },
-    
+
     // 最新充值订单列表
     orderList() {
       this.$api.home
@@ -285,6 +313,7 @@ export default {
         .then((data) => {
           if (data.status === 200) {
             this.tableData = data.data;
+            console.log(this.tableData);
           } else if (data.status === 204) {
             this.tableData = [];
           }
@@ -293,8 +322,7 @@ export default {
           this.$messageError(err.message);
         });
     },
-    
-  
+
     // 获取用户信息
     getUser() {
       this.$api.home
@@ -321,8 +349,7 @@ export default {
           this.$messageError(err.message);
         });
     },
-   
-    
+
     // 订单列表等待下发接口
     waitSendOrder(orderNum) {
       this.$api.home
@@ -380,7 +407,7 @@ export default {
                       this.$messageError('分区检测失败！');
                     }
                   });
-              }, 3000);
+              }, 500);
             }
           })
           .catch(() => {
@@ -407,26 +434,29 @@ export default {
           this.chargeInfoData.waitFlag = false;
           this.$messageError('下发超时,请检测网关！');
         });
-    },
-   
+    }
+
   },
   created() {
-    //this.getAccountInfo();
-    //this.cashWithdraw();
+    // this.getAccountInfo();
+    // this.cashWithdraw();
     this.chargeInfo();
-   // this.getNotice();
+    // this.getNotice();
     this.orderList();
-  //  this.servicePhone();
-   // this.getMessageCount();
+    //  this.servicePhone();
+    // this.getMessageCount();
     this.getUser();
     this.getUserProfit();
-   // this.checkpersonInfo();
-   // this.getMimicharge();
+    // this.checkpersonInfo();
+    // this.getMimicharge();
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
 .topinfo {
   float: right;
   width: 784px;

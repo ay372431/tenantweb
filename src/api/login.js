@@ -56,5 +56,43 @@ export default {
       method: 'get',
       params: params
     });
+  },
+  async CreateMathCode(params) {
+    return api({
+      url: '/api/Register/CreateMathCode',
+      method: 'get',
+      params: params
+    });
+  },
+  // 获取微信登录二维码
+  async getWeChatCode(params) {
+    return api({
+      url: '/api/weixin/GetBindQr',
+      method: 'get',
+      params: params
+    });
+  },
+  // 检测微信扫码登录状态
+  async checkWeChatLogin(params) {
+    return api({
+      url: '/api/weixin/CheckBindScan',
+      method: 'get',
+      params: params
+    });
+  },
+  // 获取登录二维码
+  async getLoginQrCode(params) {
+    return api({
+      url: '/api/Weixin/LoginQr',
+      method: 'get',
+      params: params
+    });
+  },
+  async checkBindWeixi(params) {
+    return api({
+      url: '/api/Weixin/CheckScan',
+      method: 'get',
+      params: params
+    });
   }
 };

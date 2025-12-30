@@ -25,7 +25,6 @@
             </div>
             <div class="tab-content" tabindex="1" v-if="isPwdLoginShow">
 
-
               <div class="form">
                 <div class="input">
                   <el-input placeholder="请输入登录帐号" v-model="form.username" :disabled="false"></el-input>
@@ -219,40 +218,40 @@
 </template>
 
 <script>
-import axios from "axios";
-import loginFooter from "../../components/loginFooter";
-import loginHeader from "../../components/loginHeader.vue";
-import Mgr from "../../assets/js/SecurityService";
-import api from "../../assets/js/apiRequestHandler";
-import { authUrl, url } from "../../assets/js/version.js";
-import wxlogin from "vue-wxlogin";
+import axios from 'axios';
+import loginFooter from '../../components/loginFooter';
+import loginHeader from '../../components/loginHeader.vue';
+import Mgr from '../../assets/js/SecurityService';
+import api from '../../assets/js/apiRequestHandler';
+import { authUrl, url } from '../../assets/js/version.js';
+import wxlogin from 'vue-wxlogin';
 export default {
   components: {
     loginFooter,
     loginHeader,
-    wxlogin,
+    wxlogin
   },
   data() {
     return {
       current: 1,
       form: {
-        username: "",
-        password: "",
-        code: "",
-        checkKey: "",
-        returnUrl: "",
+        username: '',
+        password: '',
+        code: '',
+        checkKey: '',
+        returnUrl: ''
       },
-      qqSignin: "",
-      wxQrSignin: "",
+      qqSignin: '',
+      wxQrSignin: '',
       isPwdLoginShow: true,
       isWxQrLoginShow: false,
-      wxqrimgurl: "",
-      wxvalidKey: "",
+      wxqrimgurl: '',
+      wxvalidKey: '',
       randomCode:
-        "data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==",
-      appid: "wx61e40b3869c98170",
-      scope: "snsapi_login",
-      redirect_uri: "http://111.67.201.26:5000/External/WeixinOpen",
+        'data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==',
+      appid: 'wx61e40b3869c98170',
+      scope: 'snsapi_login',
+      redirect_uri: 'http://111.67.201.26:5000/External/WeixinOpen'
     };
   },
   mounted() {
@@ -262,46 +261,46 @@ export default {
       .getReturnUrl()
       .then((url) => {
         // console.log(url);
-        let ReturnUrl = "";
+        let ReturnUrl = '';
         // 这里比较复杂，redirect_uri内url必须转义，其它参数则不需要，需要scope=
-        let index = url.indexOf("?");
+        let index = url.indexOf('?');
         let host = url.substring(0, index + 1);
-        host = host.substring(host.indexOf("/connect"));
-        let params = url.substring(index + 1).split("&");
+        host = host.substring(host.indexOf('/connect'));
+        let params = url.substring(index + 1).split('&');
         ReturnUrl =
           host +
           params
             .map((x) => {
-              if (x.indexOf("redirect_uri") === 0) {
+              if (x.indexOf('redirect_uri') === 0) {
                 // return 'redirect_uri=' + encodeURIComponent(x.substring(13));
-                return "redirect_uri=" + x.substring(13);
+                return 'redirect_uri=' + x.substring(13);
               }
               return x;
             })
-            .join("&");
+            .join('&');
         // console.log("ReturnUrl:" + ReturnUrl);
         this.returnUrl = ReturnUrl;
-        var extenalSource = url.replace(/^http(s)?:\/\/[^/]+/, "");
+        var extenalSource = url.replace(/^http(s)?:\/\/[^/]+/, '');
         // var extenalIndex = extenalSource.indexOf('http');
         var extenalUrl = encodeURIComponent(extenalSource);
         // console.log(extenalUrl);
         this.qqSignin =
-          authUrl + "/External/Challenge?provider=QQ&returnUrl=" + extenalUrl;
+          authUrl + '/External/Challenge?provider=QQ&returnUrl=' + extenalUrl;
         this.wxQrSignin =
           authUrl +
-          "/External/Challenge?provider=WeixinOpen&returnUrl=" +
+          '/External/Challenge?provider=WeixinOpen&returnUrl=' +
           extenalUrl;
       })
       .catch((err) => {
-        console.log("报错了：" + err);
+        console.log('报错了：' + err);
       });
   },
   methods: {
     async getQrcode() {
       let res = await api({
-        url: "/api/Register/CreateCode",
-        method: "get",
-        params: {},
+        url: '/api/Register/CreateCode',
+        method: 'get',
+        params: {}
       });
       this.randomCode = res.data.imageData;
       this.form.checkKey = res.data.validateKey;
@@ -312,12 +311,12 @@ export default {
       let ReturnUrl = this.returnUrl;
       axios.defaults.withCredentials = true;
       axios
-        .get(url + "api/Register/CheckLogin?code=" + this.wxvalidKey)
+        .get(url + 'api/Register/CheckLogin?code=' + this.wxvalidKey)
         .then((data) => {
           if (data.data) {
             clearInterval(this.timer);
             this.timer = null;
-            console.log("returnUrl:" + authUrl + ReturnUrl);
+            console.log('returnUrl:' + authUrl + ReturnUrl);
             window.location = authUrl + ReturnUrl;
           }
         })
@@ -334,8 +333,8 @@ export default {
     getwxqrImg() {
       let ReturnUrl = this.returnUrl;
       axios
-        .post(url + "api/Register/GetLoginImage", {
-          ReturnUrl: ReturnUrl,
+        .post(url + 'api/Register/GetLoginImage', {
+          ReturnUrl: ReturnUrl
         })
         .then((res) => {
           this.wxqrimgurl = res.data.imageData;
@@ -358,19 +357,19 @@ export default {
       let ReturnUrl = this.returnUrl;
       axios.defaults.withCredentials = true;
       axios
-        .post(authUrl + "/Account/loginApi", {
+        .post(authUrl + '/Account/loginApi', {
           ReturnUrl: ReturnUrl,
           Username: this.form.username,
           Password: this.form.password,
           RememberLogin: true,
           Code: this.form.code,
-          CheckKey: this.form.checkKey,
+          CheckKey: this.form.checkKey
         })
         .then((data) => {
           console.log(data.data);
-          if (data.data === "~/") {
+          if (data.data === '~/') {
             // this.$router.push({ path: '/404' });
-            this.$messageError("登录出错，请检查！");
+            this.$messageError('登录出错，请检查！');
           } else {
             // window.location = authUrl + data.data;
             window.location = authUrl + ReturnUrl;
@@ -380,7 +379,7 @@ export default {
           // 捕获错误并获取错误内容
           if (error.response) {
             // 请求已经发出，但服务器返回状态码不在 2xx 范围内
-            //console.log(error.response.data);
+            // console.log(error.response.data);
             this.$messageError(error.response.data.message);
             this.getQrcode();
           } else if (error.request) {
@@ -391,7 +390,6 @@ export default {
             console.log('Error', error.message);
           }
           console.log(error.config);
-
         });
     },
     tab(index) {
@@ -404,7 +402,7 @@ export default {
         this.isWxQrLoginShow = true;
         // this.getwxqrImg();
       }
-    },
+    }
   },
   beforeCreate() {
     let mgr = new Mgr();
@@ -413,18 +411,21 @@ export default {
         // console.log("signedIn", signIn);
         // this.signedIn = signIn;
         if (signIn) {
-          this.$router.push("/main");
+          this.$router.push('/main');
         }
       },
       (err) => {
         console.log(err);
       }
     );
-  },
+  }
 };
 </script>
 
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
 .social-signup-container {
   width: 220px;
   margin: 0px auto;

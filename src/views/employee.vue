@@ -14,11 +14,11 @@
     <div class="tablebox pdb15 pdt20">
       <div class="gs_tablebox">
         <el-table ref="moduleTable" size="mini" :data="subMerchant.tableData" border style="width: 100%" stripe>
-          <el-table-column prop="name" label="注册时间">
-            <template slot-scope="scope">
+          <el-table-column prop="joinDate" label="注册时间"  width="250">
+            <!-- <template slot-scope="scope">
               <p style="height:18px;">{{ scope.row.joinDate ? scope.row.joinDate.split(' ')[0] : '' }}</p>
               <p style="color:#999;height:18px;">{{ scope.row.joinDate ? scope.row.joinDate.split(' ')[1] : '' }}</p>
-            </template>
+            </template> -->
           </el-table-column>
           <el-table-column prop="nickName" label="昵称">
           </el-table-column>
@@ -35,10 +35,10 @@
             </template>
           </el-table-column>
 
-          <el-table-column label="操作" width="350">
+          <el-table-column label="操作" width="150">
             <template slot-scope="scope">
               <el-button-group>
-                <el-button size="mini" type="primary" @click="editgroup(scope.row.id, scope.row.name)">编辑分组</el-button>
+                <!-- <el-button size="mini" type="primary" @click="editgroup(scope.row.id, scope.row.name)">编辑分组</el-button> -->
                 <el-button size="mini" type="danger" @click.prevent="handleClose(scope.row.id)">删除</el-button>
               </el-button-group>
             </template>
@@ -53,7 +53,7 @@
       </div>
     </div>
     <!-- 添加游戏分组弹框 -->
-    <el-dialog :title="编辑员工分组" :visible.sync="teamdata.show" @close="teamInit" custom-class="gs_dialog" width="400px">
+    <el-dialog title="编辑员工分组" :visible.sync="teamdata.show" @close="teamInit" custom-class="gs_dialog" width="400px">
       <div class="opeartbox">
         <ul class="clearfix">
           <li hidden>
@@ -106,6 +106,19 @@
             </span>
           </li>
           <li>
+            <span class="tit">角色：</span>
+            <span class="txtbox">
+              <el-select v-model="subMerchant.dialog.roleId" placeholder="请选择角色" style="width: 200px">
+                <el-option
+                  v-for="role in roleOptions"
+                  :key="role.id"
+                  :label="role.name"
+                  :value="role.id"
+                />
+              </el-select>
+            </span>
+          </li>
+          <li>
             <span class='tit'>邮箱：</span>
             <span class="txtbox">
               <el-input size="small" v-model="subMerchant.dialog.mail"></el-input>
@@ -137,12 +150,13 @@
 export default {
   data() {
     return {
+      roleOptions: [], // 角色列表
       loading: false, // 推广下载loading
       loadingIndex: '', // 推广下载index
       groupName: '', // 分组名称
       pageIndex: 1, // 页码
       pageSize: 20, // 每页的条数
-      total: 0, // 总数据的条数      
+      total: 0, // 总数据的条数
 
       teamdata: {
         // 分组
@@ -151,7 +165,7 @@ export default {
         teamAll: false,
         teamlist: [],
         Options: [], // 分组的多选list
-        isIndeterminate: true,
+        isIndeterminate: true
       },
       subMerchant: {
         pageIndex: 1, // 页码
@@ -166,7 +180,7 @@ export default {
           password: '', // 登录密码
           mail: '', // 邮箱
           qq: '', // 联系qq
-          phone: '', // 联系电话
+          phone: '' // 联系电话
 
         }
       }
@@ -225,7 +239,8 @@ export default {
           password: this.subMerchant.dialog.password,
           email: this.subMerchant.dialog.mail,
           qqNumber: this.subMerchant.dialog.qq,
-          phoneNumber: this.subMerchant.dialog.phone
+          phoneNumber: this.subMerchant.dialog.phone,
+          roleId: this.subMerchant.dialog.roleId // 绑定下拉框选中的角色ID
 
         })
         .then((data) => {
@@ -251,7 +266,6 @@ export default {
     },
     // 获取用户分组
     groupsdrow() {
-
       this.$api.partinstall
         .groupsdrow()
         .then((data) => {
@@ -263,7 +277,6 @@ export default {
     },
     // 安装成功后，页面数据初始化
     teamInit() {
-
       // 分组
       this.teamdata.id = 0;
       this.teamdata.show = false;
@@ -291,8 +304,8 @@ export default {
     },
     // 添加分组
     addteam() {
-      if (JSON.stringify(this.teamdata.teamlist) === "[]") {
-        this.$messageError("请选择游戏分组！");
+      if (JSON.stringify(this.teamdata.teamlist) === '[]') {
+        this.$messageError('请选择游戏分组！');
         return true;
       }
       this.$api.employee
@@ -300,7 +313,7 @@ export default {
           id: this.teamdata.id,
           groups: this.teamdata.teamlist.map((item) => {
             return { id: item };
-          }),
+          })
         })
         .then((data) => {
           if (data.status === 200) {
@@ -360,15 +373,32 @@ export default {
     handleCurrentChange(data) {
       this.subMerchant.pageIndex = data;
       this.getlist();
+    },
+    // 获取角色列表
+    // ...existing code...
+    getRoleList() {
+      this.$api.employee
+        .getRole({ pageSize: 999 })
+        .then((data) => {
+          // 假设接口返回 { data: { data: [...] } }
+          this.roleOptions = Array.isArray(data.data.data) ? data.data.data : [];
+        })
+        .catch((err) => {
+          this.$messageError(err.message);
+        });
     }
   },
   created() {
     this.getlist();
     this.groupsdrow();
+    this.getRoleList();
   }
 };
 </script>
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
 .opeartbox {
   padding: 15px 20px 5px;
   background: #fff;

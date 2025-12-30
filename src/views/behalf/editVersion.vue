@@ -25,6 +25,7 @@
                 >
                   <el-option
                     v-for="(item, index) in 25"
+                    :key="index"
                     :value="index"
                     :label="index + '点'"
                   >
@@ -42,6 +43,7 @@
                 >
                   <el-option
                     v-for="(item, index) in 25"
+                    :key="index"
                     :value="index"
                     :label="index + '点'"
                   >

@@ -10,23 +10,24 @@
     <div class="gs_title" style="color: white;">模板克隆</div>
     <!-- 基本信息 -->
     <div class="bg_fff mgt10">
-      <div class="gs_title cursor bg_eee" @click="collspa.show1 = !collspa.show1">基本信息<span class="arrow" :class="{'active':collspa.show1}"></span></div>
+      <div class="gs_title cursor bg_eee" @click="collspa.show1 = !collspa.show1">基本信息<span class="arrow"
+          :class="{ 'active': collspa.show1 }"></span></div>
       <el-collapse-transition>
         <div v-show="collspa.show1" class="gs_listcontainer">
           <dl class="clearfix">
             <dt>模板类型：</dt>
             <dd>
               <ul class="areaContainer clearfix">
-                <li class="on" v-if="baseInfo.type===1">
+                <li class="on" v-if="baseInfo.type === 1">
                   <img src="../assets/images/index.png" alt="">
                 </li>
-                <li class="on" v-else-if="baseInfo.type===2">
+                <li class="on" v-else-if="baseInfo.type === 2">
                   <img src="../assets/images/cs.png" alt="">
                 </li>
-                <li class="on" v-else-if="baseInfo.type===3">
+                <li class="on" v-else-if="baseInfo.type === 3">
                   <img src="../assets/images/cq3.png" alt="">
                 </li>
-                <li class="on" v-else-if="baseInfo.type===4">
+                <li class="on" v-else-if="baseInfo.type === 4">
                   <img src="../assets/images/sql.png" alt="">
                 </li>
               </ul>
@@ -41,7 +42,16 @@
               <span class="line_tip">1-16个字，请勿输入特殊符号</span>
             </dd>
           </dl>
-          <dl class="clearfix" v-if="baseInfo.type===4">
+          <dl class="clearfix">
+            <dt>风控金额：</dt>
+            <dd>
+              <span class="inputbox">
+                <el-input size="small" ref="baseName" v-model="baseInfo.safetyMoney"></el-input>
+              </span>
+              <span class="line_tip">额外赠送金额，请输入数字，0为不赠送</span>
+            </dd>
+          </dl>
+          <dl class="clearfix" v-if="baseInfo.type === 4">
             <dt>游戏名称：</dt>
             <dd>
               <span class="inputbox">
@@ -50,20 +60,31 @@
               <span class="line_tip">1-16个字，请勿输入特殊符号</span>
             </dd>
           </dl>
-          <dl class="clearfix" v-if="baseInfo.type===1||baseInfo.type===2">
+          <dl class="clearfix" v-if="baseInfo.type === 1 || baseInfo.type === 2">
             <dt>游戏币：</dt>
             <dd>
               <span class="inputbox pdt5">
                 <el-radio-group v-model="baseInfo.gameMoney" @change="gameMoneyChange">
                   <el-radio :label="0">元宝</el-radio>
                   <el-radio :label="1">金币</el-radio>
-                  <el-radio :label="3" v-if="baseInfo.type===2">金元</el-radio>
+                  <el-radio :label="3" v-if="baseInfo.type === 2">金元</el-radio>
                   <el-radio :label="2">自定义</el-radio>
                 </el-radio-group>
               </span>
             </dd>
           </dl>
-          <dl class="clearfix" v-if="baseInfo.type===3||baseInfo.type===4||baseInfo.type===5">
+          <dl class="clearfix">
+            <dt>游戏中展示：</dt>
+            <dd>
+              <span class="inputbox pdt5">
+                <el-radio-group v-model="baseInfo.isShowGlod">
+                  <el-radio :label="0">是</el-radio>
+                  <el-radio :label="1">否</el-radio>
+                </el-radio-group>
+              </span>
+            </dd>
+          </dl>
+          <dl class="clearfix" v-if="baseInfo.type === 3 || baseInfo.type === 4 || baseInfo.type === 5">
             <dt>充值方式：</dt>
             <dd>
               <span class="inputbox pdt5">
@@ -76,21 +97,22 @@
             <dt>游戏币名称：</dt>
             <dd>
               <span class="inputbox inputColorBox">
-                <el-input size="small" :class="'inputColor'+baseInfo.color" ref="baseGameName" v-model="baseInfo.gameName"></el-input>
+                <el-input size="small" :class="'inputColor' + baseInfo.color" ref="baseGameName"
+                  v-model="baseInfo.gameName"></el-input>
               </span>
             </dd>
             <dd class="colorBox">
               <ul class="clearfix">
-                <li class="color0" :class="{'on':baseInfo.color === 0}" @click="baseInfo.color = 0"></li>
-                <li class="color1" :class="{'on':baseInfo.color === 1}" @click="baseInfo.color = 1"></li>
-                <li class="color3" :class="{'on':baseInfo.color === 3}" @click="baseInfo.color = 3"></li>
-                <li class="color2" :class="{'on':baseInfo.color === 2}" @click="baseInfo.color = 2"></li>
-                <li class="color4" :class="{'on':baseInfo.color === 4}" @click="baseInfo.color = 4"></li>
-                <li class="color5" :class="{'on':baseInfo.color === 5}" @click="baseInfo.color = 5"></li>
+                <li class="color0" :class="{ 'on': baseInfo.color === 0 }" @click="baseInfo.color = 0"></li>
+                <li class="color1" :class="{ 'on': baseInfo.color === 1 }" @click="baseInfo.color = 1"></li>
+                <li class="color3" :class="{ 'on': baseInfo.color === 3 }" @click="baseInfo.color = 3"></li>
+                <li class="color2" :class="{ 'on': baseInfo.color === 2 }" @click="baseInfo.color = 2"></li>
+                <li class="color4" :class="{ 'on': baseInfo.color === 4 }" @click="baseInfo.color = 4"></li>
+                <li class="color5" :class="{ 'on': baseInfo.color === 5 }" @click="baseInfo.color = 5"></li>
               </ul>
             </dd>
-            <dt v-if="baseInfo.type===1||baseInfo.type===2">脚本命令：</dt>
-            <dd v-if="baseInfo.type===1||baseInfo.type===2">
+            <dt v-if="baseInfo.type === 1 || baseInfo.type === 2">脚本命令：</dt>
+            <dd v-if="baseInfo.type === 1 || baseInfo.type === 2">
               <span class="inputbox">
                 <el-input size="small" ref="baseCommand" v-model="baseInfo.command"></el-input>
               </span>
@@ -105,7 +127,7 @@
               <span class="line_tip">1元人民币可以兑换的游戏币数量</span>
             </dd>
           </dl>
-          <dl class="clearfix" v-if="baseInfo.type===1||baseInfo.type===2">
+          <dl class="clearfix" v-if="baseInfo.type === 1 || baseInfo.type === 2">
             <dt>充值N P C：</dt>
             <dd>
               <span class="inputbox">
@@ -122,21 +144,24 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="(item,i) in baseInfo.chargeNpc" :key="'charge'+i">
+                      <tr v-for="(item, i) in baseInfo.chargeNpc" :key="'charge' + i">
                         <td>
-                          <el-input size="small" :ref="'baseChargeName'+i" v-model="item.name"></el-input>
+                          <el-input size="small" :ref="'baseChargeName' + i" v-model="item.name"></el-input>
                         </td>
                         <td>
-                          <el-input size="small" :ref="'baseChargeMap'+i" v-model="item.map"></el-input>
+                          <el-input size="small" :ref="'baseChargeMap' + i" v-model="item.map"></el-input>
                         </td>
                         <td>
-                          <el-input size="small" :ref="'baseChargeLooks'+i" v-model="item.looks" type="number"></el-input>
+                          <el-input size="small" :ref="'baseChargeLooks' + i" v-model="item.looks"
+                            type="number"></el-input>
                         </td>
                         <td>
-                          <el-input size="small" :ref="'baseChargexAxis'+i" v-model="item.xAxis" type="number"></el-input>
+                          <el-input size="small" :ref="'baseChargexAxis' + i" v-model="item.xAxis"
+                            type="number"></el-input>
                         </td>
                         <td>
-                          <el-input size="small" :ref="'baseChargeyAxis'+i" v-model="item.yAxis" type="number"></el-input>
+                          <el-input size="small" :ref="'baseChargeyAxis' + i" v-model="item.yAxis"
+                            type="number"></el-input>
                         </td>
                         <td>
                           <el-button size="small" type="danger" @click="delchargeNpc(i)">删除</el-button>
@@ -151,21 +176,19 @@
               </span>
             </dd>
           </dl>
-          <dl class="clearfix" v-if="baseInfo.type===1||baseInfo.type===2">
+          <dl class="clearfix" v-if="baseInfo.type === 1 || baseInfo.type === 2">
             <dt>游戏引擎：</dt>
             <dd>
               <span class="inputbox">
-                <el-select size="small" v-model="baseInfo.gameEngine" placeholder="请选择" @change="gameEngineChange">
+                <el-select size="small" popper-class="custom-select" v-model="baseInfo.gameEngine" ref="baseGameEngine" placeholder="请选择" @change="gameEngineChange">
                   <el-option v-for="(item,i) in gameEnginedrow" :key="'yq'+i" :label="item.engine" :value="item.engine">
-                  </el-option>
-                  <el-option label="自定义引擎" :value="''">
                   </el-option>
                 </el-select>
               </span>
               <span class="block_tip">其它游戏引擎请联系平台管理员进行添加</span>
             </dd>
           </dl>
-          <dl class="clearfix" v-if="baseInfo.type===1||baseInfo.type===2">
+          <dl class="clearfix" v-if="baseInfo.type === 1 || baseInfo.type === 2">
             <dt>浏览器指令：</dt>
             <dd>
               <span class="inputbox">
@@ -175,24 +198,66 @@
             </dd>
           </dl>
           <dl class="clearfix">
+            <dt>扫码支付：</dt>
+            <dd>
+              <span class="inputbox">
+                <el-checkbox v-model="baseInfo.isScan">开启游戏内扫码支付</el-checkbox>
+              </span>
+              <span class="line_tip">开启后玩家可以直接在游戏内扫码支付</span>
+            </dd>
+          </dl>
+          <dl class="clearfix" v-if="baseInfo.isScan">
+            <dt>模 板：</dt>
+            <dd>
+              <span class="inputbox">
+                <el-select style="width:250px;" size="small" ref="scanModel" v-model="scanModel" placeholder="请选择">
+                  <el-option v-for="(item) in scanModelDrow" :key="item.id" :label="item.title" :value="item.id">
+                  </el-option>
+                </el-select>
+                <el-button style="margin-left: 15px;" size="small" type="primary" @click="openQrcodeDialog(false)">创建二维码模版</el-button>
+              </span>
+            </dd>
+          </dl>
+          <dl class="clearfix">
+            <dt>微信密保：</dt>
+            <dd>
+              <span class="inputbox">
+                <el-checkbox v-model="baseInfo.isWxmb">开启微信密保功能</el-checkbox>
+              </span>
+            </dd>
+          </dl>
+          <dl class="clearfix" v-if="baseInfo.isWxmb">
+            <dt>模 板：</dt>
+            <dd>
+              <span class="inputbox">
+                <el-select style="width:250px;" size="small" ref="installModel" v-model="installModel"
+                  placeholder="请选择">
+                  <el-option v-for="(item) in modelDrow" :key="item.id" :label="item.name" :value="item.id">
+                  </el-option>
+                </el-select>
+                <el-button style="margin-left: 15px;" size="small" type="primary" @click="openWxmbDialog(false, null, '热血传奇')">创建微信密保模版</el-button>
+              </span>
+            </dd>
+          </dl>
+          <dl class="clearfix" style="display: none;">
             <dt>最小金额：</dt>
             <dd>
               <span class="inputbox">
                 <el-input size="small" ref="baseMinMoney" type="number" v-model="baseInfo.minMoney"></el-input>
               </span>
-              <span class="line_tip">单笔订单允许最小充值金额{{baseInfo.sysMinMoney}}</span>
+              <span class="line_tip">单笔订单允许最小充值金额{{ baseInfo.sysMinMoney }}</span>
             </dd>
           </dl>
-          <dl class="clearfix">
+          <dl class="clearfix" style="display: none;">
             <dt>最大金额：</dt>
             <dd>
               <span class="inputbox">
                 <el-input size="small" ref="baseMaxMoney" type="number" v-model="baseInfo.maxMoney"></el-input>
               </span>
-              <span class="line_tip">单笔订单允许最大充值金额{{baseInfo.sysMaxMoney}}</span>
+              <span class="line_tip">单笔订单允许最大充值金额{{ baseInfo.sysMaxMoney }}</span>
             </dd>
           </dl>
-          <dl class="clearfix">
+          <dl class="clearfix" style="display: none;">
             <dt>固定金额：</dt>
             <dd>
               <span class="inputbox">
@@ -213,7 +278,7 @@
               </span>
             </dd>
           </dl>
-          <dl class="clearfix">
+          <dl class="clearfix" v-if="baseInfo.isTongQu">
             <dt>目录类别：</dt>
             <dd>
               <span class="inputbox pdt5">
@@ -225,11 +290,40 @@
               </span>
             </dd>
           </dl>
-          <dl class="clearfix"  v-if="baseInfo.isTongQu">
+          <dl class="clearfix" v-if="baseInfo.isTongQu">
+            <dt>有测试区：</dt>
+            <dd>
+              <span class="inputbox pdt5">
+                <el-radio-group v-model="baseInfo.isTest">
+                  <el-radio :label="true">是</el-radio>
+                  <el-radio :label="false">否</el-radio>
+                </el-radio-group>
+              </span>
+            </dd>
+          </dl>
+          <dl class="clearfix" v-if="baseInfo.isTongQu && baseInfo.isTest">
+            <dt>额外补发：</dt>
+            <dd>
+              <span class="inputbox">
+                <el-input size="small" ref="baseGameMing" v-model="baseInfo.betch"></el-input>
+              </span>
+              <span class="line_tip">%</span>
+            </dd>
+          </dl>
+          <dl class="clearfix" v-if="baseInfo.isTongQu && baseInfo.isTest">
+            <dt>补发选项：</dt>
+            <dd>
+              <span class="inputbox">
+                <el-checkbox v-model="baseInfo.isBetch">额外补发只补发主货币</el-checkbox>
+              </span>
+            </dd>
+          </dl>
+          <dl class="clearfix" v-if="baseInfo.isTongQu">
             <dt>通区目录：</dt>
             <dd>
               <span class="inputbox">
-                <el-input size="small" @input="onChangeTongQuDir" ref="baseFixedMoney" type="text" v-model="baseInfo.tongQuDir"></el-input>
+                <el-input size="small" @input="onChangeTongQuDir" ref="baseFixedMoney" type="text"
+                  v-model="baseInfo.tongQuDir"></el-input>
               </span>
               <span class="line_tip">通区目录</span>
             </dd>
@@ -238,7 +332,8 @@
             <dt>充值脚本路径：</dt>
             <dd>
               <span class="inputbox">
-                <el-input size="small" @input="onChangeValue" ref="baseFixedMoney" type="text" v-model="baseInfo.payDir"></el-input>
+                <el-input size="small" @input="onChangeValue" ref="baseFixedMoney" type="text"
+                  v-model="baseInfo.payDir"></el-input>
               </span>
               <span class="line_tip" style="color: red;font-weight: bold;">平台充值脚本存放的文件夹名称，一个区配置双NPC时，该名称需不同</span>
             </dd>
@@ -247,8 +342,9 @@
       </el-collapse-transition>
     </div>
     <!-- 附加赠送 -->
-    <div class="bg_fff mgt5" v-if="baseInfo.type===1||baseInfo.type===2">
-      <div class="gs_title cursor bg_eee" @click="collspa.show3 = !collspa.show3">附加赠送<span class="arrow" :class="{'active':collspa.show3}"></span></div>
+    <div class="bg_fff mgt5" v-if="baseInfo.type === 1 || baseInfo.type === 2">
+      <div class="gs_title cursor bg_eee" @click="collspa.show3 = !collspa.show3">附加赠送<span class="arrow"
+          :class="{ 'active': collspa.show3 }"></span></div>
       <el-collapse-transition>
         <div v-show="collspa.show3" class="gs_listcontainer">
           <dl class="clearfix">
@@ -277,20 +373,21 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="(item,i) in attachInfo.attachList" :key="'attach'+i">
+                      <tr v-for="(item, i) in attachInfo.attachList" :key="'attach' + i">
                         <td>
-                          <el-input size="small" :ref="'attachName'+i" v-model="item.name"></el-input>
+                          <el-input size="small" :ref="'attachName' + i" v-model="item.name"></el-input>
                         </td>
-                        
+
                         <td>
-                          <el-input size="small" :ref="'attachCommand'+i" v-model="item.command"></el-input>
+                          <el-input size="small" :ref="'attachCommand' + i" v-model="item.command"></el-input>
                         </td>
                         <td>
-                          <el-input size="small" :ref="'attachRatio'+i" v-model="item.ratio" type="number"></el-input>
+                          <el-input size="small" :ref="'attachRatio' + i" v-model="item.ratio" type="number"></el-input>
                         </td>
                         <td>
                           <el-select size="small" v-model="item.type" placeholder="请选择" style="width:235px;">
-                            <el-option v-for="(item,i) in attachInfo.options" :key="'yq'+i" :label="item.label" :value="item.value">
+                            <el-option v-for="(item, i) in attachInfo.options" :key="'yq' + i" :label="item.label"
+                              :value="item.value">
                             </el-option>
                           </el-select>
                         </td>
@@ -318,7 +415,8 @@
     </div>
     <!-- 激励赠送 -->
     <div class="bg_fff mgt5">
-      <div class="gs_title cursor bg_eee" @click="collspa.show2 = !collspa.show2">激励赠送<span class="arrow" :class="{'active':collspa.show2}"></span></div>
+      <div class="gs_title cursor bg_eee" @click="collspa.show2 = !collspa.show2">激励赠送<span class="arrow"
+          :class="{ 'active': collspa.show2 }"></span></div>
       <el-collapse-transition>
         <div v-show="collspa.show2" class="gs_listcontainer">
           <dl class="clearfix">
@@ -347,23 +445,27 @@
                 <div class="tablebox" style="width: 550px;">
                   <table>
                     <tbody>
-                      <tr v-for="(item,i) in inciteInfo.giveList" :key="'incite'+i">
+                      <tr v-for="(item, i) in inciteInfo.giveList" :key="'incite' + i">
                         <td>
                           <span class="mgr5 basecolor">满：</span>
-                          <el-input style="display:inline-block;width: 150px;" :ref="'inciteAmount'+i" size="small" type="number" :disabled="!inciteInfo.checked" v-model="item.amount"></el-input> 元
+                          <el-input style="display:inline-block;width: 150px;" :ref="'inciteAmount' + i" size="small"
+                            type="number" :disabled="!inciteInfo.checked" v-model="item.amount"></el-input> 元
                         </td>
                         <td>
                           <span class="mgr5 basecolor">赠送：</span>
-                          <el-input style="display:inline-block;width: 150px;" :ref="'inciteGiveAmount'+i" size="small" type="number" :disabled="!inciteInfo.checked" v-model="item.giveAmount"></el-input> 元
+                          <el-input style="display:inline-block;width: 150px;" :ref="'inciteGiveAmount' + i" size="small"
+                            type="number" :disabled="!inciteInfo.checked" v-model="item.giveAmount"></el-input> 元
                         </td>
                         <td>
-                          <el-button size="small" type="danger" :disabled="!inciteInfo.checked" @click="delIncite(i)">删除</el-button>
+                          <el-button size="small" type="danger" :disabled="!inciteInfo.checked"
+                            @click="delIncite(i)">删除</el-button>
                         </td>
                       </tr>
                     </tbody>
                   </table>
                   <p class="pdl10 mgt5">
-                    <el-button size="small" type="primary" :disabled="!inciteInfo.checked" @click="addIncite">添加</el-button>
+                    <el-button size="small" type="primary" :disabled="!inciteInfo.checked"
+                      @click="addIncite">添加</el-button>
                   </p>
                 </div>
               </span>
@@ -373,8 +475,9 @@
       </el-collapse-transition>
     </div>
     <!-- 积分赠送 -->
-    <div class="bg_fff mgt5" v-if="baseInfo.type===1||baseInfo.type===2">
-      <div class="gs_title cursor bg_eee" @click="collspa.show4 = !collspa.show4">积分赠送<span class="arrow" :class="{'active':collspa.show4}"></span></div>
+    <div class="bg_fff mgt5" v-if="baseInfo.type === 1 || baseInfo.type === 2">
+      <div class="gs_title cursor bg_eee" @click="collspa.show4 = !collspa.show4">积分赠送<span class="arrow"
+          :class="{ 'active': collspa.show4 }"></span></div>
       <el-collapse-transition>
         <div v-show="collspa.show4" class="gs_listcontainer">
           <dl class="clearfix">
@@ -402,26 +505,29 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="(item,i) in integralInfo.integralList" :key="'integral'+i">
+                      <tr v-for="(item, i) in integralInfo.integralList" :key="'integral' + i">
                         <td>
-                          <el-input size="small" style="width:100px;" :ref="'integralName'+i" @input="onChangeIntegralName(i)" v-model="item.name"></el-input>
+                          <el-input size="small" style="width:100px;" :ref="'integralName' + i"
+                            @input="onChangeIntegralName(i)" v-model="item.name"></el-input>
                         </td>
                         <td>
-                          <el-input size="small" style="width:300px;" :ref="'integralFile'+i" v-model="item.file"></el-input>
+                          <el-input :disabled="true" size="small" style="width:300px;" :ref="'integralFile' + i"
+                            v-model="item.file"></el-input>
                         </td>
                         <td>
-                          <el-input size="small" type="number" :ref="'integralRatio'+i" v-model="item.ratio"></el-input>
+                          <el-input size="small" type="number" :ref="'integralRatio' + i" v-model="item.ratio"></el-input>
                         </td>
                         <td>
                           <el-select size="small" v-model="item.type" placeholder="请选择" style="width:185px;">
-                            <el-option v-for="(li,i) in attachInfo.options" :key="'yq'+i" :label="li.label" :value="li.value">
+                            <el-option v-for="(li, i) in attachInfo.options" :key="'yq' + i" :label="li.label"
+                              :value="li.value">
                             </el-option>
                           </el-select>
                         </td>
                         <td class="tc">
                           <el-checkbox v-model="item.show">游戏</el-checkbox>
                         </td>
-                         <td class="tc">
+                        <td class="tc">
                           <el-checkbox v-model="item.isShow">网站</el-checkbox>
                         </td>
                         <td>
@@ -441,8 +547,9 @@
       </el-collapse-transition>
     </div>
     <!-- 装备赠送 -->
-    <div class="bg_fff mgt5" v-if="baseInfo.type===1||baseInfo.type===2">
-      <div class="gs_title cursor bg_eee" @click="collspa.show5 = !collspa.show5">装备赠送<span class="arrow" :class="{'active':collspa.show5}"></span></div>
+    <div class="bg_fff mgt5" v-if="baseInfo.type === 1 || baseInfo.type === 2">
+      <div class="gs_title cursor bg_eee" @click="collspa.show5 = !collspa.show5">装备赠送<span class="arrow"
+          :class="{ 'active': collspa.show5 }"></span></div>
       <el-collapse-transition>
         <div v-show="collspa.show5" class="gs_listcontainer">
           <dl class="clearfix">
@@ -495,16 +602,17 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="(item,i) in equipmentInfo.list" :key="'equip'+i">
+                      <tr v-for="(item, i) in equipmentInfo.list" :key="'equip' + i">
                         <td style="color: #63aafa;">满：</td>
                         <td>
-                          <el-input size="small" type="number" :ref="'equipmentAmount'+i" v-model="item.amount"></el-input>
+                          <el-input size="small" type="number" :ref="'equipmentAmount' + i"
+                            v-model="item.amount"></el-input>
                         </td>
                         <td>
-                          <el-input size="small" :ref="'equipmentCommand'+i" v-model="item.command"></el-input>
+                          <el-input size="small" :ref="'equipmentCommand' + i" v-model="item.command"></el-input>
                         </td>
                         <td>
-                          <el-input size="small" :ref="'equipmentName'+i" v-model="item.name"></el-input>
+                          <el-input size="small" :ref="'equipmentName' + i" v-model="item.name"></el-input>
                         </td>
                         <td>
                           <el-button size="small" type="danger" @click="delequip(i)">删除</el-button>
@@ -512,7 +620,9 @@
                       </tr>
                     </tbody>
                   </table>
-                  <p v-if="equipmentInfo.list.length>0" style="margin-left:10px;margin-top:10px;color:red;font-size:13px;">!温馨提示:如需赠送多个装备,装备之间请用"+"分隔.例如:回城券*5+传送戒指 (注：*后为赠送数量,默认值为1)</p>
+                  <p v-if="equipmentInfo.list.length > 0"
+                    style="margin-left:10px;margin-top:10px;color:red;font-size:13px;">
+                    !温馨提示:如需赠送多个装备,装备之间请用"+"分隔.例如:回城券*5+传送戒指 (注：*后为赠送数量,默认值为1)</p>
                   <p class="pdl10 mgt5">
                     <el-button size="small" type="primary" @click="addequip">添加</el-button>
                   </p>
@@ -524,8 +634,9 @@
       </el-collapse-transition>
     </div>
     <!-- 红包赠送 -->
-    <div class="bg_fff mgt5" v-if="baseInfo.type===1||baseInfo.type===2">
-      <div class="gs_title cursor bg_eee" @click="collspa.show6 = !collspa.show6">红包赠送<span class="arrow" :class="{'active':collspa.show6}"></span></div>
+    <div class="bg_fff mgt5" v-if="baseInfo.type === 1 || baseInfo.type === 2">
+      <div class="gs_title cursor bg_eee" @click="collspa.show6 = !collspa.show6">红包赠送<span class="arrow"
+          :class="{ 'active': collspa.show6 }"></span></div>
       <el-collapse-transition>
         <div v-show="collspa.show6" class="gs_listcontainer">
           <dl class="clearfix">
@@ -563,21 +674,21 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="(item,i) in redbag.redNPC" :key="'redbag'+i">
+                      <tr v-for="(item, i) in redbag.redNPC" :key="'redbag' + i">
                         <td>
-                          <el-input size="small" :ref="'redbagName'+i" v-model="item.name"></el-input>
+                          <el-input size="small" :ref="'redbagName' + i" v-model="item.name"></el-input>
                         </td>
                         <td>
-                          <el-input size="small" :ref="'redbagMap'+i" v-model="item.map"></el-input>
+                          <el-input size="small" :ref="'redbagMap' + i" v-model="item.map"></el-input>
                         </td>
                         <td>
-                          <el-input size="small" :ref="'redbagLooks'+i" v-model="item.looks" type="number"></el-input>
+                          <el-input size="small" :ref="'redbagLooks' + i" v-model="item.looks" type="number"></el-input>
                         </td>
                         <td>
-                          <el-input size="small" :ref="'redbagxAxis'+i" v-model="item.xAxis" type="number"></el-input>
+                          <el-input size="small" :ref="'redbagxAxis' + i" v-model="item.xAxis" type="number"></el-input>
                         </td>
                         <td>
-                          <el-input size="small" :ref="'redbagyAxis'+i" v-model="item.yAxis" type="number"></el-input>
+                          <el-input size="small" :ref="'redbagyAxis' + i" v-model="item.yAxis" type="number"></el-input>
                         </td>
                         <td>
                           <el-button size="small" type="danger" @click="delredNpc(i)">删除</el-button>
@@ -599,15 +710,18 @@
                 <div class="tablebox" style="width: 700px;">
                   <table>
                     <tbody>
-                      <tr v-for="(item,i) in redbag.redDetail" :key="'red'+i">
+                      <tr v-for="(item, i) in redbag.redDetail" :key="'red' + i">
                         <td>
                           <span class="mgr5 basecolor">满：</span>
-                          <el-input style="display:inline-block;width: 150px;" type="number" :ref="'redbagAmount'+i" size="small" v-model="item.amount"></el-input> 元
+                          <el-input style="display:inline-block;width: 150px;" type="number" :ref="'redbagAmount' + i"
+                            size="small" v-model="item.amount"></el-input> 元
                         </td>
                         <td>
                           <span class="mgr5 basecolor">随机赠送：</span>
-                          <el-input style="display:inline-block;width: 70px;" type="number" :ref="'redbagStartAmount'+i" size="small" v-model="item.startAmount"></el-input> --
-                          <el-input style="display:inline-block;width: 70px;" type="number" :ref="'redbagEndAmount'+i" size="small" v-model="item.endAmount"></el-input> 元
+                          <el-input style="display:inline-block;width: 70px;" type="number" :ref="'redbagStartAmount' + i"
+                            size="small" v-model="item.startAmount"></el-input> --
+                          <el-input style="display:inline-block;width: 70px;" type="number" :ref="'redbagEndAmount' + i"
+                            size="small" v-model="item.endAmount"></el-input> 元
                         </td>
                         <td>
                           <el-button size="small" type="danger" @click="delred(i)">删除</el-button>
@@ -627,7 +741,8 @@
     </div>
     <!-- 充值渠道 -->
     <div class="bg_fff mgt5">
-      <div class="gs_title cursor bg_eee" @click="collspa.show7 = !collspa.show7">渠道赠送<span class="arrow" :class="{'active':collspa.show7}"></span></div>
+      <div class="gs_title cursor bg_eee" @click="collspa.show7 = !collspa.show7">渠道赠送<span class="arrow"
+          :class="{ 'active': collspa.show7 }"></span></div>
       <el-collapse-transition>
         <div v-show="collspa.show7" class="gs_listcontainer">
           <dl class="clearfix">
@@ -660,10 +775,11 @@
             <dd>
               <span class="inputbox">
                 <ul class="chargelist">
-                  <li class="clearfix" v-for="(item,i) in chargeInfo.redNPC" :key="'charge'+i">
-                    <span class="tit">{{item.productName}} :</span>
+                  <li class="clearfix" v-for="(item, i) in chargeInfo.redNPC" :key="'charge' + i">
+                    <span class="tit">{{ item.productName }} :</span>
                     <span class="inp">
-                      <el-input size="small" type="number" :ref="'chargeRate'+i" v-model="item.rate" @input="fixedInp(item.rate)"></el-input>
+                      <el-input size="small" type="number" :ref="'chargeRate' + i" v-model="item.rate"
+                        @input="fixedInp(item.rate)"></el-input>
                     </span>
                     <span style="height:32px;line-height:32px;margin-left: 5px;">%</span>
                   </li>
@@ -673,15 +789,18 @@
           </dl>
           <dl class="clearfix" v-else>
             <dd>
-              <div class="accountList clearfix" v-for="(item,i) in chargeInfo.redNPC" :key="'money'+i">
-                <span class="tit">{{item.productName}} :</span>
+              <div class="accountList clearfix" v-for="(item, i) in chargeInfo.redNPC" :key="'money' + i">
+                <span class="tit">{{ item.productName }} :</span>
                 <div class="listbox">
                   <table>
                     <tr>
-                      <td :class="{'firstd':k===0}" v-for="(li,k) in item.amountRate" :key="'rate'+k">
-                        <p>{{k===0?'不足':'满'}}<el-input class="inp" size="small" type="number" :ref="'charge'+i+'amount'+k" v-model="li.amount" @input="moneyInp(k,li.amount)"></el-input>元</p>
+                      <td :class="{ 'firstd': k === 0 }" v-for="(li, k) in item.amountRate" :key="'rate' + k">
+                        <p>{{ k === 0 ? '不足' : '满' }}<el-input class="inp" size="small" type="number"
+                            :ref="'charge' + i + 'amount' + k" v-model="li.amount" @input="moneyInp(k, li.amount)"></el-input>元
+                        </p>
                         <p class="mgt5">
-                          <el-input class="inp secondinp" size="small" type="number" :ref="'charge'+i+'rate'+k" v-model="li.rate" @input="rateInp(k,li.rate)"></el-input>%
+                          <el-input class="inp secondinp" size="small" type="number" :ref="'charge' + i + 'rate' + k"
+                            v-model="li.rate" @input="rateInp(k, li.rate)"></el-input>%
                         </p>
                       </td>
                     </tr>
@@ -689,7 +808,8 @@
                 </div>
                 <div class="btnbox">
                   <el-button size="mini" type="danger" @click="deleteItem(i)">删除</el-button>
-                  <el-button style="margin-left:0;margin-top:5px;" size="mini" type="primary" @click="addItem(i)">添加</el-button>
+                  <el-button style="margin-left:0;margin-top:5px;" size="mini" type="primary"
+                    @click="addItem(i)">添加</el-button>
                 </div>
               </div>
             </dd>
@@ -700,6 +820,219 @@
     <p class="tc mgt15">
       <el-button type="primary" @click="submit" :loading="!editFlag">保存</el-button>
     </p>
+    <!-- 新增/编辑二维码模版弹窗 -->
+    <el-dialog :title="qrcodeDialog.isEdit ? '编辑二维码模版' : '新增二维码模版'" :visible.sync="qrcodeDialog.visible" width="480px"
+      :close-on-click-modal="false" @close="closeQrcodeDialog">
+      <el-form ref="qrcodeForm" :model="qrcodeDialog.form" :rules="qrcodeDialog.rules" label-width="80px" size="small"
+        style="padding-right:12px;" @submit.native.prevent="saveQrcodeTemplate">
+        <el-form-item label="标题" prop="title">
+          <el-input v-model="qrcodeDialog.form.title" placeholder="请输入标题" maxlength="30" />
+        </el-form-item>
+        <el-form-item label="Wii编号" prop="resourceCode">
+          <el-input v-model="qrcodeDialog.form.resourceCode" placeholder="请输入WII编号" maxlength="20" />
+        </el-form-item>
+        <el-form-item label="图片序号" prop="imageCode">
+          <el-input v-model="qrcodeDialog.form.imageCode" placeholder="请输入图片序号" maxlength="20" />
+        </el-form-item>
+        <el-form-item label="尺寸" prop="serial">
+          <el-select v-model="qrcodeDialog.form.serial" placeholder="请选择" style="width:100%;">
+            <el-option v-for="n in [3, 4, 5, 6]" :key="n" :label="n" :value="n" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="坐标X" prop="xOffset">
+          <el-input v-model="qrcodeDialog.form.xOffset" placeholder="请输入坐标X" maxlength="10" />
+        </el-form-item>
+        <el-form-item label="坐标Y" prop="yOffset">
+          <el-input v-model="qrcodeDialog.form.yOffset" placeholder="请输入坐标Y" maxlength="10" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="closeQrcodeDialog">取消</el-button>
+        <el-button type="danger" :loading="qrcodeDialog.loading" @click="saveQrcodeTemplate">确定</el-button>
+      </div>
+    </el-dialog>
+    <!-- 新增/编辑微信密保模版弹窗 -->
+    <el-dialog :title="wxmbDialog.isEdit ? '编辑微信密保模版' : '新增微信密保模版'" :visible.sync="wxmbDialog.visible" width="900px"
+      :close-on-click-modal="false" @close="closeWxmbDialog">
+      <div class="wxmb-dialog-scroll">
+        <el-form ref="wxmbForm" :model="wxmbDialog.form" :rules="wxmbDialog.rules" label-width="160px" size="small"
+          style="padding-right:12px;" @submit.native.prevent="saveWxmbTemplate">
+          <!-- 这里粘贴你在 wechat.vue 里用的微信密保模版表单内容即可 -->
+          <!-- 基本信息 -->
+          <!-- 基本信息 -->
+          <el-form-item label="模版名称" prop="name">
+            <el-input v-model="wxmbDialog.form.name" maxlength="30" />
+          </el-form-item>
+          <el-form-item label="二维码模版" prop="qrcodeType" style="margin-top:18px;">
+            <el-select v-model="wxmbDialog.form.qrcodeType" placeholder="请选择二维码模版">
+              <!-- <el-option label="BLUE密保" value="BLUE密保"/>
+                <el-option label="GOM/GEE密保" value="GOM/GEE密保"/> -->
+              <el-option v-for="(item, i) in qrcodeTemplatesList" :key="i" :label="item.title"
+                :value="item.title"></el-option>
+            </el-select>
+          </el-form-item>
+          <!-- 传奇世界专属：补丁下载 -->
+          <el-form-item v-if="wxmbDialog.form.gameType === '传奇世界'" label="补丁下载" prop="patchType">
+            <div class="qrcode-tags">
+              <el-tag style="margin-left:8px;cursor: pointer;font-size: 14px;"><a
+                  href="http://localhost:5003/script/七星服务Gom.zip"><i class="el-icon-paperclip"></i>4x4</a></el-tag>
+              <el-tag style="margin-left:4px;cursor: pointer;font-size: 14px;"><a
+                  href="http://localhost:5003/script/七星服务Gee.zip" target="_blank"><i
+                    class="el-icon-paperclip"></i>8x8</a></el-tag>
+            </div>
+          </el-form-item>
+          <el-divider content-position="left">微信密保</el-divider>
+          <el-form-item label="是否进行强制验证" prop="isForce">
+            <el-radio-group v-model="wxmbDialog.form.isForce">
+              <el-radio :label="true">强制验证</el-radio>
+              <el-radio :label="false">不强制验证</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="验证密保地图ID" prop="mbMapId">
+            <el-input v-model="wxmbDialog.form.mbMapId" />
+          </el-form-item>
+          <el-form-item label="验证完成传送地图ID" prop="finishMapId" style="margin-top:18px;">
+            <el-input v-model="wxmbDialog.form.finishMapId" />
+          </el-form-item>
+          <!-- 热血传奇专属：密保变量定义 -->
+          <template v-if="wxmbDialog.form.gameType !== '传奇世界'">
+            <el-divider content-position="left">密保变量定义</el-divider>
+            <el-row :gutter="10">
+              <el-col :span="8">
+                <el-form-item label="机器码" prop="machineVar">
+                  <el-input v-model="wxmbDialog.form.machineVar" placeholder="如：T46" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="微信openid" prop="openidVar">
+                  <el-input v-model="wxmbDialog.form.openidVar" placeholder="如：T47" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="微信保留ID" prop="wxVar">
+                  <el-input v-model="wxmbDialog.form.wxVar" placeholder="如：T48" />
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </template>
+          <el-divider content-position="left">密保NPC</el-divider>
+          <el-form-item label="NPC名称" prop="npcName">
+            <el-input v-model="wxmbDialog.form.npcName" placeholder="如：游戏密保认证" />
+          </el-form-item>
+          <el-form-item style="margin-top:18px;">
+            <el-row :gutter="10">
+              <el-col :span="6"><strong>地图ID</strong></el-col>
+              <el-col :span="4"><strong>x坐标</strong></el-col>
+              <el-col :span="4"><strong>y坐标</strong></el-col>
+              <el-col :span="6"><strong>外观ID</strong></el-col>
+              <el-col :span="4"><strong>操作</strong></el-col>
+            </el-row>
+            <div v-for="(npc, idx) in wxmbDialog.form.npcs" :key="idx" style="margin-bottom:8px;">
+              <el-row :gutter="10">
+                <el-col :span="6">
+                  <el-input v-model="npc.mapId" placeholder="地图ID" />
+                </el-col>
+                <el-col :span="4">
+                  <el-input v-model="npc.x" placeholder="x坐标" />
+                </el-col>
+                <el-col :span="4">
+                  <el-input v-model="npc.y" placeholder="y坐标" />
+                </el-col>
+                <el-col :span="6">
+                  <el-input v-model="npc.lookId" placeholder="外观ID" />
+                </el-col>
+                <el-col :span="4">
+                  <el-button type="danger" size="mini" @click="removeNpc(idx)">删除</el-button>
+                </el-col>
+              </el-row>
+            </div>
+            <el-button type="text" @click="addNpc">+ 添加一行</el-button>
+          </el-form-item>
+          <el-divider content-position="left">游戏转区</el-divider>
+          <el-form-item>
+            <el-checkbox v-model="wxmbDialog.form.transferEnable">开启转区功能</el-checkbox>
+          </el-form-item>
+          <template v-if="wxmbDialog.form.transferEnable">
+            <el-form-item label="可转区最低金额" prop="transferMinAmount">
+              <el-input v-model="wxmbDialog.form.transferMinAmount" placeholder="请输入最低金额" style="width: 200px;">
+                <template slot="append">元</template>
+              </el-input>
+              <span class="line_tip">玩家最低要充多少钱才可进行转区</span>
+            </el-form-item>
+            <!-- 热血传奇专属：转区变量定义 -->
+            <template v-if="wxmbDialog.form.gameType !== '传奇世界'">
+              <el-divider content-position="left">转区变量定义</el-divider>
+              <el-row :gutter="10">
+                <el-col :span="10">
+                  <el-form-item label="充值转区点" prop="transferRechargeVar">
+                    <el-input v-model="wxmbDialog.form.transferRechargeVar" placeholder="如：U46" />
+                  </el-form-item>
+                </el-col>
+                <el-col :span="10">
+                  <el-form-item label="已用转区点" prop="transferUsedVar">
+                    <el-input v-model="wxmbDialog.form.transferUsedVar" placeholder="如：U47" />
+                  </el-form-item>
+                </el-col>
+                <el-col :span="10">
+                  <el-form-item label="角色是否已转区" prop="transferFlagVar">
+                    <el-input v-model="wxmbDialog.form.transferFlagVar" placeholder="如：U48" />
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row :gutter="10">
+                <el-col :span="10">
+                  <el-form-item label="通区货币" prop="transferCoinVar">
+                    <el-input v-model="wxmbDialog.form.transferCoinVar" placeholder="如：U49" />
+                  </el-form-item>
+                </el-col>
+                <el-col :span="10">
+                  <el-form-item label="通区货币名称" prop="transferCoinName">
+                    <el-input v-model="wxmbDialog.form.transferCoinName" placeholder="如：游戏币" />
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </template>
+            <el-divider content-position="left">转区NPC</el-divider>
+            <el-form-item label="NPC名称" prop="transferNpcName">
+              <el-input v-model="wxmbDialog.form.transferNpcName" placeholder="如：自助转区服务" />
+            </el-form-item>
+            <el-form-item style="margin-top:18px;">
+              <el-row :gutter="10">
+                <el-col :span="6"><strong>地图ID</strong></el-col>
+                <el-col :span="4"><strong>x坐标</strong></el-col>
+                <el-col :span="4"><strong>y坐标</strong></el-col>
+                <el-col :span="6"><strong>外观ID</strong></el-col>
+                <el-col :span="4"><strong>操作</strong></el-col>
+              </el-row>
+              <div v-for="(npc, idx) in wxmbDialog.form.transferNpcs" :key="idx" style="margin-bottom:8px;">
+                <el-row :gutter="10">
+                  <el-col :span="6">
+                    <el-input v-model="npc.mapId" placeholder="地图ID" />
+                  </el-col>
+                  <el-col :span="4">
+                    <el-input v-model="npc.x" placeholder="x坐标" />
+                  </el-col>
+                  <el-col :span="4">
+                    <el-input v-model="npc.y" placeholder="y坐标" />
+                  </el-col>
+                  <el-col :span="6">
+                    <el-input v-model="npc.lookId" placeholder="外观ID" />
+                  </el-col>
+                  <el-col :span="4">
+                    <el-button type="danger" size="mini" @click="removeTransferNpc(idx)">删除</el-button>
+                  </el-col>
+                </el-row>
+              </div>
+              <el-button type="text" @click="addTransferNpc">+ 添加一行</el-button>
+            </el-form-item>
+          </template>
+        </el-form>
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="closeWxmbDialog">取消</el-button>
+        <el-button type="danger" :loading="wxmbDialog.loading" @click="saveWxmbTemplate">确定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -718,6 +1051,11 @@ export default {
         show6: false,
         show7: false
       },
+      modelDrow: [], // 微信密保模版下拉
+      scanModelDrow: [], // 扫码支付模版下拉
+      scanModel: '', // 扫码模版
+      installModel: '', // 微信密保模版
+      qrcodeTemplatesList: [], // 获取二维码模版，不分页
       baseInfo: {
         // 基本信息
         type: 1, // 模板类型
@@ -733,19 +1071,24 @@ export default {
         gameEngine: '', // 游戏引擎
         gameEnginelist: [], // 游戏引擎下拉
         // gameEnginedrow: gameEngine, // 游戏引擎下拉
+        isShowGlod: 0, // 是否显示游戏币
         webCommand: '', // 浏览器指令
         minMoney: '', // 最小金额
         maxMoney: '', // 最大金额
         fixedMoney: '', // 固定
-        isTongQu: false,//是否通区
+        isTongQu: false, // 是否通区
         tongQuDir: '', // 通区目录
-        payDir:'',//充值脚本路径
-        dir: [],//充值脚本路径盘符
+        payDir: '', // 充值脚本路径
+        dir: [], // 充值脚本路径盘符
         DirType: false, // 领取路径
         sysMinMoney: 0, // 系统最小金额
         sysMaxMoney: 0, // 系统最大金额
         isDir: 0, // 目录类别   0同盘符  1不同盘符
-        giveOptionState: 0 // 计算选项  0按充值金额计算  1充值金额+渠道赠送
+        giveOptionState: 0, // 计算选项  0按充值金额计算  1充值金额+渠道赠送
+        safetyMoney: 0, // 安全金额
+        isTest: true, // 是否测试服
+        betch: 1, // 补发比例
+        isBetch: false // 是否开启额外补发
       },
       inciteInfo: {
         // 激励详情
@@ -807,6 +1150,109 @@ export default {
         select: 0, // 选项
         oneSet: false, // 一键设置
         redNPC: [] // 赠送详情
+      },
+      dialog: {
+        show: false,
+        checked: 1,
+        id: '',
+        ids: [] // 新增
+      },
+      qrcodeDialog: {
+        visible: false,
+        isEdit: false,
+        loading: false,
+        form: {
+          title: '',
+          resourceCode: '',
+          imageCode: '',
+          serial: 3,
+          xOffset: '',
+          yOffset: ''
+        },
+        rules: {
+          title: [
+            { required: true, message: '请输入标题', trigger: 'blur' },
+            { max: 30, message: '标题长度不能超过30个字符' }
+          ],
+          resourceCode: [
+            { required: true, message: '请输入WII编号', trigger: 'blur' },
+            { max: 20, message: 'WII编号长度不能超过20个字符' }
+          ],
+          imageCode: [
+            { required: true, message: '请输入图片序号', trigger: 'blur' },
+            { max: 20, message: '图片序号长度不能超过20个字符' }
+          ],
+          serial: [
+            { required: true, message: '请选择尺寸', trigger: 'change' }
+          ],
+          xOffset: [
+            { required: true, message: '请输入坐标X', trigger: 'blur' }
+          ],
+          yOffset: [
+            { required: true, message: '请输入坐标Y', trigger: 'blur' }
+          ]
+        }
+      },
+      wxmbDialog: {
+        visible: false,
+        isEdit: false,
+        loading: false,
+        form: {
+          name: '',
+          gameType: '',
+          qrcodeType: '',
+          // patchType: '', // 传奇世界专属
+          isForce: true,
+          mbMapId: '',
+          finishMapId: '',
+          machineVar: '',
+          openidVar: '',
+          wxVar: '',
+          npcName: '',
+          npcs: [{ mapId: '', x: 0, y: 0, lookId: '' }],
+          transferEnable: false,
+          transferMinAmount: '',
+          transferRechargeVar: '',
+          transferUsedVar: '',
+          transferFlagVar: '',
+          transferCoinVar: '',
+          transferCoinName: '',
+          transferNpcName: '',
+          transferNpcs: [{ mapId: '', x: 0, y: 0, lookId: '' }]
+        },
+        rules: {
+          name: [{ required: true, message: '请输入模版名称', trigger: 'blur' }],
+          gameType: [{ required: true, message: '请选择游戏类型', trigger: 'change' }],
+          qrcodeType: [{ required: true, message: '请选择二维码模版', trigger: 'change' }],
+          isForce: [{ required: true, message: '请选择是否强制', trigger: 'change' }],
+          mbMapId: [{ required: true, message: '请输入验证密保地图ID', trigger: 'blur' }],
+          finishMapId: [{ required: true, message: '请输入验证完成传送地图ID', trigger: 'blur' }],
+          machineVar: [{ required: true, message: '请输入机器码变量', trigger: 'blur' }],
+          openidVar: [{ required: true, message: '请输入微信openid变量', trigger: 'blur' }],
+          wxVar: [{ required: true, message: '请输入微信保留ID变量', trigger: 'blur' }],
+          npcName: [{ required: true, message: '请输入NPC名称', trigger: 'blur' }],
+          transferMinAmount: [
+            { required: true, message: '请输入最低金额', trigger: 'blur' }
+          ],
+          transferRechargeVar: [
+            { required: true, message: '请输入充值转区点变量', trigger: 'blur' }
+          ],
+          transferUsedVar: [
+            { required: true, message: '请输入已用转区点变量', trigger: 'blur' }
+          ],
+          transferFlagVar: [
+            { required: true, message: '请输入角色是否已转区变量', trigger: 'blur' }
+          ],
+          transferCoinVar: [
+            { required: true, message: '请输入通区货币变量', trigger: 'blur' }
+          ],
+          transferCoinName: [
+            { required: true, message: '请输入通区货币名称', trigger: 'blur' }
+          ],
+          transferNpcName: [
+            { required: true, message: '请输入转区NPC名称', trigger: 'blur' }
+          ]
+        }
       }
     };
   },
@@ -827,133 +1273,160 @@ export default {
     }
   },
   methods: {
-    //监听目录类别变化
+    // 构建积分文件路径，自动处理 payDir 为空、通区与盘符差异
+    buildIntegralFile(name) {
+      const paySegment = this.baseInfo.payDir ? `${this.baseInfo.payDir}\\` : '';
+      if (this.baseInfo.isTongQu) {
+        if (this.baseInfo.isDir === 0) {
+          const tong = (this.baseInfo.tongQuDir || '').replace(/^[A-Za-z]:\\/, '');
+          return `..\\..\\..\\..\\${tong}\\Mir200\\Envir\\QuestDiary\\${paySegment}充值积分\\${name}Save.txt`;
+        } else {
+          const tong = (this.baseInfo.tongQuDir || '').replace(/\\$/, '');
+          return `${tong}\\Mir200\\Envir\\QuestDiary\\${paySegment}充值积分\\${name}Save.txt`;
+        }
+      } else {
+        if (this.baseInfo.isDir === 1) {
+          return `${paySegment}充值积分\\${name}Save.txt`;
+        } else {
+          return `..\\QuestDiary\\${paySegment}充值积分\\${name}Save.txt`;
+        }
+      }
+    },
+    // 刷新所有积分文件路径（在 created 与 payDir/通区相关变化时调用）
+    refreshIntegralFiles() {
+      this.integralInfo.integralList.forEach(item => {
+        item.file = this.buildIntegralFile(item.name || '');
+      });
+    },
+    // 监听目录类别变化
     onChangeDir(value) {
       // const item = this.integralInfo.integralList[index];
-      var tongQuDirInfo = this.baseInfo.tongQuDir;
-      if(value == 0){
-        // 同盘符
-        //分割路径，去掉盘符
-        tongQuDirInfo = tongQuDirInfo.replace(/^[A-Za-z]:\\/,'');
-        this.integralInfo.integralList.forEach(item => {
-          if(this.baseInfo.isTongQu)
-            item.file = `..\\..\\..\\..\\${tongQuDirInfo}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
-          else
-            item.file = `..\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
-        });
-      }else{
-        // 不同盘符
-        this.integralInfo.integralList.forEach(item => {
-          item.file = `${this.baseInfo.tongQuDir}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
-        });
-      }
+      // var tongQuDirInfo = this.baseInfo.tongQuDir;
+      // if (value === 0) {
+      //   // 同盘符
+      //   // 分割路径，去掉盘符
+      //   tongQuDirInfo = tongQuDirInfo.replace(/^[A-Za-z]:\\/, '');
+      //   this.integralInfo.integralList.forEach(item => {
+      //     if (this.baseInfo.isTongQu) { item.file = `..\\..\\..\\..\\${tongQuDirInfo}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`; } else { item.file = `..\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`; }
+      //   });
+      // } else {
+      //   // 不同盘符
+      //   this.integralInfo.integralList.forEach(item => {
+      //     item.file = `${this.baseInfo.tongQuDir}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+      //   });
+      // }
+      this.refreshIntegralFiles();
     },
-    //监听积分名称变化
+    // 监听积分名称变化
     onChangeIntegralName(index) {
       const item = this.integralInfo.integralList[index];
-      if (this.baseInfo.isTongQu) {
-        // 通区时
-        if (this.baseInfo.isDir == 0) {
-          // 同盘符，去掉盘符
-          let tongQuDirInfo = this.baseInfo.tongQuDir.replace(/^[A-Za-z]:\\/, '');
-          item.file = `..\\..\\..\\..\\${tongQuDirInfo}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
-        } else {
-          // 不同盘符
-          item.file = `${this.baseInfo.tongQuDir}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
-        }
-      } else {
-        // 非通区时
-        if (this.baseInfo.isDir == 1) {
-          // 不同盘符
-          item.file = `${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
-        } else {
-          // 同盘符
-          item.file = `..\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
-        }
-      }
+      item.file = this.buildIntegralFile(item.name || '');
+      // if (this.baseInfo.isTongQu) {
+      //   // 通区时
+      //   if (this.baseInfo.isDir === 0) {
+      //     // 同盘符，去掉盘符
+      //     let tongQuDirInfo = this.baseInfo.tongQuDir.replace(/^[A-Za-z]:\\/, '');
+      //     item.file = `..\\..\\..\\..\\${tongQuDirInfo}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+      //   } else {
+      //     // 不同盘符
+      //     item.file = `${this.baseInfo.tongQuDir}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+      //   }
+      // } else {
+      //   // 非通区时
+      //   if (this.baseInfo.isDir === 1) {
+      //     // 不同盘符
+      //     item.file = `${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+      //   } else {
+      //     // 同盘符
+      //     item.file = `..\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+      //   }
+      // }
     },
-    //监听通区目录变化
+    // 监听通区目录变化
     onChangeTongQuDir(value) {
-      if (this.baseInfo.isTongQu) {
-        // 通区时，拼接通区路径
-        if(this.baseInfo.dir == 0){
-          // 同盘符
-          value = value.replace(/^[A-Za-z]:\\/,'');
-        }else{
-          // 不同盘符
-          value = value.replace(/\\$/,'');
-        }
-        this.integralInfo.integralList.forEach(item => {
-          item.file = `..\\..\\..\\..\\${value}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
-        });
-      }else{
-        // 非通区时，恢复默认或清空
-        this.integralInfo.integralList.forEach(item => {
-          item.file = `..\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
-        });
-      }
+      // if (this.baseInfo.isTongQu) {
+      //   // 通区时，拼接通区路径
+      //   if (this.baseInfo.isDir === 0) {
+      //     // 同盘符
+      //     value = value.replace(/^[A-Za-z]:\\/, '');
+      //   } else {
+      //     // 不同盘符
+      //     value = value.replace(/\\$/, '');
+      //   }
+      //   this.integralInfo.integralList.forEach(item => {
+      //     item.file = `..\\..\\..\\..\\${value}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+      //   });
+      // } else {
+      //   // 非通区时，恢复默认或清空
+      //   this.integralInfo.integralList.forEach(item => {
+      //     item.file = `..\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+      //   });
+      // }
+      this.refreshIntegralFiles();
     },
-    //监听通区变化
+    // 监听通区变化
     onChangeRadio(value) {
-      if (value) {
-        // 通区时
-        if (this.baseInfo.isDir == 0) {
-          // 同盘符
-          let tongQuDirInfo = this.baseInfo.tongQuDir.replace(/^[A-Za-z]:\\/, '');
-          this.integralInfo.integralList.forEach(item => {
-            item.file = `..\\..\\..\\..\\${tongQuDirInfo}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
-          });
-        } else {
-          // 不同盘符
-          this.integralInfo.integralList.forEach(item => {
-            item.file = `${this.baseInfo.tongQuDir}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
-          });
-        }
-      } else {
-        // 非通区时
-        if (this.baseInfo.isDir == 1) {
-          // 不同盘符
-          this.integralInfo.integralList.forEach(item => {
-            item.file = `${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
-          });
-        } else {
-          // 同盘符
-          this.integralInfo.integralList.forEach(item => {
-            item.file = `..\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
-          });
-        }
-      }
+      // if (value) {
+      //   // 通区时
+      //   if (this.baseInfo.isDir === 0) {
+      //     // 同盘符
+      //     let tongQuDirInfo = this.baseInfo.tongQuDir.replace(/^[A-Za-z]:\\/, '');
+      //     this.integralInfo.integralList.forEach(item => {
+      //       item.file = `..\\..\\..\\..\\${tongQuDirInfo}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+      //     });
+      //   } else {
+      //     // 不同盘符
+      //     this.integralInfo.integralList.forEach(item => {
+      //       item.file = `${this.baseInfo.tongQuDir}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+      //     });
+      //   }
+      // } else {
+      //   // 非通区时
+      //   if (this.baseInfo.isDir === 1) {
+      //     // 不同盘符
+      //     this.integralInfo.integralList.forEach(item => {
+      //       item.file = `${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+      //     });
+      //   } else {
+      //     // 同盘符
+      //     this.integralInfo.integralList.forEach(item => {
+      //       item.file = `..\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+      //     });
+      //   }
+      // }
+      this.refreshIntegralFiles();
     },
-    //监听充值脚本路径变化
+    // 监听充值脚本路径变化
     onChangeValue(value) {
-      if (this.baseInfo.isTongQu) {
-        // 通区时
-        if (this.baseInfo.isDir == 0) {
-          // 同盘符，去掉盘符
-          let tongQuDirInfo = this.baseInfo.tongQuDir.replace(/^[A-Za-z]:\\/, '');
-          this.integralInfo.integralList.forEach(item => {
-            item.file = `..\\..\\..\\..\\${tongQuDirInfo}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
-          });
-        } else {
-          // 不同盘符
-          this.integralInfo.integralList.forEach(item => {
-            item.file = `${this.baseInfo.tongQuDir}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
-          });
-        }
-      } else {
-        // 非通区时
-        if (this.baseInfo.isDir == 1) {
-          // 不同盘符
-          this.integralInfo.integralList.forEach(item => {
-            item.file = `${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
-          });
-        } else {
-          // 同盘符
-          this.integralInfo.integralList.forEach(item => {
-            item.file = `..\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
-          });
-        }
-      }
+      // if (this.baseInfo.isTongQu) {
+      //   // 通区时
+      //   if (this.baseInfo.isDir === 0) {
+      //     // 同盘符，去掉盘符
+      //     let tongQuDirInfo = this.baseInfo.tongQuDir.replace(/^[A-Za-z]:\\/, '');
+      //     this.integralInfo.integralList.forEach(item => {
+      //       item.file = `..\\..\\..\\..\\${tongQuDirInfo}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+      //     });
+      //   } else {
+      //     // 不同盘符
+      //     this.integralInfo.integralList.forEach(item => {
+      //       item.file = `${this.baseInfo.tongQuDir}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+      //     });
+      //   }
+      // } else {
+      //   // 非通区时
+      //   if (this.baseInfo.isDir === 1) {
+      //     // 不同盘符
+      //     this.integralInfo.integralList.forEach(item => {
+      //       item.file = `${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+      //     });
+      //   } else {
+      //     // 同盘符
+      //     this.integralInfo.integralList.forEach(item => {
+      //       item.file = `..\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+      //     });
+      //   }
+      // }
+      this.refreshIntegralFiles();
     },
     // 获取模板的详情
     moduleDetail(id) {
@@ -968,6 +1441,7 @@ export default {
             this.baseInfo.name = data.data.name;
             this.baseInfo.gameMoney = data.data.gameCurrencyType;
             this.baseInfo.gameName = data.data.currencyName;
+            this.baseInfo.isShowGlod = data.data.isShowGlod;
             this.baseInfo.color = data.data.templateColor;
             this.baseInfo.command = data.data.scriptCommand;
             this.baseInfo.rate = data.data.ratio;
@@ -981,9 +1455,12 @@ export default {
             this.baseInfo.fixedMoney = data.data.fixedAmountGroup;
             this.baseInfo.isTongQu = data.data.isTongQu;
             this.baseInfo.isDir = data.data.isDir;
-            this.baseInfo.dir = data.data.dir===null?[]:data.data.dir.split(',');
+            this.baseInfo.dir = data.data.dir === null ? [] : data.data.dir.split(',');
             this.baseInfo.tongQuDir = data.data.tongQuDir;
             this.baseInfo.payDir = data.data.payDir;
+            this.baseInfo.isTest = data.data.isTest;
+            this.baseInfo.betch = data.data.betch;
+            this.baseInfo.isBetch = data.data.isBetch;
             this.baseInfo.chargetype =
               data.data.rechargeWay === null ? '' : data.data.rechargeWay;
             this.baseInfo.gameMing =
@@ -991,7 +1468,7 @@ export default {
             // 激励详情
             this.inciteInfo.checked = data.data.isContains;
             this.inciteInfo.giveList = data.data.incentives;
-            this.baseinfo.giveOptionState = data.data.giveOptionState;
+            this.baseInfo.giveOptionState = data.data.giveOptionState;
             // 附加赠送
             this.attachInfo.checked = data.data.showAdditional;
             this.attachInfo.attachList = data.data.additionalGives;
@@ -1017,6 +1494,9 @@ export default {
             this.chargeInfo.checked = data.data.giveState;
             this.chargeInfo.select = data.data.giveWay;
             this.chargeInfo.redNPC = data.data.productTemplateRate;
+            this.scanModel = data.data.scanModel; // 扫码支付模版
+            this.installModel = data.data.installModel; // 微信密保模版
+            this.safetyMoney = data.data.safetyMoney; // 安全金额
           }
         })
         .catch((err) => {
@@ -1024,8 +1504,8 @@ export default {
         });
     },
     tongQuChange(val) {
-      if (val == true) {
-        this.integralInfo.integralList =  [
+      if (val === true) {
+        this.integralInfo.integralList = [
           {
             name: '元宝消费',
             show: false,
@@ -1040,9 +1520,9 @@ export default {
             ratio: 1,
             type: 0
           }
-        ] ;// 积分详情;
-      }else{
-        this.integralInfo.integralList =  [
+        ];// 积分详情;
+      } else {
+        this.integralInfo.integralList = [
           {
             name: '元宝消费',
             show: false,
@@ -1057,9 +1537,8 @@ export default {
             ratio: 1,
             type: 0
           }
-        ] ;// 积分详情;
+        ];// 积分详情;
       }
-      
     },
     /* -----------------------1.基本信息相关处理------------------------ */
     // 游戏币的切换选项
@@ -1786,16 +2265,24 @@ export default {
             maxAmount: this.baseInfo.maxMoney,
             fixedAmountGroup: this.baseInfo.fixedMoney,
             isTongQu: this.baseInfo.isTongQu,
+            isShowGlod: this.baseInfo.isShowGlod,
             isDir: this.baseInfo.isDir,
             gameName: this.baseInfo.gameMing,
             rechargeWay: this.baseInfo.chargetype,
             tongQuDir: this.baseInfo.tongQuDir,
             payDir: this.baseInfo.payDir,
-            dir: Array.isArray(this.baseInfo.dir) ? this.baseInfo.dir.join(',') : this.baseInfo.dir,
+            safetyMoney: this.safetyMoney,
+            isTest: this.baseInfo.isTest,
+            betch: this.baseInfo.betch,
+            isBetch: this.baseInfo.isBetch,
+            // dir: Array.isArray(this.baseInfo.dir) ? this.baseInfo.dir.join(',') : this.baseInfo.dir,
+            dir: 'C',
+            scanModel: this.scanModel, // 扫码支付模版
+            installModel: this.installModel, // 微信密保模版
             // 激励详情
             isContains: this.inciteInfo.checked,
             incentives: this.inciteInfo.giveList,
-            giveOptionState: this.inciteInfo.giveOption,
+            giveOptionState: this.inciteInfo.giveOptionState,
             // 附加赠送
             showAdditional: this.attachInfo.checked,
             additionalGives: this.attachInfo.attachList,
@@ -1844,29 +2331,222 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       })
-        .then(() => {})
+        .then(() => { })
         .catch(() => {
           this.$router.push({ path: '/main/partmodules' });
         });
+    },
+    // 获取微信密保模版
+    getWxmbTemplates() {
+      this.$api.groupmange.getWxmbTemplates().then(res => {
+        if (res && res.status === 200) {
+          this.modelDrow = res.data || res; // 兼容不同返回结构
+        }
+      });
+    },
+    // 获取二维码模版-不分页
+    getAllQrcodeTemplates() {
+      this.$api.groupmange.getAllQrcodeTemplates().then(res => {
+        if (res && res.status === 200) {
+          this.qrcodeTemplatesList = res.data || [];
+        }
+      });
+    },
+    // async getAllQrcodeTemplates() {
+    //   let header = await mgr();
+    //   return api
+    //     .get("/api/WxUserValid/GetQrcodeTemplates", {
+    //       headers: {
+    //         Authorization: "Bearer " + header,
+    //       }
+    //     })
+    //     .then((res) => {
+    //       console.log(res.data)
+    //       this.qrcodeTemplatesList = res.data || [];
+    //     })
+    //     .catch((err) => {
+    //       this.$messageError(err.message);
+    //     });
+    // },
+    // 获取扫码支付模版
+    getScanTemplates() {
+      this.$api.groupmange.getQrcodeTemplates().then(res => {
+        if (res && res.status === 200) {
+          this.scanModelDrow = res.data || res;
+        }
+      });
+    },
+    // 打开二维码模版弹窗
+    openQrcodeDialog(isEdit, template) {
+      this.qrcodeDialog.isEdit = isEdit;
+      if (isEdit) {
+        // 编辑
+        this.qrcodeDialog.form = { ...template };
+      } else {
+        // 新增
+        this.qrcodeDialog.form = {
+          title: '',
+          resourceCode: '',
+          imageCode: '',
+          serial: 3,
+          xOffset: '',
+          yOffset: ''
+        };
+      }
+      this.qrcodeDialog.visible = true;
+    },
+    // 关闭二维码模版弹窗
+    closeQrcodeDialog() {
+      this.qrcodeDialog.visible = false;
+      this.$refs.qrcodeForm.resetFields();
+    },
+    // 保存二维码模版
+    saveQrcodeTemplate() {
+      this.$refs.qrcodeForm.validate((valid) => {
+        if (!valid) return;
+        this.qrcodeDialog.loading = true;
+        const { isEdit, form } = this.qrcodeDialog;
+        this.$api.groupmange[isEdit ? 'editQrcodeTemplate' : 'addQrcodeTemplate'](form)
+          .then((res) => {
+            this.qrcodeDialog.loading = false;
+            if (res.status === 200) {
+              this.$messageSuccess(`${isEdit ? '编辑' : '新增'}成功！`);
+              this.closeQrcodeDialog();
+              this.getScanTemplates();
+            }
+          })
+          .catch((err) => {
+            this.qrcodeDialog.loading = false;
+            this.$messageError(err.message);
+          });
+      });
+    },
+    // 打开微信密保模版弹窗
+    openWxmbDialog(isEdit, row, gameType) {
+      this.getAllQrcodeTemplates(); // 获取所有的二维码模版
+      this.wxmbDialog.visible = true;
+      this.wxmbDialog.isEdit = !!isEdit;
+      if (isEdit && row) {
+        this.wxmbDialog.form = { ...row };
+        if (!this.wxmbDialog.form.npcs || !this.wxmbDialog.form.npcs.length) {
+          this.wxmbDialog.form.npcs = [{ mapId: '', x: 0, y: 0, lookId: '' }];
+        }
+        if (!this.wxmbDialog.form.transferNpcs || !this.wxmbDialog.form.transferNpcs.length) {
+          this.wxmbDialog.form.transferNpcs = [{ mapId: '', x: 0, y: 0, lookId: '' }];
+        }
+      } else {
+        // 传奇世界
+        if (gameType === '传奇世界') {
+          this.wxmbDialog.form = {
+            name: '',
+            gameType: '传奇世界',
+            qrcodeType: '',
+            patchType: '',
+            isForce: true,
+            mbMapId: '',
+            finishMapId: '',
+            npcName: '',
+            npcs: [{ mapId: '', x: 0, y: 0, lookId: '' }],
+            transferEnable: false,
+            transferMinAmount: '',
+            transferNpcName: '',
+            transferNpcs: [{ mapId: '', x: 0, y: 0, lookId: '' }]
+          };
+        } else {
+          // 热血传奇
+          this.wxmbDialog.form = {
+            name: '',
+            gameType: gameType || '',
+            qrcodeType: '',
+            isForce: true,
+            mbMapId: '',
+            finishMapId: '',
+            machineVar: '',
+            openidVar: '',
+            wxVar: '',
+            npcName: '',
+            npcs: [{ mapId: '', x: 0, y: 0, lookId: '' }],
+            transferEnable: false,
+            transferMinAmount: '',
+            transferRechargeVar: '',
+            transferUsedVar: '',
+            transferFlagVar: '',
+            transferCoinVar: '',
+            transferCoinName: '',
+            transferNpcName: '',
+            transferNpcs: [{ mapId: '', x: 0, y: 0, lookId: '' }]
+          };
+        }
+      }
+      this.$nextTick(() => {
+        if (this.$refs.wxmbForm) this.$refs.wxmbForm.clearValidate();
+      });
+    },
+    // 关闭微信密保模版弹窗
+    closeWxmbDialog() {
+      this.wxmbDialog.visible = false;
+      this.$refs.wxmbForm.resetFields();
+    },
+    // 保存微信密保模版
+    saveWxmbTemplate() {
+      this.$refs.wxmbForm.validate((valid) => {
+        if (!valid) return;
+        this.wxmbDialog.loading = true;
+        const { isEdit, form } = this.wxmbDialog;
+        this.$api.groupmange[isEdit ? 'editWxmbTemplate' : 'addWxmbTemplate'](form)
+          .then((res) => {
+            this.wxmbDialog.loading = false;
+            if (res.status === 200) {
+              this.$messageSuccess(`${isEdit ? '编辑' : '新增'}成功！`);
+              this.closeWxmbDialog();
+              this.getWxmbTemplates();
+            }
+          })
+          .catch((err) => {
+            this.wxmbDialog.loading = false;
+            this.$messageError(err.message);
+          });
+      });
+    },
+    addNpc() {
+      this.wxmbDialog.form.npcs.push({ mapId: '', x: 0, y: 0, lookId: '' });
+    },
+    removeNpc(idx) {
+      this.wxmbDialog.form.npcs.splice(idx, 1);
+    },
+    addTransferNpc() {
+      this.wxmbDialog.form.transferNpcs.push({ mapId: '', x: 0, y: 0, lookId: '' });
+    },
+    removeTransferNpc(idx) {
+      this.wxmbDialog.form.transferNpcs.splice(idx, 1);
     }
   },
   created() {
     this.moduleDetail();
     this.gameEngineDrow();
     this.getMimicharge();
+    this.getWxmbTemplates(); // 获取微信密保模版
+    this.getScanTemplates(); // 获取扫码支付模版
+    this.getAllQrcodeTemplates(); // 获取所有的二维码模版
+    this.refreshIntegralFiles();
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
 .tablebox {
   width: 680px;
+
   table {
     th {
       height: 30px;
       font-weight: normal;
       color: #63aafa;
     }
+
     td {
       padding: 5px 8px;
       color: #999;
@@ -1874,28 +2554,33 @@ export default {
     }
   }
 }
+
 .chargelist {
   width: 800px;
+
   li {
     float: left;
     margin-right: 15px;
     margin-bottom: 10px;
+
     .tit {
       font-size: 14px;
       color: #63aafa;
       float: left;
-      width: 90px;
+      width: 120px;
       height: 30px;
       line-height: 30px;
       text-align: right;
       margin-right: 8px;
     }
+
     .inp {
       float: left;
       width: 100px;
     }
   }
 }
+
 .areaContainer {
   li {
     position: relative;
@@ -1904,11 +2589,14 @@ export default {
     padding: 2px;
     cursor: pointer;
     margin-right: 8px;
+
     &:hover {
       border-color: #00b066;
     }
+
     &.on {
       border-color: #00b066;
+
       &:after {
         content: '';
         position: absolute;
@@ -1919,18 +2607,22 @@ export default {
         right: 0;
       }
     }
+
     img {
       display: block;
     }
   }
 }
+
 .bg_eee {
   background-color: #ddd;
   padding-left: 15px;
   background-image: none;
+
   &:hover {
     background-color: #e3e3e3;
   }
+
   .arrow {
     float: right;
     width: 18px;
@@ -1938,14 +2630,17 @@ export default {
     background: url(../assets/images/arrow.png) no-repeat center 0;
     margin-top: 9px;
     margin-right: 20px;
+
     &.active {
       background-position-y: -36px;
     }
   }
 }
+
 .accountList {
   font-size: 14px;
   margin-top: 20px;
+
   .tit {
     float: left;
     width: 91px;
@@ -1954,32 +2649,39 @@ export default {
     line-height: 30px;
     text-align: right;
   }
+
   .listbox {
     float: left;
     max-width: 830px;
     margin-left: 10px;
     color: #00b066;
     overflow-x: auto;
+
     table {
       td {
         padding: 0 6px;
         width: 100px;
         min-width: 100px;
+
         &.firstd {
           width: 110px;
           min-width: 110px;
+
           .inp {
             &.secondinp {
               margin-left: 32px;
             }
           }
         }
+
         .inp {
           width: 60px;
           margin: 0 4px;
+
           &::v-deep .el-input__inner {
             padding: 0 8px;
           }
+
           &.secondinp {
             margin-left: 18px;
           }
@@ -1987,6 +2689,7 @@ export default {
       }
     }
   }
+
   .btnbox {
     float: left;
     padding-top: 6px;
@@ -1994,61 +2697,71 @@ export default {
     width: 80px;
   }
 }
+
 .colorBox {
   margin-left: 20px;
+
   ul {
     border: 1px solid #63aafa;
     width: 48px;
+
     li {
       float: left;
       width: 16px;
       height: 16px;
       cursor: pointer;
+
       &.color0 {
         background: #606266;
+
         &.on {
-          background: #606266 url(../assets/images/color.png) no-repeat right
-            bottom;
+          background: #606266 url(../assets/images/color.png) no-repeat right bottom;
         }
       }
+
       &.color1 {
         background: #fe0000;
+
         &.on {
-          background: #fe0000 url(../assets/images/color.png) no-repeat right
-            bottom;
+          background: #fe0000 url(../assets/images/color.png) no-repeat right bottom;
         }
       }
+
       &.color2 {
         background: #ff00ff;
+
         &.on {
-          background: #ff00ff url(../assets/images/color.png) no-repeat right
-            bottom;
+          background: #ff00ff url(../assets/images/color.png) no-repeat right bottom;
         }
       }
+
       &.color3 {
         background: #0000ff;
+
         &.on {
-          background: #0000ff url(../assets/images/color.png) no-repeat right
-            bottom;
+          background: #0000ff url(../assets/images/color.png) no-repeat right bottom;
         }
       }
+
       &.color4 {
         background: #008712;
+
         &.on {
-          background: #008712 url(../assets/images/color.png) no-repeat right
-            bottom;
+          background: #008712 url(../assets/images/color.png) no-repeat right bottom;
         }
       }
+
       &.color5 {
         background: #ff9000;
+
         &.on {
-          background: #ff9000 url(../assets/images/color.png) no-repeat right
-            bottom;
+          background: #ff9000 url(../assets/images/color.png) no-repeat right bottom;
         }
       }
     }
   }
 }
+
 .inputColorBox {
   &::v-deep .el-input {
     &.inputColor0 {
@@ -2056,31 +2769,45 @@ export default {
         color: #606266;
       }
     }
+
     &.inputColor1 {
       .el-input__inner {
         color: #fe0000;
       }
     }
+
     &.inputColor2 {
       .el-input__inner {
         color: #ff00ff;
       }
     }
+
     &.inputColor3 {
       .el-input__inner {
         color: #0000ff;
       }
     }
+
     &.inputColor4 {
       .el-input__inner {
         color: #008712;
       }
     }
+
     &.inputColor5 {
       .el-input__inner {
         color: #ff9000;
       }
     }
   }
+}
+
+.wxmb-dialog-scroll {
+  max-height: 500px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+.custom-select .el-select-dropdown__list {
+  max-height: 500px;
 }
 </style>

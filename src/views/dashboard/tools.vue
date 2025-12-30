@@ -1,3 +1,4 @@
+<!-- eslint-disable no-tabs -->
 <template>
 	<div style="padding-top: 120px;">
 		<div class="banner">
@@ -105,204 +106,204 @@
 import { netUrl } from '../../assets/js/version.js';
 
 export default {
-	data() {
-		return {
-			list: [],
-			downurl: netUrl + '/api/Upload/ShowFileNew?name=Wgzs'
-		};
-	},
-	methods: {
+  data() {
+    return {
+      list: [],
+      downurl: netUrl + '/api/Upload/ShowFileNew?name=Wgzs'
+    };
+  },
+  methods: {
 
-	},
-	created() {
-	}
+  },
+  created() {
+  }
 };
 </script>
 
 <style scoped>
 .topimg {
-	height: 225px;
-	background: url('../../assets/themes/images/subbanner.jpg') no-repeat center bottom;
+height: 225px;
+background: url('../../assets/themes/images/subbanner.jpg') no-repeat center bottom;
 }
 
 .banner {
-	background-image: url('../../assets/img/kaiqubg.png');
-	background-size: 100% 100%;
-	height: 433px;
-	display: flex;
-	align-items: center;
+background-image: url('../../assets/img/kaiqubg.png');
+background-size: 100% 100%;
+height: 433px;
+display: flex;
+align-items: center;
 }
 
 .banner-txt {
-	background-color: rgba(255, 255, 255, 0.3);
-	height: 160px;
-	display: flex;
-	align-items: center;
-	width: 60vh;
-	justify-content: flex-end;
-	padding-right: 30px;
+background-color: rgba(255, 255, 255, 0.3);
+height: 160px;
+display: flex;
+align-items: center;
+width: 60vh;
+justify-content: flex-end;
+padding-right: 30px;
 }
 
 .banner-right {
-	display: flex;
-	flex-direction: column;
-	align-items: flex-end;
-	margin-left: 30vh;
+display: flex;
+flex-direction: column;
+align-items: flex-end;
+margin-left: 30vh;
 }
 
 .wrap {
-	width: 1300px;
-	margin: 0 auto;
+width: 1300px;
+margin: 0 auto;
 }
 
 .youshi-box {
-	height: 900px;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
+height: 900px;
+display: flex;
+flex-direction: column;
+justify-content: center;
 }
 
 .navtitle {
-	text-align: center;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
+text-align: center;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
 }
 
 .navtitle.one {
-	margin-bottom: 75px;
+margin-bottom: 75px;
 }
 
 .navtitle .title {
-	font-size: 36px;
-	margin-bottom: 15px;
-	margin-top: 10px;
+font-size: 36px;
+margin-bottom: 15px;
+margin-top: 10px;
 }
 
 .navtitle .small {
-	font-size: 14px;
-	letter-spacing: 2px;
+font-size: 14px;
+letter-spacing: 2px;
 }
 
 .navtitle .line {
-	height: 3px;
-	width: 30px;
-	background-color: #0195ff;
-	border-radius: 2px;
+height: 3px;
+width: 30px;
+background-color: #0195ff;
+border-radius: 2px;
 }
 
 .youshilist {
-	display: flex;
-	justify-content: space-between;
-	margin-bottom: 160px;
+display: flex;
+justify-content: space-between;
+margin-bottom: 160px;
 }
 
 .youshilist .item {
-	width: 18%;
-	box-sizing: border-box;
-	text-align: center;
+width: 18%;
+box-sizing: border-box;
+text-align: center;
 }
 
 .youshilist .item .title {
-	font-weight: bold;
-	font-size: 18px;
-	text-align: center;
-	margin: 48px 0 27px 0;
+font-weight: bold;
+font-size: 18px;
+text-align: center;
+margin: 48px 0 27px 0;
 }
 
 .youshilist .item .desc {
-	font-size: 14px;
-	line-height: 24px;
-	text-align: left;
+font-size: 14px;
+line-height: 24px;
+text-align: left;
 }
 
 .gongneng {
-	display: flex;
-	justify-content: space-between;
+display: flex;
+justify-content: space-between;
 }
 
 .gongneng .item {
-	width: 20%;
-	box-sizing: border-box;
-	text-align: center;
-	height: 540px;
-	color: #fff;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
+width: 20%;
+box-sizing: border-box;
+text-align: center;
+height: 540px;
+color: #fff;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
 }
 
 .gongneng .item .title {
-	font-weight: bold;
-	font-size: 24px;
-	margin: 48px 0 27px 0;
+font-weight: bold;
+font-size: 24px;
+margin: 48px 0 27px 0;
 }
 
 .gongneng .item .desc {
-	font-size: 14px;
-	line-height: 24px;
+font-size: 14px;
+line-height: 24px;
 }
 
 .gongneng .item.bg1 {
-	background-image: url('../../assets/img/kaiquimg1.png');
-	background-size: 100% 100%;
+background-image: url('../../assets/img/kaiquimg1.png');
+background-size: 100% 100%;
 }
 
 .gongneng .item.bg2 {
-	background-image: url('../../assets/img/kaiquimg2.png');
-	background-size: 100% 100%;
+background-image: url('../../assets/img/kaiquimg2.png');
+background-size: 100% 100%;
 }
 
 .gongneng .item.bg3 {
-	background-image: url('../../assets/img/kaiquimg3.png');
-	background-size: 100% 100%;
+background-image: url('../../assets/img/kaiquimg3.png');
+background-size: 100% 100%;
 }
 
 .gongneng .item.bg4 {
-	background-image: url('../../assets/img/kaiquimg4.png');
-	background-size: 100% 100%;
+background-image: url('../../assets/img/kaiquimg4.png');
+background-size: 100% 100%;
 }
 
 .gongneng .item.bg5 {
-	background-image: url('../../assets/img/kaiquimg5.png');
-	background-size: 100% 100%;
+background-image: url('../../assets/img/kaiquimg5.png');
+background-size: 100% 100%;
 }
 
 .contactus-box {
-	padding: 75px 0 100px 0;
+padding: 75px 0 100px 0;
 }
 
 .contactus {
-	background-image: url('../../assets/img/contactus.png');
-	background-size: 100% 100%;
-	height: 412px;
-	display: flex;
-	align-items: center;
-	justify-content: space-around;
+background-image: url('../../assets/img/contactus.png');
+background-size: 100% 100%;
+height: 412px;
+display: flex;
+align-items: center;
+justify-content: space-around;
 }
 
 .contactus .bluebox {
-	background-image: url('../../assets/img/conbg.png');
-	width: 376px;
-	height: 155px;
-	text-align: center;
-	color: #fff;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	font-size: 24px;
+background-image: url('../../assets/img/conbg.png');
+width: 376px;
+height: 155px;
+text-align: center;
+color: #fff;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+font-size: 24px;
 }
 
 .contactus .bluebox p:last-child {
-	font-size: 30px;
-	margin-top: 15px;
+font-size: 30px;
+margin-top: 15px;
 }
 
 .contactus .bluebox a {
-	color: #fff;
-	text-decoration: none;
+color: #fff;
+text-decoration: none;
 }
 </style>

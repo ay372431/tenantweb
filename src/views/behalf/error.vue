@@ -104,22 +104,22 @@
 </template>
 
 <script>
-import mgr from "../../assets/js/securityapi";
-import api from "../../assets/js/apiRequestHandler";
+import mgr from '../../assets/js/securityapi';
+import api from '../../assets/js/apiRequestHandler';
 export default {
   data() {
     return {
       dialogConfig: false,
       tableData: [],
       form: {
-        Id: "",
+        Id: '',
         ApplicationUserId: this.$store.state.id,
-        BeneficiaryAccountNumber: "",
-        BeneficiaryAccountName: "",
+        BeneficiaryAccountNumber: '',
+        BeneficiaryAccountName: '',
         PageNumber: 1,
         PageSize: 10,
-        total: 0,
-      },
+        total: 0
+      }
     };
   },
   created() {
@@ -130,21 +130,21 @@ export default {
       let header = await mgr();
       this.form.ApplicationUserId = this.$store.state.id;
       for (let i in this.form) {
-        if (this.form[i] === "") {
+        if (this.form[i] === '') {
           delete this.form[i];
         }
       }
       api
-        .get("/api/TenantPaid/WrongAccountList", {
+        .get('/api/TenantPaid/WrongAccountList', {
           headers: {
-            Authorization: "Bearer " + header,
+            Authorization: 'Bearer ' + header
           },
-          params: this.form,
+          params: this.form
         })
         .then((res) => {
           if (res.status === 200) {
             this.form.total = JSON.parse(
-              res.headers["x-pagination"]
+              res.headers['x-pagination']
             ).TotalCount;
             this.tableData = res.data;
           }
@@ -166,28 +166,28 @@ export default {
     },
     async handleEdit(index, row) {
       let header = await mgr();
-      this.$confirm("此操作将恢复该账号, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
+      this.$confirm('此操作将恢复该账号, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
         .then(() => {
           api
             .post(
-              "/api/TenantPaid/OperateWrongAccount",
+              '/api/TenantPaid/OperateWrongAccount',
               {
-                wrongAccountList:[row.id],
-                isRecover: true,
+                wrongAccountList: [row.id],
+                isRecover: true
               },
               {
                 headers: {
-                  Authorization: "Bearer " + header,
-                },
+                  Authorization: 'Bearer ' + header
+                }
               }
             )
             .then((res) => {
               if (res.status === 200) {
-                this.$messageSuccess("操作成功");
+                this.$messageSuccess('操作成功');
                 this.getLists();
               }
             });
@@ -195,8 +195,8 @@ export default {
         .catch((err) => {
           this.$messageError(err.message);
         });
-    },
-  },
+    }
+  }
 };
 </script>
 

@@ -1095,6 +1095,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
 .gs_tabbox {
   .tabbox {
     float: none;

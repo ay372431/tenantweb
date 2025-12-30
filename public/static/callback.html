@@ -17,7 +17,7 @@
       filterProtocolClaims: true
     });
     mgr.signinRedirectCallback().then(function (user) {
-      console.log('callback.html success');
+      // console.log('callback.html success');
       var index = parent.layer.getFrameIndex(window.name);
       if (!index) {
         window.location.href = '../#/main/home';

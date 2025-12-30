@@ -8,100 +8,142 @@
 <template>
   <div class="home">
     <div class="gs_title" style="color: white;">获取代码</div>
-    <div class="opeartbox">
-      <div class="easttop">
-        <ul>
-          <li>
-            <span class='tit'>游戏分组：</span>
-            <span class="txtbox">
-              <el-select v-model="gamegroupingpage" clearable size="small" placeholder="请选择">
-                <el-option v-for="(item,i) in gamegroupingdrow" :key="'gamegrouping'+i" :label="item.name" :value="item.uuid"></el-option>
-              </el-select>
-            </span>
-          </li>
-          <li>
-            <span class='tit'>充值站点：</span>
-            <span class="txtbox">
-              <el-select v-model="rechargesitepage" size="small" placeholder="请选择">
-                <el-option v-for="(item,i) in rechargesitedrow" :key="'rechargesite'+i" :label="item.name" :value="item.url"></el-option>
-              </el-select>
-            </span>
-          </li>
-          <el-button size="small" type="primary" @click="downLink" :loading="loading">下载多线路充值文件</el-button>
-        </ul>
+    <div style="display: flex;padding-left: 1%;padding-right: 1%;">
+      <div class="opeartbox">
+        <div class="easttop">
+          <ul>
+            <li>
+              <span class='tit'>游戏分组：</span>
+              <span class="txtbox">
+                <el-select v-model="gamegroupingpage" clearable size="small" placeholder="请选择">
+                  <el-option v-for="(item, i) in gamegroupingdrow" :key="'gamegrouping' + i" :label="item.name"
+                    :value="item.uuid"></el-option>
+                </el-select>
+              </span>
+            </li>
+            <li>
+              <span class='tit'>充值站点：</span>
+              <span class="txtbox">
+                <el-select v-model="rechargesitepage" size="small" placeholder="请选择">
+                  <el-option v-for="(item, i) in rechargesitedrow" :key="'rechargesite' + i" :label="item.name"
+                    :value="item.url"></el-option>
+                </el-select>
+              </span>
+            </li>
+            <el-button size="small" type="primary" @click="downLink" :loading="loading">下载多线路充值文件</el-button>
+          </ul>
+        </div>
+        <div>
+          <ul>
+            <li>
+              <p class="tip_red">预览</p>
+              <el-radio-group v-model="preview" @change="previewSwitch">
+                <el-radio :label="1">开启</el-radio>
+                <el-radio :label="0">关闭</el-radio>
+              </el-radio-group>
+            </li>
+            <li>
+              <p class="tip_red">飘浮样式</p>
+              <el-radio-group v-model="floatstyle" @change="floatstyleChange">
+                <el-radio :label="1">普通样式</el-radio>
+                <el-radio :label="2">随机漂浮</el-radio>
+                <el-radio :label="3">对联漂浮</el-radio>
+              </el-radio-group>
+            </li>
+            <li>
+              <p class="tip_red">飘浮图片</p>
+              <el-radio-group v-model="floatingpictures" @change="floatingpicturesChange">
+                <el-radio :label="0">样式一</el-radio>
+                <el-radio style="margin-left: -10px;" :label="1">样式二</el-radio>
+                <el-radio style="margin-left: -10px;" :label="2">样式三</el-radio>
+                <el-radio :label="3">样式四</el-radio>
+                <el-radio :label="4">样式五</el-radio>
+                <el-radio style="margin-left: -10px;" :label="5">样式六</el-radio>
+                <el-radio style="margin-left: -10px;" :label="6">样式七</el-radio>
+                <el-radio :label="7">样式八</el-radio>
+              </el-radio-group>
+            </li>
+          </ul>
+          <p class="mgt15">
+            <el-button size="small" type="primary" @click="copyCode">复制漂浮代码</el-button>
+          </p>
+        </div>
+        <div class="alignmentright">
+          <ul>
+            <li>
+              <p class="tip_red">充值链接地址</p>
+              <div class="pre-code">
+                <el-button class="buttonright" size="mini" @click="copy(1)">复制</el-button>
+                <div class="text">{{ codeText1 }}</div>
+              </div>
+            </li>
+            <li>
+              <div class="tip_red">发布站来源统计 <el-switch style="margin-left:15px;" v-model="publishSwitch"
+                  @change="publicChange" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+                <div style="color:grey;margin-left:25px;font-weight:normal;font-size: 14px;">{{ text1 }}</div>
+                <div style="color:grey;margin-left:25px;font-weight:normal;font-size: 14px;margin-bottom: 10px;">
+                  代码功能：统计玩家从哪个广告站进的您的网站，直接进入您网站的玩家不记录访问数据
+                </div>
+              </div>
+              <div class="pre-blue">
+                <el-button class="buttonright" size="mini" @click="copy(2)">复制</el-button>
+                <div class="text">{{ codeText2 }}</div>
+              </div>
+            </li>
+            <li>
+              <div class="tip_red">登录器访问统计 <el-switch style="margin-left:15px;" v-model="LoginSwitch"
+                  @change="LoginChange" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+                <div style="color:grey;margin-left:25px;font-weight:normal;font-size: 14px;">{{ text2 }}</div>
+                <div style="color:grey;margin-left:25px;font-weight:normal;font-size: 14px;">
+                  代码功能：统计玩家运行登陆器的次数。
+                </div>
+                <div style="color:grey;margin-left:25px;font-weight:normal;font-size: 14px;margin-bottom: 10px;">
+                  主要作用：统计从哪个广告站过来的玩家进入游戏最多。
+                </div>
+              </div>
+              <div class="pre-blue">
+                <el-button class="buttonright" size="mini" @click="copy(3)">复制</el-button>
+                <div class="text">{{ codeText3 }}</div>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
-      <div>
-        <ul>
-          <li>
-            <p class="tip_red">预览</p>
-            <el-radio-group v-model="preview" @change="previewSwitch">
-              <el-radio :label="1">开启</el-radio>
-              <el-radio :label="0">关闭</el-radio>
-            </el-radio-group>
-          </li>
-          <li>
-            <p class="tip_red">飘浮样式</p>
-            <el-radio-group v-model="floatstyle" @change="floatstyleChange">
-              <el-radio :label="1">普通样式</el-radio>
-              <el-radio :label="2">随机漂浮</el-radio>
-              <el-radio :label="3">对联漂浮</el-radio>
-            </el-radio-group>
-          </li>
-          <li>
-            <p class="tip_red">飘浮图片</p>
-            <el-radio-group v-model="floatingpictures" @change="floatingpicturesChange">
-              <el-radio :label="0">样式一</el-radio>
-              <el-radio style="margin-left: -10px;" :label="1">样式二</el-radio>
-              <el-radio style="margin-left: -10px;" :label="2">样式三</el-radio>
-              <el-radio :label="3">样式四</el-radio>
-              <el-radio :label="4">样式五</el-radio>
-              <el-radio style="margin-left: -10px;" :label="5">样式六</el-radio>
-              <el-radio style="margin-left: -10px;" :label="6">样式七</el-radio>
-              <el-radio :label="7">样式八</el-radio>
-            </el-radio-group>
-          </li>
-        </ul>
-        <p class="mgt15">
-          <el-button size="small" type="primary" @click="copyCode">复制漂浮代码</el-button>
-        </p>
-      </div>
-      <div class="alignmentright">
-        <ul>
-          <li>
-            <p class="tip_red">充值链接地址</p>
-            <div class="pre-code">
-              <el-button class="buttonright" size="mini" @click="copy(1)">复制</el-button>
-              <div class="text">{{codeText1}}</div>
-            </div>
-          </li>
-          <li>
-            <p class="tip_red">发布站来源统计 <el-switch style="margin-left:15px;" v-model="publishSwitch" @change="publicChange" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
-              <div style="color:grey;margin-left:25px;font-weight:normal;font-size: 14px;">{{text1}}</div>
-              <div style="color:grey;margin-left:25px;font-weight:normal;font-size: 14px;margin-bottom: 10px;">
-                代码功能：统计玩家从哪个广告站进的您的网站，直接进入您网站的玩家不记录访问数据
-              </div>
-            </p>
-            <div class="pre-blue">
-              <el-button class="buttonright" size="mini" @click="copy(2)">复制</el-button>
-              <div class="text">{{codeText2}}</div>
-            </div>
-          </li>
-          <li>
-            <p class="tip_red">登录器访问统计 <el-switch style="margin-left:15px;" v-model="LoginSwitch" @change="LoginChange" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
-              <div style="color:grey;margin-left:25px;font-weight:normal;font-size: 14px;">{{text2}}</div>
-              <div style="color:grey;margin-left:25px;font-weight:normal;font-size: 14px;">
-                代码功能：统计玩家运行登陆器的次数。
-              </div>
-              <div style="color:grey;margin-left:25px;font-weight:normal;font-size: 14px;margin-bottom: 10px;">
-                主要作用：统计从哪个广告站过来的玩家进入游戏最多。
-              </div>
-            </p>
-            <div class="pre-blue">
-              <el-button class="buttonright" size="mini" @click="copy(3)">复制</el-button>
-              <div class="text">{{codeText3}}</div>
-            </div>
-          </li>
-        </ul>
+      <!-- 商户自定义域名管理 -->
+      <div class="custom-domain-box">
+        <div class="custom-domain-title">商户自定义域名：</div>
+        <div class="custom-domain-table">
+          <div class="custom-domain-row custom-domain-header">
+            <span class="custom-domain-col domain-name">域名名称</span>
+            <span class="custom-domain-col domain-url">域名地址</span>
+            <span class="custom-domain-col domain-action">操作</span>
+          </div>
+          <div v-for="(item, idx) in customDomains" :key="'domain' + idx" class="custom-domain-row">
+            <span class="custom-domain-col domain-name">
+              <el-input v-model="item.name" size="small" placeholder="域名"></el-input>
+            </span>
+            <span class="custom-domain-col domain-url">
+              <el-input v-model="item.url" size="small" placeholder="域名地址"></el-input>
+            </span>
+            <span class="custom-domain-col domain-action">
+              <el-button size="mini" type="danger" @click="removeDomain(idx)">删除</el-button>
+              <el-button size="mini" :type="item.enabled ? 'warning' : 'success'" @click="toggleDomain(idx)">{{
+                item.enabled ? '禁用' : '启用' }}</el-button>
+            </span>
+          </div>
+          <div class="custom-domain-row">
+            <span class="custom-domain-col domain-name">
+              <el-input v-model="newDomain.name" size="small" placeholder="域名"></el-input>
+            </span>
+            <span class="custom-domain-col domain-url">
+              <el-input v-model="newDomain.url" size="small" placeholder="域名地址"></el-input>
+            </span>
+            <span class="custom-domain-col domain-action">
+              <el-button size="mini" type="primary" @click="addDomain">添加</el-button>
+            </span>
+          </div>
+        </div>
+        <el-button class="custom-domain-save" size="small" type="primary" @click="saveDomains">保存</el-button>
       </div>
     </div>
   </div>
@@ -113,6 +155,8 @@ import { url } from '../assets/js/version';
 export default {
   data() {
     return {
+      customDomains: [], // 商户自定义域名列表
+      newDomain: { name: '', url: '' },
       text1: '使用说明：复制该代码加入到网站首页底部的</body>前面即可',
       text2: '使用说明：复制该代码加到登陆器右边广告页面底部的</body>前面即可',
       loading: false, // 下载按钮防呆
@@ -131,7 +175,7 @@ export default {
   },
   computed: {
     ...mapState(['uuid']),
-    codeText1: function() {
+    codeText1: function () {
       if (this.gamegroupingpage === '') {
         this.$store.commit(
           'changeUrl',
@@ -148,6 +192,68 @@ export default {
     }
   },
   methods: {
+    // 添加自定义域名
+    addDomain() {
+      if (!this.newDomain.name || !this.newDomain.url) {
+        this.$messageError('请填写完整的域名和地址');
+        return;
+      }
+      this.customDomains.push({
+        name: this.newDomain.name,
+        url: this.newDomain.url,
+        enabled: true
+      });
+      this.newDomain = { name: '', url: '' };
+    },
+    // 删除自定义域名
+    removeDomain(idx) {
+      this.customDomains.splice(idx, 1);
+    },
+    // 启用/禁用自定义域名
+    toggleDomain(idx) {
+      this.customDomains[idx].enabled = !this.customDomains[idx].enabled;
+    },
+    // 保存自定义域名（这里只做本地保存，可扩展为API调用）
+    saveDomains() {
+      const params = this.customDomains.map((domain) => ({
+        name: domain.name,
+        url: domain.url,
+        state: domain.enabled
+      }));
+      this.$api.getcode
+        .addCustomDomain(params)
+        .then((data) => {
+          if (data.status === 200) {
+            this.$messageSuccess('保存成功！');
+            this.getCustomDomainList();
+          }
+        })
+        .catch((err) => {
+          this.$messageError(err.message);
+        });
+    },
+    // 获取商户自定义域名列表
+    getCustomDomainList() {
+      this.$api.getcode
+        .getCustomDomainList()
+        .then((res) => {
+          if (res.status === 200 && Array.isArray(res.data)) {
+            this.customDomains = res.data.map(item => ({
+              name: item.name || item.Name,
+              url: item.url || item.Url,
+              enabled: item.state
+            }));
+            // this.rechargesitepage值为第一个未禁用的域名地址
+            const firstEnabledDomain = this.customDomains.find(domain => domain.enabled);
+            if (firstEnabledDomain) {
+              this.rechargesitepage = firstEnabledDomain.url;
+            }
+          }
+        })
+        .catch((err) => {
+          this.$messageError(err.message);
+        });
+    },
     // 获取用户信息
     getUser() {
       this.$api.home
@@ -348,10 +454,14 @@ export default {
     }
   },
   created() {
+    // 初始化为空
+    this.customDomains = [];
     this.getUser();
     this.getCode();
     this.gameAreaDraw();
     this.chargeStation();
+    // 获取商户自定义域名列表
+    this.getCustomDomainList();
   },
   beforeDestroy() {
     this.$store.commit('changePreview', 0);
@@ -362,14 +472,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
+
 .opeartbox {
-  padding: 15px 20px 5px 30px;
-  background: #fff;
+  background: #f8fafd;
+  border: 1px solid #e0e6ed;
+  border-radius: 6px;
+  padding: 16px 18px 10px 18px;
+  // padding: 15px 20px 5px 30px;
+  // background: #fff;
+  width: 60%;
+
   .easttop li {
     margin-bottom: 15px;
   }
+
   .alignmentright {
     padding-bottom: 20px;
+
     .pre-code {
       background-color: #fff;
       color: #10c7de;
@@ -377,11 +499,13 @@ export default {
       border: 1px solid #ccc;
       border-radius: 4px;
       width: 80%;
+
       pre {
         min-height: 20px;
         word-break: break-all;
       }
     }
+
     .pre-blue {
       background-color: #fff;
       color: #10c7de;
@@ -389,11 +513,13 @@ export default {
       border-radius: 4px;
       padding: 10px;
       width: 80%;
+
       .text {
         min-height: 20px;
         word-break: break-all;
       }
     }
+
     .buttonright {
       float: right;
       margin-top: -11px;
@@ -401,10 +527,69 @@ export default {
     }
   }
 }
+
 .tip_red {
   color: #3c8dbc;
   padding: 10px 0px;
   font-weight: bold;
   font-size: 15px;
+}
+
+.custom-domain-box {
+  background: #f8fafd;
+  border: 1px solid #e0e6ed;
+  border-radius: 6px;
+  padding: 16px 18px 10px 18px;
+  // margin-bottom: 10px;
+  width: 38%;
+  margin-left: 2%;
+  // margin-top: 6px;
+}
+
+.custom-domain-title {
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #3c8dbc;
+  font-size: 15px;
+}
+
+.custom-domain-table {
+  width: 100%;
+}
+
+.custom-domain-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.custom-domain-header {
+  font-weight: bold;
+  color: #666;
+  background: #f0f3f8;
+  border-radius: 4px;
+  padding: 4px 0;
+}
+
+.custom-domain-col {
+  display: inline-block;
+  padding-right: 10px;
+}
+
+.domain-name {
+  width: 120px;
+}
+
+.domain-url {
+  width: 320px;
+}
+
+.domain-action {
+  width: 160px;
+  display: flex;
+}
+
+.custom-domain-save {
+  margin-top: 8px;
 }
 </style>

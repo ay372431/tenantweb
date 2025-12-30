@@ -48,7 +48,7 @@
                                                 </li>
                                                 <li class="l4" style="width: 290px;width:320px; margin-bottom:20px;">
                                                     <input style="text-align: center;" value="登 录" class="button-blue3"
-                                                        type="button" @click="handleSubmitLogin">
+                                                        type="button" @click="handleLogin">
                                                 </li>
                                                 <li class="l5">
                                                     <span style="color:#fff;cursor: pointer;"
@@ -116,180 +116,203 @@
     </div>
 </template>
 <script>
-import axios from "axios";
-import Mgr from "../../assets/js/SecurityService";
-import api from "../../assets/js/apiRequestHandler";
-import { authUrl, url } from "../../assets/js/version.js";
-import wxlogin from 'vue-wxlogin';
+import axios from 'axios';
+import Mgr from '../../assets/js/SecurityService';
+import api from '../../assets/js/apiRequestHandler';
+import { authUrl, url } from '../../assets/js/version.js';
+const mgr = new Mgr();
+// import wxlogin from 'vue-wxlogin';
 export default {
-    data() {
-        return {
-            current: 1,
-            form: {
-                username: "",
-                password: "",
-                code: "",
-                checkKey: "",
-                returnUrl: "",
-            },
-            qqSignin: "",
-            wxQrSignin: "",
-            isPwdLoginShow: true,
-            isWxQrLoginShow: false,
-            wxqrimgurl: "",
-            wxvalidKey: "",
-            randomCode:
-                "data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==",
-            appid: "wx61e40b3869c98170",
-            scope: "snsapi_login",
-            redirect_uri: "http://111.67.201.26:5000/External/WeixinOpen",
-        };
-    },
-    mounted() {
-        this.getQrcode();
-        let mgr = new Mgr();
-        mgr
-            .getReturnUrl()
-            .then((url) => {
-                // console.log(url);
-                let ReturnUrl = "";
-                // 这里比较复杂，redirect_uri内url必须转义，其它参数则不需要，需要scope=
-                let index = url.indexOf("?");
-                let host = url.substring(0, index + 1);
-                host = host.substring(host.indexOf("/connect"));
-                let params = url.substring(index + 1).split("&");
-                ReturnUrl =
+  data() {
+    return {
+      current: 1,
+      form: {
+        username: '',
+        password: '',
+        code: '',
+        checkKey: '',
+        returnUrl: ''
+      },
+      qqSignin: '',
+      wxQrSignin: '',
+      isPwdLoginShow: true,
+      isWxQrLoginShow: false,
+      wxqrimgurl: '',
+      wxvalidKey: '',
+      randomCode:
+                'data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==',
+      appid: 'wx61e40b3869c98170',
+      scope: 'snsapi_login',
+      redirect_uri: 'http://111.67.201.26:5000/External/WeixinOpen'
+    };
+  },
+  mounted() {
+    this.getQrcode();
+    let mgr = new Mgr();
+    mgr
+      .getReturnUrl()
+      .then((url) => {
+        // console.log(url);
+        let ReturnUrl = '';
+        // 这里比较复杂，redirect_uri内url必须转义，其它参数则不需要，需要scope=
+        let index = url.indexOf('?');
+        let host = url.substring(0, index + 1);
+        host = host.substring(host.indexOf('/connect'));
+        let params = url.substring(index + 1).split('&');
+        ReturnUrl =
                     host +
                     params
-                        .map((x) => {
-                            if (x.indexOf("redirect_uri") === 0) {
-                                // return 'redirect_uri=' + encodeURIComponent(x.substring(13));
-                                return "redirect_uri=" + x.substring(13);
-                            }
-                            return x;
-                        })
-                        .join("&");
-                // console.log("ReturnUrl:" + ReturnUrl);
-                this.returnUrl = ReturnUrl;
-                var extenalSource = url.replace(/^http(s)?:\/\/[^/]+/, "");
-                // var extenalIndex = extenalSource.indexOf('http');
-                var extenalUrl = encodeURIComponent(extenalSource);
-                // console.log(extenalUrl);
-                this.qqSignin =
-                    authUrl + "/External/Challenge?provider=QQ&returnUrl=" + extenalUrl;
-                this.wxQrSignin =
+                      .map((x) => {
+                        if (x.indexOf('redirect_uri') === 0) {
+                          // return 'redirect_uri=' + encodeURIComponent(x.substring(13));
+                          return 'redirect_uri=' + x.substring(13);
+                        }
+                        return x;
+                      })
+                      .join('&');
+        // console.log("ReturnUrl:" + ReturnUrl);
+        this.returnUrl = ReturnUrl;
+        var extenalSource = url.replace(/^http(s)?:\/\/[^/]+/, '');
+        // var extenalIndex = extenalSource.indexOf('http');
+        var extenalUrl = encodeURIComponent(extenalSource);
+        // console.log(extenalUrl);
+        this.qqSignin =
+                    authUrl + '/External/Challenge?provider=QQ&returnUrl=' + extenalUrl;
+        this.wxQrSignin =
                     authUrl +
-                    "/External/Challenge?provider=WeixinOpen&returnUrl=" +
+                    '/External/Challenge?provider=WeixinOpen&returnUrl=' +
                     extenalUrl;
-            })
-            .catch((err) => {
-                console.log("报错了：" + err);
-            });
+      })
+      .catch((err) => {
+        console.log('报错了：' + err);
+      });
+  },
+  methods: {
+    windowScroll() {
+      this.height = document.getElementsByClassName('contentBox')[0].scrollTop;
     },
-    methods: {
-        windowScroll() {
-            this.height = document.getElementsByClassName('contentBox')[0].scrollTop;
-        },
-        // 获取注册页面的底部信息
-        footerInfo() {
-            this.$api.login
-                .footerInfo()
-                .then(data => {
-                    if (data.status === 200) {
-                        this.webName = data.data.webName;
-                        this.servicePhone = data.data.servicePhone;
-                    }
-                })
-                .catch(err => {
-                    this.$messageError(err.message);
-                });
-        },
-        async getQrcode() {
-            let res = await api({
-                url: "/api/Register/CreateCode",
-                method: "get",
-                params: {},
-            });
-            this.randomCode = res.data.imageData;
-            this.form.checkKey = res.data.validateKey;
-            // console.log(res);
-        },
-        getwxqrImg() {
-            let ReturnUrl = this.returnUrl;
-            axios
-                .post(url + "api/Register/GetLoginImage", {
-                    ReturnUrl: ReturnUrl,
-                })
-                .then((res) => {
-                    this.wxqrimgurl = res.data.imageData;
-                    this.wxvalidKey = res.data.validateKey;
-                    this.timer = setInterval(() => {
-                        this.checkBindWeixi();
-                    }, 1000);
-                })
-                .catch((err) => {
-                    this.loading = false;
-                    if (err.response) {
-                        console.log(err.response.data);
-                        console.log(err.response.status);
-                        console.log(err.response.headers);
-                        this.errorMsg = err.response.data;
-                    }
-                });
-        },
-        handleSubmitLogin() {
-            if (!this.form.username) {
-                this.$messageError('请输入用户名');
-                return;
-            }
-            if (!this.form.password) {
-                this.$messageError('请输入密码');
-                return;
-            }
-            this.singin()
-        },
-        singin() {
-            let ReturnUrl = this.returnUrl;
-            axios.defaults.withCredentials = true;
-            axios
-                .post(authUrl + "/Account/loginApi", {
-                    ReturnUrl: ReturnUrl,
-                    Username: this.form.username,
-                    Password: this.form.password,
-                    RememberLogin: true,
-                    Code: this.form.code,
-                    CheckKey: this.form.checkKey,
-                })
-                .then((data) => {
-                    console.log(data.data);
-                    if (data.data === "~/") {
-                        // this.$router.push({ path: '/404' });
-                        this.$messageError("登录出错，请检查！");
-                    } else {
-                        // window.location = authUrl + data.data;
-                        window.location = authUrl + ReturnUrl;
-                    }
-                })
-                .catch((error) => {
-                    // 捕获错误并获取错误内容
-                    if (error.response) {
-                        // 请求已经发出，但服务器返回状态码不在 2xx 范围内
-                        //console.log(error.response.data);
-                        this.$messageError(error.response.data.message);
-                        this.getQrcode();
-                    } else if (error.request) {
-                        // 请求已经发出，但没有收到响应
-                        console.log(error.request);
-                    } else {
-                        // 在设置请求时触发错误
-                        console.log('Error', error.message);
-                    }
-                    console.log(error.config);
+    // 获取注册页面的底部信息
+    footerInfo() {
+      this.$api.login
+        .footerInfo()
+        .then(data => {
+          if (data.status === 200) {
+            this.webName = data.data.webName;
+            this.servicePhone = data.data.servicePhone;
+          }
+        })
+        .catch(err => {
+          this.$messageError(err.message);
+        });
+    },
+    async getQrcode() {
+      let res = await api({
+        url: '/api/Register/CreateCode',
+        method: 'get',
+        params: {}
+      });
+      this.randomCode = res.data.imageData;
+      this.form.checkKey = res.data.validateKey;
+      // console.log(res);
+    },
+    getwxqrImg() {
+      let ReturnUrl = this.returnUrl;
+      axios
+        .post(url + 'api/Register/GetLoginImage', {
+          ReturnUrl: ReturnUrl
+        })
+        .then((res) => {
+          this.wxqrimgurl = res.data.imageData;
+          this.wxvalidKey = res.data.validateKey;
+          this.timer = setInterval(() => {
+            this.checkBindWeixi();
+          }, 1000);
+        })
+        .catch((err) => {
+          this.loading = false;
+          if (err.response) {
+            console.log(err.response.data);
+            console.log(err.response.status);
+            console.log(err.response.headers);
+            this.errorMsg = err.response.data;
+          }
+        });
+    },
+    handleSubmitLogin() {
+      if (!this.form.username) {
+        this.$messageError('请输入用户名');
+        return;
+      }
+      if (!this.form.password) {
+        this.$messageError('请输入密码');
+        return;
+      }
+      this.singin();
+    },
+    singin() {
+      let ReturnUrl = this.returnUrl;
+      axios.defaults.withCredentials = true;
+      axios
+        .post(authUrl + '/Account/loginApi', {
+          ReturnUrl: ReturnUrl,
+          Username: this.form.username,
+          Password: this.form.password,
+          RememberLogin: true,
+          Code: this.form.code,
+          CheckKey: this.form.checkKey
+        })
+        .then((data) => {
+          if (data.data === '~/') {
+            // this.$router.push({ path: '/404' });
+            this.$messageError('登录出错，请检查！');
+          } else {
+            // window.location = authUrl + data.data;
+            window.location = authUrl + ReturnUrl;
+          }
+        })
+        .catch((error) => {
+          // 捕获错误并获取错误内容
+          if (error.response) {
+            // 请求已经发出，但服务器返回状态码不在 2xx 范围内
+            // console.log(error.response.data);
+            this.$messageError(error.response.data.message);
+            this.getQrcode();
+          } else if (error.request) {
+            // 请求已经发出，但没有收到响应
+            console.log(error.request);
+          } else {
+            // 在设置请求时触发错误
+            console.log('Error', error.message);
+          }
+          console.log(error.config);
+        });
+    },
+    async handleLogin() {
+      this.errorMsg = '';
+      this.loading = true;
+      try {
+        await mgr.login({
+          username: this.form.username,
+          password: this.form.password,
+          code: this.form.code,
+          checkKey: this.form.checkKey,
+          rememberLogin: true
+        });
 
-                });
-        },
+        const role = await mgr.getRole();
+        if (role === 'CustomRole') {
+          this.$router.replace({ path: '/employeemain/employeehome' });
+        } else {
+          this.$router.replace({ path: '/main/home' });
+        }
+      } catch (e) {
+        this.errorMsg = e.message || '登录失败';
+      } finally {
+        this.loading = false;
+      }
     }
-}
+  }
+};
 </script>
 <style scoped>
 .warp-container {

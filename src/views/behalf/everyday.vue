@@ -1,6 +1,6 @@
 <template>
   <div class="wrap-box">
-    <div class="sonbar"><img src="../../assets/img/san.png" />每日统计</div>
+    <div class="gs_title" style="color: white;">每日统计</div>
     <div class="wrap-box-c">
       <div class="fieldset">
         <el-divider content-position="left"
@@ -173,6 +173,9 @@ export default {
 </script>
 
 <style scoped>
+.gs_title {
+  background: var(--theme-color);
+}
 .fieldset-con {
   margin: 0 0 20px 20px;
   display: flex;

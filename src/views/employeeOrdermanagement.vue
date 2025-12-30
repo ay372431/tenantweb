@@ -120,7 +120,7 @@
         <el-table ref="moduleTable" size="mini" :data="tableData" border style="width: 100%" stripe>
           <el-table-column prop="orderDate" label="下单时间">
             <template slot-scope="scope">
-              
+
               <span style="height:18px;">{{scope.row.orderDate?scope.row.orderDate.split(' ')[0]:''}}</span>
               <span style="height:18px;color:#999; margin-left: 5px;"> {{scope.row.orderDate?scope.row.orderDate.split(' ')[1]:''}}</span>
             </template>
@@ -134,7 +134,7 @@
           </el-table-column>
           <el-table-column prop="playerAccount" label="充值账号">
           </el-table-column>
-         
+
           <el-table-column prop="amount" label="订单金额">
             <template slot-scope="scope">
               <span style="color:#00b066;">{{scope.row.amount?scope.row.amount.toFixed(2):'0.00'}}</span>
@@ -590,7 +590,7 @@ export default {
                       this.$messageError('分区检测失败！');
                     }
                   });
-              }, 3000);
+              }, 500);
             }
           })
           .catch(() => {
@@ -613,6 +613,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
 .opeartbox {
   padding: 15px 150px 5px 20px;
   background: #fff;
@@ -777,6 +780,5 @@ export default {
     }
   }
 }
-
 
 </style>

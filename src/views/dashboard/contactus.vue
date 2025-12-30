@@ -18,7 +18,7 @@
                     客服QQ</p>
                 <div class="col-sm-12" style=" overflow: hidden;    margin-bottom: 30px;">
                     <div class="kefulianxi"
-                        style="height: 280px; border: 1px solid #ccc; margin-top: 10px; float: left;width: 16.666%;margin-right: 40px;flex">
+                        style="height: 280px; border: 1px solid #ccc; margin-top: 10px; float: left;width: 16.666%;margin-right: 40px;">
                         <div class="kefu1" style="position: relative;">
                             <img src="@/assets/themes/images/yw.png"
                                 style="width: 150px; position: relative; left: 50%; top: 20px; margin-left: -75px;">
@@ -38,8 +38,8 @@
 </template>
 <script>
 export default {
-    name: 'contactus',
-}
+  name: 'contactus'
+};
 </script>
 <style scoped>
 .topimg {

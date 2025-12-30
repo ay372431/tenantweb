@@ -134,5 +134,25 @@ export default {
       params: params,
       headers: { Authorization: 'Bearer ' + header }
     });
+  },
+  // 模版统计
+  async temlStatic(params) {
+    let header = await mgr();
+    return api({
+      url: '/api/DataAnalysis/GetDataAnalysisTemplateListAsync',
+      method: 'get',
+      params: params,
+      headers: { Authorization: 'Bearer ' + header }
+    });
+  },
+  // 全局IPS统计
+  async deviceStatic(params) {
+    let header = await mgr();
+    return api({
+      url: '/api/DataAnalysis/GetDataAnalysisDeviceListAsync',
+      method: 'get',
+      params: params,
+      headers: { Authorization: 'Bearer ' + header }
+    });
   }
 };

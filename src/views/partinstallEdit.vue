@@ -171,18 +171,18 @@
           <dt>网关标识：</dt>
           <dd>
             <span class="inputbox">
-           
+
               <slect-drow
                 :itemList="serverDrow"
                 @delitem="delequipcode"
                 :slect.sync="serverIp"
                 style="width: 250px;"
               ></slect-drow>
-            
+
             </span>
             <span class="block_tip">安装分区前请先运行网关客户端</span>
           </dd>
-        
+
         </dl>
         <dl class="clearfix" v-if="typeindex === 1 || typeindex === 2">
           <dt>安装路径：</dt>
@@ -239,14 +239,14 @@
             </span>
           </dd>
         </dl>
-        <dl class="clearfix" v-if="typeindex === 1 || typeindex === 2">
-          <dt>游戏内充值：</dt>
+        <dl class="clearfix">
+          <dt>充值方式：</dt>
           <dd>
             <span class="inputbox pdt5">
               <el-radio-group v-model="glodScan">
-                <el-radio :label="0">支持游戏内扫码</el-radio>
-                <el-radio :label="1">支持游戏内扫码和网页扫码</el-radio>
-                <el-radio :label="2">不支持游戏内扫码</el-radio>
+                <el-radio :label="2">网页扫码</el-radio>
+                <el-radio :label="0">游戏内扫码</el-radio>
+                <el-radio :label="1">以上两者</el-radio>
               </el-radio-group>
             </span>
           </dd>
@@ -255,9 +255,9 @@
           <dt>补丁下载：</dt>
           <dd>
             <span class="inputbox gs_textarea">
-              <a style="color: #333;text-decoration: none;font-size: 14px;" href="http://www.10pay.com/soft/smart/ercon.zip">点击下载补丁</a>
+              <div style="color: #333;text-decoration: none;font-size: 14px;"  @click="gorout">点击下载补丁</div>
             </span>
-            <span class="tip_red">选择游戏内扫码许下载补丁文件放入游戏中，补丁默认编号是240，序号是0</span>
+            <span class="tip_red">选择游戏内扫码许下载补丁文件放入游戏中，补丁默认编号是44，序号是4</span>
           </dd>
         </dl>
         <dl class="clearfix">
@@ -483,7 +483,7 @@ export default {
   },
   data() {
     return {
-      id:0,
+      id: 0,
       installFlag: true, // 保存按钮中的防重复点击
       typeindex: 1, // 分区类型
       partName: '', // 分区名称
@@ -527,6 +527,9 @@ export default {
     };
   },
   methods: {
+    gorout() {
+      this.$router.push({ path: '/personal/wechat', query: { tab: 'ewmmb' } });
+    },
     // 获取分区信息
     getareainfo() {
       this.$api.groupmange
@@ -536,7 +539,7 @@ export default {
           this.typeindex = data.data.type; // 分区类型
           this.modelDrowList(data.data.type);
           this.partName = data.data.name; // 分区名称
-          this.id= data.data.id;
+          this.id = data.data.id;
           this.partChecked = data.data.isChangeInTime; // 在指定时间更改分区名称
           this.changeName = data.data.useName; // 更改名称
           this.changeTime = data.data.changeDate; // 更改时间
@@ -552,7 +555,7 @@ export default {
           this.glodEgg = data.data.ybEgg; // 元宝蛋
           this.glodScan = data.data.scan; // 扫码充值
           this.notice = data.data.notice; // 分区公告
-          this.setDelType = data.data.isDel==0?false:true;
+          this.setDelType = data.data.isDel !== 0;
           this.setDelTime = data.data.delDate;
           // sql
           if (data.data.dbInfo === null) {
@@ -714,7 +717,7 @@ export default {
         }
         this.$api.partinstall
           .partEdit({
-            id:this.$route.query.id,
+            id: this.$route.query.id,
             type: this.typeindex, // 分区类型
             dataFormat: this.webSet.datatype, // web通讯中数据格式
             dbInfo: {
@@ -753,12 +756,14 @@ export default {
               return { id: item };
             }),
             partitionCmdType: this.iscreatjb, // 是否创建脚本
-            id:this.id,
-            isDel: this.setDelType==true?1:0,// 是否定时删区
-            delDate: this.setDelTime, // 删区时间
+            // eslint-disable-next-line no-dupe-keys
+            id: this.id,
+            isDel: this.setDelType === true ? 1 : 0, // 是否定时删区
+            delDate: this.setDelTime // 删区时间
           })
           .then(data => {
             if (data.status === 200) {
+              this.$messageSuccess('更新成功！');
               this.installFlag = true;
               this.open();
             }
@@ -771,7 +776,7 @@ export default {
     },
     // 编辑成功后提示
     open() {
-      this.$confirm('更新成功！是否继续操作？', '确认信息', {
+      this.$confirm('保存成功！是否继续编辑？', '确认信息', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -868,6 +873,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
 .tip_red {
   color: red;
   padding: 10px 40px;

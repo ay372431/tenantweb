@@ -68,5 +68,25 @@ export default {
       params: params,
       headers: { Authorization: 'Bearer ' + header }
     });
+  },
+  // 添加自定义域名
+  async addCustomDomain(params) {
+    let header = await mgr();
+    return api({
+      url: '/api/SelectDropDown/AddMerchantRechargeCircuitAsync',
+      method: 'post',
+      data: params,
+      headers: { Authorization: 'Bearer ' + header }
+    });
+  },
+  // 获取自定义域名列表
+  async getCustomDomainList(params) {
+    let header = await mgr();
+    return api({
+      url: '/api/SelectDropDown/GetMerchantRechargeCircuitAsync',
+      method: 'get',
+      params: params,
+      headers: { Authorization: 'Bearer ' + header }
+    });
   }
 };

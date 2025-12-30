@@ -30,20 +30,47 @@ let mgr = new Mgr();
 /**
  * 请求拦截器
  */
-AxiosInstance.interceptors.request.use(
-  config => {
-    if (sessionStorage.getItem('agentMerchantId')) {
-      config.headers.MerchantId = sessionStorage.getItem('agentMerchantId');
-    }
-    let url = config.url;
-    config.url = url + '?r=' + (Math.random() * 100000 + 1);
-    return config;
-  },
-  error => {
-    return Promise.reject(error);
+/**
+ * 响应拦截器
+ */
+AxiosInstance.interceptors.request.use(config => {
+  const token = sessionStorage.getItem('access_token');
+  if (token) {
+    config.headers.Authorization = 'Bearer ' + token;
   }
-);
+  const userIp = localStorage.getItem('user_ip');
+  if (userIp) {
+    // 方式一：加到headers
+    config.headers['X-Real-IP'] = userIp;
+  }
+  return config;
+},
+err => {
+  const response = err && err.response ? err.response : null;
+  const data = response ? response.data : null;
+  const status = response ? response.status : null;
+  const code = data && data.statusCode ? data.statusCode : null;
 
+  // 统一处理未登录 / token 失效（后端可能用 HTTP 401 或在 body 里带 statusCode=401）
+  if (status === 401 || code === 401) {
+    mgr.signOut();
+    window.location.href = '/#/login/loginHome';
+    // 不再把错误抛给业务代码，避免再弹 message
+    return new Promise(() => {}); // 返回一个 pending promise，终止后续链
+  }
+
+  // 423：账号被锁等，直接跳转，无需业务处理
+  if (status === 423) {
+    window.location.href = '/#/accessdenied';
+    return new Promise(() => {});
+  }
+  if (data) {
+    return Promise.reject(data);
+  }
+  // 其它错误交给业务层，err 保留原始结构，避免 err.data 为空时报 Cannot read...
+  return Promise.reject(err);
+}
+);
 /**
  * 响应拦截器
  */
@@ -52,12 +79,27 @@ AxiosInstance.interceptors.response.use(
     return response;
   },
   err => {
-    if (err.response.status === 401) {
+    const response = err && err.response ? err.response : null;
+    const data = response ? response.data : null;
+    const status = response ? response.status : null;
+    const code = data && data.statusCode ? data.statusCode : null;
+
+    // 统一处理未登录 / token 失效（后端可能用 HTTP 401 或在 body 里带 statusCode=401）
+    if (status === 401 || code === 401) {
       mgr.signOut();
-    } else if (err.response.status === 423) {
-      window.location.href = '../#/accessdenied';
+      window.location.href = '/#/login/loginHome';
+      return new Promise(() => {}); // 阻断后续
     }
-    return Promise.reject(err.response.data);
+
+    // 423：账号被锁等，直接跳转，无需业务处理
+    if (status === 423) {
+      window.location.href = '/#/accessdenied';
+      return new Promise(() => {});
+    }
+    if (data) {
+      return Promise.reject(data);
+    }
+    return Promise.reject(err);
   }
 );
 

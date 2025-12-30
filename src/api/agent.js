@@ -243,5 +243,15 @@ export default {
       params: params,
       headers: { Authorization: 'Bearer ' + header }
     });
+  },
+  // 修改备注
+  async updateMerchantDesc(params) {
+    let header = await mgr();
+    return api({
+      url: '/api/UserManage/UpdateUserDesc',
+      method: 'post',
+      data: params,
+      headers: { Authorization: 'Bearer ' + header }
+    });
   }
 };

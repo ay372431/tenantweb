@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-   
+
     <div class="tablebox mgt15">
       <div class="gs_title" style="color: white;">最新充值订单</div>
       <div class="gs_tablebox">
@@ -151,8 +151,7 @@ export default {
           this.$messageError(err.message);
         });
     },
-    
-    
+
     // 获取充值信息
     chargeInfo() {
       this.$api.home
@@ -177,7 +176,7 @@ export default {
           this.$messageError(err.message);
         });
     },
-    
+
     // 最新充值订单列表
     orderList() {
       this.$api.home
@@ -196,7 +195,7 @@ export default {
           this.$messageError(err.message);
         });
     },
-   
+
     // 获取用户信息
     getUser() {
       this.$api.home
@@ -223,7 +222,7 @@ export default {
           this.$messageError(err.message);
         });
     },
-    
+
     // 订单列表等待下发接口
     waitSendOrder(orderNum) {
       this.$api.home
@@ -281,7 +280,7 @@ export default {
                       this.$messageError('分区检测失败！');
                     }
                   });
-              }, 3000);
+              }, 500);
             }
           })
           .catch(() => {
@@ -308,26 +307,24 @@ export default {
           this.chargeInfoData.waitFlag = false;
           this.$messageError('下发超时,请检测网关！');
         });
-    },
-    
-   
+    }
+
   },
   created() {
-   // this.getAccountInfo();
-
-
+    // this.getAccountInfo();
 
     this.orderList();
- 
 
     this.getUser();
-   // this.getUserProfit();
-
+    // this.getUserProfit();
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
 .topinfo {
   float: right;
   width: 784px;

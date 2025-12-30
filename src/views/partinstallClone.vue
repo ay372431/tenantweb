@@ -10,7 +10,7 @@
     <div class="bg_fff">
       <div class="gs_title" style="color: white;">克隆分区</div>
       <div class="gs_listcontainer">
-       
+
         <dl class="clearfix">
           <dt>分区名称：</dt>
           <dd>
@@ -178,6 +178,27 @@
                 <el-radio :label="false">关闭</el-radio>
               </el-radio-group>
             </span>
+          </dd>
+        </dl>
+        <dl class="clearfix">
+          <dt>充值方式：</dt>
+          <dd>
+            <span class="inputbox pdt5">
+              <el-radio-group v-model="glodScan">
+                <el-radio :label="2">网页扫码</el-radio>
+                <el-radio :label="0">游戏内扫码</el-radio>
+                <el-radio :label="1">以上两者</el-radio>
+              </el-radio-group>
+            </span>
+          </dd>
+        </dl>
+        <dl class="clearfix" v-if="glodScan==1 || glodScan==0">
+          <dt>补丁下载：</dt>
+          <dd>
+            <span class="inputbox gs_textarea">
+              <div style="color: #333;text-decoration: none;font-size: 14px;"  @click="gorout">点击下载补丁</div>
+            </span>
+            <span class="tip_red">选择游戏内扫码许下载补丁文件放入游戏中，补丁默认编号是44，序号是4</span>
           </dd>
         </dl>
         <dl class="clearfix">
@@ -425,6 +446,9 @@ export default {
     };
   },
   methods: {
+    gorout() {
+      this.$router.push({ path: '/personal/wechat', query: { tab: 'ewmmb' } });
+    },
     // 获取分区信息
     getareainfo() {
       this.$api.groupmange
@@ -657,6 +681,7 @@ export default {
           });
       }
     },
+
     // 克隆成功后提示
     open() {
       this.$confirm(
@@ -759,6 +784,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
 .tip_red {
   color: red;
   padding: 10px 40px;

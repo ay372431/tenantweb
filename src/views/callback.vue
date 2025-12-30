@@ -16,7 +16,7 @@ export default {
         }),
         loadUserInfo: true,
         filterProtocolClaims: true,
-        response_mode: "query"
+        response_mode: 'query'
       })
         .signinRedirectCallback()
         .then(function () {
@@ -27,7 +27,7 @@ export default {
           setTimeout(function () {
             mgr.getRole().then(
               success => {
-                if (success === 'Employee') {
+                if (success === 'CustomRole') {
                   that.$router.replace({ path: '/employeemain/employeehome' });
                 } else {
                   that.$router.replace({ path: '/main/home' });
@@ -37,7 +37,6 @@ export default {
                 console.log(err);
               }
             );
-           
           }, 100);
         })
         .catch(function (e) { });

@@ -3,7 +3,7 @@
     <div class="settingbox clearfix">
       <div class="userinfo gs_shadow" style="height: 150px;width: 23%;">
         <div class="infobox">
-          <div style="display: flex;justify-content: center;align-items: center;">
+          <div style="display: flex;padding-left: 5px;">
             <!-- <el-upload class="avatar-uploader" accept=".jpg,.jpeg,.png" action="" :http-request="() => { }"
               :before-upload="fileSelect" :show-file-list="false">
               <img v-if="userInfo.imgurl" :src="userInfo.imgurl" class="avatar">
@@ -24,7 +24,7 @@
               </p> -->
               <p class="acout">{{ userInfo.userName }}</p>
               <p class="text">ID：{{ userInfo.id }}</p>
-              <p class="text">IP：{{ userInfo.ip?userInfo.ip:"127.0.0.1" }}</p>
+              <p class="text">IP：{{ userInfo.ip}}</p>
               <!-- <p class="range"><span>{{ userInfo.type ? '代理' : '商户' }}</span></p> -->
             </div>
           </div>
@@ -32,7 +32,8 @@
         <ul class="operbox">
           <li>
             <el-tooltip class="item" effect="dark" content="点击去绑定微信" placement="bottom">
-              <router-link to="/personal/weixin" tag="span">绑定微信</router-link>
+              <router-link v-if="$store.state.settlementType != 3" to="/personal/weixin" tag="span">绑定微信</router-link>
+              <span v-else style="color: #ccc; cursor: not-allowed;">绑定微信</span>
             </el-tooltip>
           </li>
           <li>
@@ -42,7 +43,7 @@
           </li>
           <li class="noboder">
             <el-tooltip class="item" effect="dark" content="点击查看操作日志" placement="bottom">
-              <router-link to="/personal/conectKey" tag='span'>通讯秘钥</router-link>
+              <router-link to="/main/conectKey" tag='span'>通讯秘钥</router-link>
             </el-tooltip>
           </li>
         </ul>
@@ -76,34 +77,52 @@
               </li>
             </ul>
             <div class="getbtn">
-              <el-button size="mini" type="danger" @click="$router.push({ path: '/agentsystem/merchant' })">代理中心</el-button>
-              <el-button size="mini" type="danger" @click="$router.push({ path: '/main/Withdrawalrecords' })">提现记录</el-button>
-              <el-button size="mini" type="danger" @click="$router.push({ path: '/main/withdrawapply' })">提现</el-button>
+              <el-button v-if="$store.state.userType && $store.state.settlementType !=3" size="mini" type="danger"
+                @click="$router.push({ path: '/agentsystem/merchant' })">代理中心</el-button>
+              <el-button size="mini" type="danger" v-if="this.bank.realName != '未知户'"
+                @click="$router.push({ path: '/main/Withdrawalrecords' })">提现记录</el-button>
+              <el-button size="mini" v-if="this.bank.realName != '未知户'" type="danger" @click="$router.push({ path: '/main/withdrawapply' })">提现</el-button>
             </div>
             <div class="btns">
               <el-tooltip class="item" effect="dark" content="点击查看账户安全" placement="bottom">
-                <router-link to="/personal/acountsafe" tag='span'>账户安全</router-link>
+                <router-link v-if="$store.state.settlementType != 3" to="/personal/acountsafe"
+                  tag='span'>账户安全</router-link>
+                <span v-else style="color: #ccc; cursor: not-allowed;">账户安全</span>
               </el-tooltip>
-              <el-tooltip class="item" effect="dark" content="点击查看产品结算比率" placement="bottom">
-                <router-link to="/main/rateList" tag='span' class="linebtn">结算比率</router-link>
+              <el-tooltip effect="dark" content="点击查看产品结算比率" placement="bottom">
+                <router-link v-if="$store.state.settlementType != 3" to="/main/rateList" tag='span'
+                  class="linebtn">结算比率</router-link>
+                <span v-else class="linebtn" style="color: #ccc; cursor: not-allowed;">结算比率</span>
               </el-tooltip>
               <!-- <el-tooltip class="item" effect="dark" content="点击查看帐户提现记录" placement="bottom">
                 <router-link to="/main/Withdrawalrecords" tag="span" class="linebtn">提现记录</router-link>
               </el-tooltip> -->
               <el-tooltip class="item" effect="dark" content="点击查看账户收支记录" placement="bottom">
-                <router-link to="/main/Withdrawalrecords" tag="span" class="linebtn">账户收支</router-link>
+                <router-link v-if="$store.state.settlementType != 3" to="/main/Withdrawalrecords" tag="span"
+                  class="linebtn">账户收支</router-link>
+                <span v-else class="linebtn" style="color: #ccc; cursor: not-allowed;">账户收支</span>
               </el-tooltip>
-              <el-tooltip class="item" effect="dark" content="点击查看账户收支记录" placement="bottom">
-                <router-link to="/main/employee" tag="span" class="linebtn">子账户</router-link>
+              <el-tooltip class="item" effect="dark" content="点击查看子账户" placement="bottom">
+                <router-link v-if="$store.state.settlementType != 3" to="/main/employee" tag="span"
+                  class="linebtn">子账户</router-link>
+                <span v-else class="linebtn" style="color: #ccc; cursor: not-allowed;">子账户</span>
               </el-tooltip>
-              <el-tooltip class="item" effect="dark" content="点击查看账户收支记录" placement="bottom">
-                <router-link to="/main/wechat" tag="span" class="linebtn">微信动态密保</router-link>
+              <el-tooltip class="item" effect="dark" content="点击查看微信动态密保" placement="bottom">
+                <router-link v-if="$store.state.settlementType != 3" to="/main/wechat" tag="span"
+                  class="linebtn">微信动态密保</router-link>
+                <span v-else class="linebtn" style="color: #ccc; cursor: not-allowed;">微信动态密保</span>
               </el-tooltip>
-              <el-tooltip class="item" effect="dark" content="点击查看账户收支记录" placement="bottom">
-                <router-link to="/main/orderInterval" tag="span" class="linebtn">定时任务</router-link>
+              <el-tooltip class="item" effect="dark" content="点击查看定时任务" placement="bottom">
+                <router-link v-if="$store.state.settlementType != 3" to="/main/orderInterval" tag="span"
+                  class="linebtn">定时任务</router-link>
+                <span v-else class="linebtn" style="color: #ccc; cursor: not-allowed;">定时任务</span>
               </el-tooltip>
-              <el-tooltip class="item" effect="dark" content="点击查看账户收支记录" placement="bottom">
+              <el-tooltip class="item" effect="dark" content="点击查看登录日志" placement="bottom">
                 <router-link to="/main/Userlogs" tag="span" class="linebtn">登录日志</router-link>
+              </el-tooltip>
+              <el-tooltip class="item" effect="dark" content="点击领取礼品" placement="bottom">
+                <!-- <input type="button" class="linebtn" value="领取礼品" @click="goOrder"> -->
+                <span class="linebtn" style="cursor:pointer;" @click="goOrder">领取礼品</span>
               </el-tooltip>
             </div>
           </div>
@@ -115,66 +134,75 @@
         <div class="chargebox gs_shadow">
           <div class="chargebox_t">
             <ul>
-            <li>
-              <p class="tit">昨日充值</p>
-              <p class="num">{{ chargeInfoData.todaycharge }}</p>
-            </li>
-            <li>
-              <p class="tit">昨日收入</p>
-              <p class="num">{{ chargeInfoData.todayProfit }}</p>
-            </li>
-            <li>
-              <p class="tit">今日充值</p>
-              <p class="num">{{ chargeInfoData.todaycharge }}</p>
-            </li>
-            <li>
-              <p class="tit">今日收入</p>
-              <p class="num">{{ chargeInfoData.todayProfit }}</p>
-            </li>
-            <li v-loading="chargeInfoData.waitFlag">
-              <p class="tit">等待发送</p>
-              <el-tooltip v-if="chargeInfoData.waitSend > 0" class="item" effect="dark" content="点击下发" placement="bottom">
-                <p class="num" style="cursor:pointer;" @click="waitSentAll">{{ chargeInfoData.waitSend }}</p>
-              </el-tooltip>
-              <p class="num" v-else>{{ chargeInfoData.waitSend }}</p>
-            </li>
-            <li v-if="userInfo.type">
-              <p class="tit">代理收入</p>
-              <p class="num">{{ chargeInfoData.agentProfit }}</p>
-            </li>
-            <li v-if="userInfo.type">
-              <p class="tit">下属商户</p>
-              <p class="num">{{ chargeInfoData.tenantCount }}</p>
-            </li>
-            <li v-if="userInfo.type">
-              <p class="tit">代理充值</p>
-              <p class="num">{{ chargeInfoData.agentPayAmount }}</p>
-            </li>
-          </ul>
-          <div class="carousel">
-            <el-carousel height="40px" direction="vertical" :autoplay="true">
-              <el-carousel-item v-for="item in noticeList" :key="item.id">
-                <div class="textbox clearfix" @click="detialNotice(item)">
-                  <span class="tit">{{ item.title }}</span>
-                  <span class="time">{{ item.date }}</span>
-                </div>
-              </el-carousel-item>
-            </el-carousel>
-          </div>
+              <li>
+                <p class="tit">昨日充值</p>
+                <p class="num">{{ chargeInfoData.yesterdayPayAmount }}</p>
+              </li>
+              <li>
+                <p class="tit">昨日收入</p>
+                <p class="num">{{ chargeInfoData.yesterdayProfit }}</p>
+              </li>
+              <li>
+                <p class="tit">今日充值</p>
+                <p class="num">{{ chargeInfoData.todaycharge }}</p>
+              </li>
+              <li>
+                <p class="tit">今日收入</p>
+                <p class="num">{{ chargeInfoData.todayProfit }}</p>
+              </li>
+              <li v-loading="chargeInfoData.waitFlag">
+                <p class="tit">等待发送</p>
+                <el-tooltip v-if="chargeInfoData.waitSend > 0" class="item" effect="dark" content="点击下发"
+                  placement="bottom">
+                  <p class="num" style="cursor:pointer;" @click="waitSentAll">{{ chargeInfoData.waitSend }}</p>
+                </el-tooltip>
+                <p class="num" v-else>{{ chargeInfoData.waitSend }}</p>
+              </li>
+              <li v-if="userInfo.type">
+                <p class="tit">代理收入</p>
+                <p class="num">{{ chargeInfoData.agentProfit }}</p>
+              </li>
+              <li v-if="userInfo.type">
+                <p class="tit">下属商户</p>
+                <p class="num">{{ chargeInfoData.tenantCount }}</p>
+              </li>
+              <li v-if="userInfo.type">
+                <p class="tit">代理充值</p>
+                <p class="num">{{ chargeInfoData.agentPayAmount }}</p>
+              </li>
+            </ul>
+            <div class="carousel">
+              <el-carousel height="40px" direction="vertical" :autoplay="true">
+                <el-carousel-item v-for="item in noticeList" :key="item.id">
+                  <div class="textbox clearfix" @click="detialNotice(item)">
+                    <span class="tit">{{ item.title }}</span>
+                    <span class="time">{{ item.date }}</span>
+                  </div>
+                </el-carousel-item>
+              </el-carousel>
+            </div>
           </div>
         </div>
       </div>
-      
+
     </div>
     <div class="functionbox gs_shadow mgt15">
       <div class="gs_title" style="background: initial;">功能设置</div>
       <div style="display: flex;font-size: 13px;">
         <ul style="width: 47%;">
+          <li class="icon11">
+            <span class="mgr15">订单通知</span>
+            <span>关闭后不会发送充值信息</span>
+            <p class="fr">
+              <el-switch v-model="userInfo.wechatState" @change="wechatOff" active-color="#13ce66"
+                inactive-color="#ff4949"></el-switch>
+            </p>
+          </li>
           <li class="icon1">
             <span>在线客服</span>
             <el-tooltip class="item" effect="dark" content="点击可查看编辑客服" placement="bottom">
-              <span class="basecolor" style="cursor:pointer; margin-left:20px;"
-                @click="editserve">客服电话：<i>{{ functionSet.serverPhone }}</i></span>
+              <span class="basecolor" style="cursor:pointer; margin-left:20px;" @click="editserve">客服电话：<i>{{
+                functionSet.serverPhone }}</i></span>
             </el-tooltip>
             <p class="fr">
               <el-switch v-model="functionSet.serverSwitch" @change="serverOff" active-color="#13ce66"
@@ -215,7 +243,7 @@
             <!-- <span>手机/QQ设置</span> -->
             <p class="fr">
               <span class="inputbox pdt5">
-                <el-radio-group  v-model="functionSet.payType" @change="setPayType">
+                <el-radio-group v-model="functionSet.payType" @change="setPayType">
                   <el-radio style="margin-right: initial;color: #ff4440 !important;" :label="0">微信优先</el-radio>
                   <el-radio style="margin-right: initial;color: blue;" :label="1">支付宝优先</el-radio>
                   <!-- <el-radio style="margin-right: initial;color: green;" :label="2">选填</el-radio> -->
@@ -227,7 +255,7 @@
             <span class="mgr15">充值角色名设置</span>
             <p class="fr">
               <span class="inputbox pdt5">
-                <el-radio-group  v-model="functionSet.gameNameState" @change="SetGameName">
+                <el-radio-group v-model="functionSet.gameNameState" @change="SetGameName">
                   <el-radio style="margin-right: initial;color: #ff4440 !important;" :label="0">关闭</el-radio>
                   <el-radio style="margin-right: initial;color: blue;" :label="1">必填</el-radio>
                   <el-radio style="margin-right: initial;color: green;" :label="2">选填</el-radio>
@@ -240,7 +268,9 @@
             <span>单笔最小金额{{ dialogcharge.nowMincharge.toFixed(2) }}元</span>
             <span>单笔最大金额{{ dialogcharge.nowMaxcharge.toFixed(2) }}元</span>
             <p class="fr">
-              <span class="settingBtn" @click="dialogcharge.show = true">设置</span>
+              <span v-if="$store.state.settlementType != 3 || hasMenu(10)" class="settingBtn"
+                @click="dialogcharge.show = true">设置</span>
+              <span v-else style="color: #ccc; cursor: not-allowed;">设置</span>
             </p>
           </li>
           <li class="icon5" v-if="userInfo.type">
@@ -257,13 +287,13 @@
       <div class="gs_title" style="background: initial;">最新充值订单</div>
       <div class="gs_tablebox">
         <el-table ref="moduleTable" size="mini" :data="tableData" border style="width: 100%" stripe>
-          <el-table-column prop="orderNumber" label="订单号" width="180">
+          <el-table-column prop="orderNumber" label="订单号" width="200">
           </el-table-column>
           <el-table-column prop="playerAccount" label="充值账号" width="120">
           </el-table-column>
           <el-table-column prop="playerQq" label="玩家QQ" width="120">
           </el-table-column>
-          <el-table-column prop="partitionsName" label="所属分区" width="230">
+          <el-table-column prop="partitionsName" label="所属分区" width="210">
           </el-table-column>
           <el-table-column label="订单金额">
             <template slot-scope="scope">
@@ -346,6 +376,14 @@
       <p class="tc pdb20 mgt15">
         <el-button size="mini" type="primary" @click="gofinishInfo">完善信息</el-button>
         <el-button size="mini" type="info" @click="dialog3.show = false">取消</el-button>
+      </p>
+    </el-dialog>
+    <el-dialog title="提示" :close-on-click-modal="false" :visible.sync="dialog5.show" custom-class="gs_dialog"
+      width="400px">
+      <p>您还未签约，请尽快前往签约！</p>
+      <p class="tc pdb20 mgt15">
+        <el-button size="mini" type="primary" @click="goqy">去签约</el-button>
+        <el-button size="mini" type="info" @click="dialog5.show = false">取消</el-button>
       </p>
     </el-dialog>
     <!-- 编辑客服信息弹框 -->
@@ -431,37 +469,37 @@
       <ul class="areaContainer clearfix">
         <li :class="{ on: dialogSkins.skinNums === 0 }" @click="handleSkinChange(0)">
           <el-tooltip class="item" effect="dark" content="默认皮肤（怀旧）" placement="bottom">
-            <img class="imgskin" src="../assets/images/skin0.jpg" alt="">
+            <img class="imgskin" src="../assets/images/skin0.png" alt="">
           </el-tooltip>
         </li>
         <li :class="{ on: dialogSkins.skinNums === 1 }" @click="handleSkinChange(1)">
           <el-tooltip class="item" effect="dark" content="深沉红" placement="bottom">
-            <img class="imgskin" src="../assets/images/skin1.jpg" alt="">
+            <img class="imgskin" src="../assets/images/skin1.png" alt="">
           </el-tooltip>
         </li>
-        <li :class="{on:dialogSkins.skinNums===2}" @click="handleSkinChange(2)">
+        <li :class="{ on: dialogSkins.skinNums === 2 }" @click="handleSkinChange(2)">
           <el-tooltip class="item" effect="dark" content="莫兰迪" placement="bottom">
-            <img class="imgskin" src="../assets/images/skin2.jpg" alt="">
+            <img class="imgskin" src="../assets/images/skin2.png" alt="">
           </el-tooltip>
         </li>
         <li :class="{ on: dialogSkins.skinNums === 3 }" @click="handleSkinChange(3)">
           <el-tooltip class="item" effect="dark" content="海洋蓝" placement="bottom">
-            <img class="imgskin" src="../assets/images/skin0.jpg" alt="">
+            <img class="imgskin" src="../assets/images/skin3.png" alt="">
           </el-tooltip>
         </li>
         <li :class="{ on: dialogSkins.skinNums === 4 }" @click="handleSkinChange(4)">
           <el-tooltip class="item" effect="dark" content="活力橙" placement="bottom">
-            <img class="imgskin" src="../assets/images/skin1.jpg" alt="">
+            <img class="imgskin" src="../assets/images/skin4.png" alt="">
           </el-tooltip>
         </li>
-        <li :class="{on:dialogSkins.skinNums===5}" @click="handleSkinChange(5)">
+        <li :class="{ on: dialogSkins.skinNums === 5 }" @click="handleSkinChange(5)">
           <el-tooltip class="item" effect="dark" content="晶莹紫" placement="bottom">
-            <img class="imgskin" src="../assets/images/skin2.jpg" alt="">
+            <img class="imgskin" src="../assets/images/skin5.png" alt="">
           </el-tooltip>
         </li>
-        <li :class="{on:dialogSkins.skinNums===6}" @click="handleSkinChange(6)">
+        <li :class="{ on: dialogSkins.skinNums === 6 }" @click="handleSkinChange(6)">
           <el-tooltip class="item" effect="dark" content="商务灰" placement="bottom">
-            <img class="imgskin" src="../assets/images/skin2.jpg" alt="">
+            <img class="imgskin" src="../assets/images/skin6.png" alt="">
           </el-tooltip>
         </li>
       </ul>
@@ -472,14 +510,24 @@
             <img class="imgskin" src="../assets/images/skin0.jpg" alt="">
           </el-tooltip>
         </li>
-        <li :class="{ on: dialogSkin.skinNum === 1 }" @click="dialogSkin.skinNum = 1">
+        <!-- <li :class="{ on: dialogSkin.skinNum === 1 }" @click="dialogSkin.skinNum = 1">
           <el-tooltip class="item" effect="dark" content="浅蓝皮肤" placement="bottom">
             <img class="imgskin" src="../assets/images/skin1.jpg" alt="">
           </el-tooltip>
         </li>
-        <li :class="{on:dialogSkin.skinNum===2}" @click="dialogSkin.skinNum=2">
+        <li :class="{ on: dialogSkin.skinNum === 2 }" @click="dialogSkin.skinNum = 2">
           <el-tooltip class="item" effect="dark" content="带二维码" placement="bottom">
             <img class="imgskin" src="../assets/images/skin2.jpg" alt="">
+          </el-tooltip>
+        </li> -->
+        <li :class="{ on: dialogSkin.skinNum === 3 }" @click="dialogSkin.skinNum = 3">
+          <el-tooltip class="item" effect="dark" content="浅蓝皮肤" placement="bottom">
+            <img class="imgskin" src="../assets/images/sk3.png" alt="">
+          </el-tooltip>
+        </li>
+        <li :class="{ on: dialogSkin.skinNum === 4 }" @click="dialogSkin.skinNum = 4">
+          <el-tooltip class="item" effect="dark" content="灰色皮肤" placement="bottom">
+            <img class="imgskin" src="../assets/images/sk4.png" alt="">
           </el-tooltip>
         </li>
       </ul>
@@ -515,7 +563,9 @@ export default {
         waitSend: 0,
         agentProfit: 0.0,
         tenantCount: 0,
-        agentPayAmount: 0.0
+        agentPayAmount: 0.0,
+        yesterdayPayAmount: 0.0,
+        yesterdayProfit: 0.0
       },
       // 功能设置
       functionSet: {
@@ -528,6 +578,7 @@ export default {
         linkurl: 'https://game.369zf.cn/:80/#/login/loginregister?uuid=d2dc1312', // 推广注册的链接
         payType: 0, // 支付方式优先
         gameNameState: 0,
+        wechatSwitch: false
       },
       // 修改密码弹框
       dialog: {
@@ -544,19 +595,24 @@ export default {
       // 用户信息
       userInfo: {
         id: '',
-        userName: 'Tenant',
+        userName: '',
         type: false,
         imgurl: '',
         isSigned: false,
         signUrl: '',
-        lxfs:0,
-        jsm:0
+        lxfs: 0,
+        jsm: 0,
+        ip: '',
+        wechatState: false
       },
       noticeList: [], // 公告信息
       waitTableFlag: false, // table中的等待
       waitTableIndex: '', // table中的等待index
       tableData: [],
       dialog3: {
+        show: false
+      },
+      dialog5: {
         show: false
       },
       dialog4: {
@@ -586,7 +642,10 @@ export default {
         show: false,
         skinNums: 0
       },
+
+      bank: [],
       pageLoading: false, // 新增全局loading状态
+      isQY: false // 是否强制签约
     };
   },
   methods: {
@@ -609,15 +668,17 @@ export default {
             this.$store.commit('saveType', userRes.data.type);
             this.$store.commit('changeNickName', userRes.data.userName);
             this.$store.commit('changeId', userRes.data.id);
+            this.$store.commit('changeqyState', userRes.data.isQY);
             this.functionSet.serverSwitch = userRes.data.serviceState;
             this.functionSet.gamerSwitch = userRes.data.leaveState;
             this.functionSet.phoneSwitch = userRes.data.phoneState;
-            this.dialogSkin.skinNum = userRes.data.defaultSkin;
             this.dialogSkins.skinNums = userRes.data.defaultSkin;
+            this.dialogSkin.skinNum = userRes.data.rechargSkin;
             this.userInfo.isSigned = userRes.data.isSigned;
             this.userInfo.signUrl = userRes.data.signUrl;
             this.userInfo.lxfs = 0;
             this.userInfo.jsm = 0;
+            this.userInfo.wechatState = userRes.data.wechatState;
           }
           // 充值信息
           if (chargeRes.status === 200) {
@@ -627,11 +688,14 @@ export default {
             this.chargeInfoData.agentProfit = chargeRes.data.agentProfit.toFixed(2);
             this.chargeInfoData.tenantCount = chargeRes.data.tenantCount;
             this.chargeInfoData.agentPayAmount = chargeRes.data.agentPayAmount.toFixed(2);
+            this.chargeInfoData.yesterdayPayAmount = chargeRes.data.yesterdayPayAmount.toFixed(2);
+            this.chargeInfoData.yesterdayProfit = chargeRes.data.yesterdayProfit.toFixed(2);
           }
           // 推广链接（仅代理用户显示）
           if (this.userInfo.type && linkRes.status === 200) {
             this.functionSet.linkurl = linkRes.data;
           }
+          console.log(this.$store.state);
         })
         .catch((err) => {
           this.$messageError(err.message);
@@ -668,11 +732,10 @@ export default {
     },
     // 获取帐户信息
     getAccountInfo() {
-      this.$api.home
+      return this.$api.home
         .getAccountInfo()
         .then((data) => {
           if (data.status === 200) {
-            // console.log('用户信息'+data);
             this.accountInfo.accout = data.data.accountAmount.toFixed(2);
             this.accountInfo.frozen = data.data.frozenAmount.toFixed(2);
             this.accountInfo.withdraw = data.data.withdrawableAmount.toFixed(2);
@@ -792,6 +855,15 @@ export default {
     },
     // 在线客服off/on
     serverOff() {
+      if (this.$store.state.settlementType === 3 && !this.hasMenu(5)) {
+        this.$messageError('没有操作权限！');
+        if (this.functionSet.serverSwitch) {
+          this.functionSet.serverSwitch = false;
+        } else {
+          this.functionSet.serverSwitch = true;
+        }
+        return;
+      }
       this.$api.home
         .serviceOff()
         .then((data) => {
@@ -810,6 +882,15 @@ export default {
     },
     // 玩家留言off/on
     gamerOff() {
+      if (this.$store.state.settlementType === 3 && !this.hasMenu(9)) {
+        this.$messageError('没有操作权限！');
+        if (this.functionSet.gamerSwitch) {
+          this.functionSet.gamerSwitch = false;
+        } else {
+          this.functionSet.gamerSwitch = true;
+        }
+        return;
+      }
       this.$api.home
         .leaveMessageOff()
         .then((data) => {
@@ -826,9 +907,18 @@ export default {
           this.$messageError(err.message);
         });
     },
-    //设置通道优先
-    setPayType(){
-        this.$api.home
+    // 设置通道优先
+    setPayType() {
+      if (this.$store.state.settlementType === 3 && !this.hasMenu(6)) {
+        this.$messageError('没有操作权限！');
+        if (this.functionSet.payType === 1) {
+          this.functionSet.payType = 0;
+        } else {
+          this.functionSet.payType = 1;
+        }
+        return;
+      }
+      this.$api.home
         .setPayTypeState(
           {
             payType: this.functionSet.payType
@@ -836,9 +926,9 @@ export default {
         )
         .then((data) => {
           if (data.status === 200) {
-            if (this.functionSet.payType == 1) {
+            if (this.functionSet.payType === 1) {
               this.$messageSuccess('开启：【支付宝优先】');
-            } else if(this.functionSet.payType == 0) {
+            } else if (this.functionSet.payType === 0) {
               this.$messageSuccess('开启：【微信优先】');
             }
           }
@@ -848,9 +938,20 @@ export default {
           this.$messageError(err.message);
         });
     },
-    //设置充值角色名
-    SetGameName(){
-        this.$api.home
+    // 设置充值角色名
+    SetGameName() {
+      if (this.$store.state.settlementType === 3 && !this.hasMenu(8)) {
+        this.$messageError('没有操作权限！');
+        if (this.functionSet.gameNameState === 1) {
+          this.functionSet.gameNameState = 0;
+        } else if (this.functionSet.gameNameState === 2) {
+          this.functionSet.gameNameState = 0;
+        } else {
+          this.functionSet.gameNameState = 1;
+        }
+        return;
+      }
+      this.$api.home
         .SetGameName(
           {
             gameNameState: this.functionSet.gameNameState
@@ -858,11 +959,11 @@ export default {
         )
         .then((data) => {
           if (data.status === 200) {
-            if (this.functionSet.gameNameState == 0) {
+            if (this.functionSet.gameNameState === 0) {
               this.$messageSuccess('关闭：【充值角色名设置】');
-            } else if(this.functionSet.gameNameState == 1) {
+            } else if (this.functionSet.gameNameState === 1) {
               this.$messageSuccess('开启：【充值角色名设置必填】');
-            }else if(this.functionSet.gameNameState == 2){
+            } else if (this.functionSet.gameNameState === 2) {
               this.$messageSuccess('开启：【充值角色名设置选填】');
             }
           }
@@ -874,6 +975,15 @@ export default {
     },
     // 玩家手机号码
     phoneOff() {
+      if (this.$store.state.settlementType === 3 && !this.hasMenu(11)) {
+        this.$messageError('没有操作权限！');
+        if (this.functionSet.phoneSwitch) {
+          this.functionSet.phoneSwitch = false;
+        } else {
+          this.functionSet.phoneSwitch = true;
+        }
+        return;
+      }
       this.$api.home
         .phoneOff()
         .then((data) => {
@@ -899,11 +1009,31 @@ export default {
     noticeInit() {
       this.noticeDialog.detail = {};
     },
+    wechatOff() {
+      this.$api.home
+        .wechatOff()
+        .then((data) => {
+          if (data.status === 200) {
+            if (this.userInfo.wechatState) {
+              this.$messageSuccess('开启：【订单发送】');
+            } else {
+              this.$messageSuccess('关闭：【订单发送】');
+            }
+          }
+        })
+        .catch((err) => {
+          this.userInfo.wechatState = !this.userInfo.wechatState;
+          this.$messageError(err.message);
+        });
+    },
     // 获取用户信息
     getUser() {
       this.$api.home
         .getUserinfo()
         .then((data) => {
+          // eslint-disable-next-line no-undef
+          const color = skinColorMap[data.data.defaultSkin] || '#0398d6';
+          this.$store.commit('SET_THEME_COLOR', color);
           this.userInfo.id = data.data.id;
           this.userInfo.userName = data.data.userName;
           this.userInfo.type = data.data.type;
@@ -914,12 +1044,13 @@ export default {
           this.functionSet.serverSwitch = data.data.serviceState;
           this.functionSet.gamerSwitch = data.data.leaveState;
           this.functionSet.phoneSwitch = data.data.phoneState;
-          this.dialogSkin.skinNum = data.data.defaultSkin;
-          this.dialogSkins.skinNum = data.data.adminSkin;
+          this.userInfo.wechatState = data.data.wechatState;
           this.userInfo.isSigned = data.data.isSigned;
           this.userInfo.signUrl = data.data.signUrl;
           this.userInfo.lxfs = 0;
           this.userInfo.jsm = 0;
+          this.dialogSkins.skinNums = data.data.defaultSkin;
+          this.dialogSkin.skinNum = data.data.rechargSkin;
           if (this.userInfo.type) {
             this.getlink();
           }
@@ -963,6 +1094,12 @@ export default {
         .then((data) => {
           if (data.status === 200) {
             this.dialog3.show = !data.data;
+            if (!this.dialog3.show) {
+              console.log(this.$store.state);
+              if (this.$store.state.qyState && !this.userInfo.isSigned) {
+                this.dialog5.show = true;
+              }
+            }
           }
         })
         .catch((err) => {
@@ -971,10 +1108,18 @@ export default {
     },
     // 前去完善个人信息
     gofinishInfo() {
-      this.$router.push({ path: '/personal/finishInfo' });
+      this.$router.push({ path: '/personal/baseInfo' });
+    },
+    // 前去签约
+    goqy() {
+      this.$router.push({ path: '/personal/elecsign' });
     },
     // 编辑在线客服
     editserve() {
+      if (this.$store.state.settlementType === 3 && !this.hasMenu(5)) {
+        this.$messageError('没有操作权限！');
+        return;
+      }
       this.dialog4.serverlist = JSON.parse(
         JSON.stringify(this.functionSet.serverQQ)
       );
@@ -1156,7 +1301,7 @@ export default {
                       this.$messageError('分区检测失败！');
                     }
                   });
-              }, 3000);
+              }, 500);
             }
           })
           .catch(() => {
@@ -1184,7 +1329,27 @@ export default {
           this.$messageError('下发超时,请检测网关！');
         });
     },
-    //实时修改皮肤
+    // 获取信息
+    getInfo() {
+      this.$api.home
+        .withdrawApply()
+        .then((data) => {
+          if (data.status === 200) {
+            this.bank.account = data.data.overMoney;
+            this.bank.fee = data.data.fee.toFixed(2);
+            this.bank.bankName = data.data.bankName;
+            this.bank.player = data.data.realName;
+            this.bank.bankNumber = data.data.bankNumber;
+            this.bank.cansettle = data.data.canSettlementMoney;
+            this.bank.isfrozen = data.data.activated;
+            this.bank.realName = data.data.realName;
+          }
+        })
+        .catch((err) => {
+          this.$messageError(err.message);
+        });
+    },
+    // 实时修改皮肤
     handleSkinChange(num) {
       this.dialogSkins.skinNums = num;
       localStorage.setItem('skinNum', num); // 立即保存
@@ -1192,21 +1357,18 @@ export default {
     },
     // 获取皮肤类型
     getSkin() {
-      this.$api.home
-        .getUserinfo()
-        .then((data) => {
-          this.dialogSkin.skinNum = data.data.defaultSkin;
-          this.dialogSkin.show = true;
-        })
-        .catch((err) => {
-          this.$messageError(err.message);
-        });
+      if (this.$store.state.settlementType === 3 && this.hasMenu(7)) {
+        this.$messageError('没有操作权限！');
+        return;
+      }
+      this.dialogSkin.show = true;
     },
     // 设置皮肤
     setSkin() {
       this.$api.home
         .setSkin({
-          skinIndex: this.dialogSkins.skinNums
+          skinIndex: this.dialogSkins.skinNums,
+          rechargSkin: this.dialogSkin.skinNum
         })
         .then((data) => {
           this.$messageSuccess('皮肤设置成功！');
@@ -1216,7 +1378,7 @@ export default {
           this.$messageError(err.message);
         });
     },
-    //获取IP
+    // 获取IP
     getlist() {
       this.$api.userLog
         .logList({
@@ -1227,36 +1389,68 @@ export default {
           if (data.status === 204) {
             this.userInfo.ip = '';
           } else if (data.status === 200) {
-            if(data.data[0].ip=='::1'){
-              this.userInfo.ip = ''
-            }else{
-              this.userInfo.ip = data.data[0].ip
-            }
-            console.log(data)
+            this.userInfo.ip = data.data[0].ip;
+            // console.log(data)
           }
         })
         .catch((err) => {
           this.$messageError(err.message);
         });
     },
+    hasMenu(menuId) {
+      const menuIds = (this.$store.state.roleInfo || '').split(',').map(id => Number(id));
+      return menuIds.includes(menuId);
+    },
+    goOrder() {
+      this.$api.home
+        .addEmsOrder()
+        .then((data) => {
+          if (data.status === 200) {
+            this.$messageSuccess('领取成功!');
+          } else {
+            this.$messageError(data.message);
+          }
+        })
+        .catch((err) => {
+          this.$messageError(err.message);
+        });
+    }
   },
   created() {
     this.loadAllData();
-    this.getAccountInfo();
+    // 等待获取账户信息后再检查是否需要弹签约提示，避免竞态
+    this.getAccountInfo().then(() => {
+      this.checkpersonInfo();
+    }).catch(() => {
+      // 即使获取账户信息失败，也仍然尝试检查个人信息（可选）
+      this.checkpersonInfo();
+    });
     this.cashWithdraw();
     this.getNotice();
     this.orderList();
     this.servicePhone();
     this.getMessageCount();
     this.getUserProfit();
-    this.checkpersonInfo();
+    this.getInfo();
+    // this.checkpersonInfo(); 已移动到 getAccountInfo 完成后调用
     this.getMimicharge();
     this.getlist();
+    // 获取当前角色所有菜单权限 id 数组
+    // const menuIds = (this.$store.state.roleInfo || '').split(',').map(id => Number(id));
+    // // this.getSkin();
+    // // 判断是否有某个菜单权限
+    // function hasMenu(menuId) {
+    //   return menuIds.includes(menuId);
+    // }
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
+
 .topinfo {
   float: right;
   width: 784px;
@@ -1327,12 +1521,13 @@ export default {
   .chargebox {
     margin-top: 15px;
     padding: 2px 20px 1px;
-    
-    .chargebox_t{
-        border: 1px solid #facd89;
-        padding: 0 15px ;
-        margin-bottom: 15px;
+
+    .chargebox_t {
+      border: 1px solid #facd89;
+      padding: 0 15px;
+      margin-bottom: 15px;
     }
+
     ul {
       display: flex;
       flex-flow: row nowrap;
@@ -1359,7 +1554,8 @@ export default {
 
     .carousel {
       padding-left: 40px;
-      background: url(../assets/images/tip.png) no-repeat 0 center;
+      background: url(../assets/images/警鸣喇叭.png) no-repeat 0 center;
+      background-size: 22px 22px;
 
       .textbox {
         display: flex;
@@ -1495,7 +1691,8 @@ export default {
 
       .linkspan {
         display: inline-block;
-        max-width: 70%; /* 根据实际宽度调整 */
+        max-width: 70%;
+        /* 根据实际宽度调整 */
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -1518,42 +1715,60 @@ export default {
       }
 
       &.icon1 {
-        background: url(../assets/images/set_icon1.png) no-repeat 6px center;
+        background: url(../assets/images/客服.png) no-repeat 3px center;
+        background-size: 17px 17px;
       }
 
       &.icon2 {
-        background: url(../assets/images/set_icon2.png) no-repeat 4px center;
+        background: url(../assets/images/留言投诉.png) no-repeat 3px center;
+        background-size: 20px 20px;
       }
 
       &.icon3 {
-        background: url(../assets/images/set_icon3.png) no-repeat 6px center;
+        background: url(../assets/images/电话.png) no-repeat 3px center;
+        background-size: 20px 20px;
       }
 
       &.icon4 {
-        background: url(../assets/images/set_icon4.png) no-repeat 3px center;
-        background-size: auto 18px;
+        background: url(../assets/images/icon-会长充值记录.png) no-repeat 3px center;
+        background-size: 20px 20px;
       }
 
       &.icon5 {
-        background: url(../assets/images/set_icon5.png) no-repeat 2px center;
-        background-size: auto 18px;
+        background: url(../assets/images/set_icon5.png) no-repeat 3px center;
+        background-size: 20px 20px;
       }
 
       &.icon6 {
-        background: url(../assets/images/set_icon6.png) no-repeat 6px center;
-        background-size: auto 17px;
+        background: url(../assets/images/皮肤.png) no-repeat 3px center;
+        background-size: 20px 20px;
       }
+
       &.icon7 {
-        background: url(../assets/images/login/td.png) no-repeat 6px center;
-        background-size: auto 17px;
+        background: url(../assets/images/资金支付通道.png) no-repeat 3px center;
+        background-size: 20px 20px;
       }
+
       &.icon8 {
-        background: url(../assets/images/login/mc.png) no-repeat 6px center;
-        background-size: auto 17px;
+        background: url(../assets/images/角色管理.png) no-repeat 3px center;
+        background-size: 20px 20px;
       }
-      &:last-child {
-        margin-bottom: 15px;
+      // &.icon9 {
+      //   background: url(../assets/images/phone.png) no-repeat 6px center;
+      //   background-size: auto 17px;
+      // }
+      // &.icon10 {
+      //   background: url(../assets/images/订单发送.png) no-repeat 6px center;
+      //   background-size: auto 17px;
+      // }
+      &.icon11 {
+        background: url(../assets/images/订单.png) no-repeat 3px center;
+        background-size: 20px 20px;
       }
+
+      // &:last-child {
+      //   margin-bottom: 15px;
+      // }
     }
   }
 

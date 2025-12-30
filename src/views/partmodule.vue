@@ -24,9 +24,9 @@
         <router-link style="margin-right: 20px;margin-left: 10px;" tag="span" :to="{path:'/main/partinstallmod?type=1'}">
           <el-button style="background-color: #f69c0e;color: white;font-weight: 700;" size="small" type="button">+热血传奇模版</el-button>
         </router-link>
-        <router-link tag="span" :to="{path:'/main/partinstallmod?type=2'}">
+        <!-- <router-link tag="span" :to="{path:'/main/partinstallmod?type=2'}">
           <el-button style="background-color: #35aa47;color: white;font-weight: 700;" size="small" type="button">+传奇世界模版</el-button>
-        </router-link>
+        </router-link> -->
       </div>
     </div>
     <div class="tablebox pdb15 pdt20 bg_fff">
@@ -83,7 +83,7 @@ export default {
     };
   },
   methods: {
-    //前往分区列表页
+    // 前往分区列表页
     toPartList(id) {
       this.$router.push({ path: '/main/Zoningmanagement', query: { tempId: id } });
     },
@@ -188,4 +188,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
 </style>

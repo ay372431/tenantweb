@@ -162,19 +162,19 @@ input, button, select, textarea {
     cursor: pointer;
   }
   // 红色向右三角形
-  &::before {
-    content: '';
-    display: inline-block;
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 0;
-    height: 0;
-    border-top: 8px solid transparent;
-    border-bottom: 8px solid transparent;
-    border-left: 14px solid #0398d6;
-  }
+  // &::before {
+  //   content: '';
+  //   display: inline-block;
+  //   position: absolute;
+  //   left: 0;
+  //   top: 50%;
+  //   transform: translateY(-50%);
+  //   width: 0;
+  //   height: 0;
+  //   border-top: 8px solid transparent;
+  //   border-bottom: 8px solid transparent;
+  //   border-left: 14px solid #0398d6;
+  // }
 }
 // 对table的样式改造
 .gs_tablebox {

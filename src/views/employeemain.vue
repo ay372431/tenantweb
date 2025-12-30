@@ -44,13 +44,14 @@
 import { mapState } from 'vuex';
 import chargeLink from '../components/chargeLink';
 import Mgr from '../assets/js/SecurityService';
-import mgrs from '../assets/js/securityapi';
-import { netUrl } from '../assets/js/version';
-import axios from 'axios';
+// import mgrs from '../assets/js/securityapi';
+// import { netUrl } from '../assets/js/version';
+// import axios from 'axios';
 export default {
   name: 'Home',
   inject: ['reload'],
   components: {
+    // eslint-disable-next-line vue/no-unused-components
     chargeLink
   },
   data() {
@@ -147,7 +148,7 @@ export default {
           console.log(err);
         });
     },
-   
+
     // 跳转路由刷新
     refresh(path) {
       if (this.$route.path.indexOf(path) > -1) {
@@ -164,6 +165,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
 .main {
   position: relative;
   padding-top: 60px;

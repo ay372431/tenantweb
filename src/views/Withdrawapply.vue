@@ -135,6 +135,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
 .textBox {
   margin: 10px 0;
   padding: 10px 20px;

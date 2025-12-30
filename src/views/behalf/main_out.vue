@@ -9,33 +9,33 @@
   <div class="main">
     <div class="header" :style="headerStyle">
       <div class="headbox clearfix" :style="headerStyle" style="display: flex;">
-        <div class="logo"><img src="http://www.10pay.com/themes/ucenter/default/images/uc.png" alt="" /></div>
+        <div class="logo"><img src="../../assets/img//logo3.png" style="width: 154px;height: 40px;" alt="" /></div>
         <ul class="navbox clearfix" style="width: 75%;">
-          <li :class="{ active: activeNav === '/behalf/baseInfo' }" 
+          <li :class="{ active: activeNav === '/behalf/baseInfo' }"
           :style="activeNav === '/behalf/baseInfo' ? activeNavStyle : (hoverNav === '/behalf/baseInfo' ? hoverNavStyle : null)"
-          
+
           @click="setActive('/behalf/baseInfo')">
             <span class="icon1" @click="refresh('/behalf/baseInfo')"
               >账户管理</span
             >
           </li>
-          <li :class="{ active: activeNav === '/audit/audit' }" 
+          <li :class="{ active: activeNav === '/audit/audit' }"
           :style="activeNav === '/audit/audit' ? activeNavStyle : (hoverNav === '/audit/audit' ? hoverNavStyle : null)"
-          
+
           @click="setActive('/audit/audit')">
             <span class="icon1" @click="refresh('/audit/audit')">订单管理</span>
           </li>
-          <li :class="{ active: activeNav === '/rollout/everyday' }" 
+          <li :class="{ active: activeNav === '/rollout/everyday' }"
           :style="activeNav === '/rollout/everyday' ? activeNavStyle : (hoverNav === '/rollout/everyday' ? hoverNavStyle : null)"
-          
+
           @click="setActive('/rollout/everyday')">
             <span class="icon1" @click="refresh('/rollout/everyday')"
               >转出统计</span
             >
           </li>
-          <li :class="{ active: activeNav === '/main/home' }" 
+          <li :class="{ active: activeNav === '/main/home' }"
           :style="activeNav === '/main/home' ? activeNavStyle : (hoverNav === '/main/home' ? hoverNavStyle : null)"
-          
+
           @click="setActive('/main/home')">
             <span class="icon1" @click="refresh('/main/home')">返回平台</span>
           </li>
@@ -78,9 +78,9 @@ export default {
   data() {
     return {
       name: 'baseInfo',
-      activeNav: '/main/home', // 默认选中首页
+      activeNav: (this.$route && this.$route.path) ? this.$route.path : '/main/home',
       skinNum: Number(localStorage.getItem('skinNum')) || 0,
-      hoverNav: '', // 当前 hover 的菜单 path
+      hoverNav: '' // 当前 hover 的菜单 path
     };
   },
   computed: {
@@ -88,13 +88,13 @@ export default {
     headerStyle() {
       // 根据皮肤号返回不同背景色
       switch (this.skinNum) {
-        case 1: return { background: '#88434f',color: 'white'};
-        case 2: return { background: '#2d3338',color: 'white' };
-        case 3: return { background: '#3370ff',color: 'white'};
-        case 4: return { background: '#d75f28',color: 'white' };
-        case 5: return { background: '#88434f',color: 'white'};
-        case 6: return { background: '#5d4aee',color: 'white' };
-        default: return { background: '#0398d6',color: 'white' };
+        case 1: return { background: '#88434f', color: 'white' };
+        case 2: return { background: '#2d3338', color: 'white' };
+        case 3: return { background: '#3370ff', color: 'white' };
+        case 4: return { background: '#d75f28', color: 'white' };
+        case 5: return { background: '#9966cc', color: 'white' };
+        case 6: return { background: '#5d4aee', color: 'white' };
+        default: return { background: '#0398d6', color: 'white' };
       }
     },
     sliderStyle() {
@@ -105,18 +105,18 @@ export default {
         case 4: return { background: '#f6e5e0', color: 'grey' };
         case 5: return { background: '#e9e3f4', color: 'grey' };
         case 6: return { background: '#e5e0e2', color: 'grey' };
-        default: return { background: 'linear-gradient(to bottom,#f2f2f2 0,#f8f8f8 100%', color: 'grey' };;
+        default: return { background: 'linear-gradient(to bottom,#f2f2f2 0,#f8f8f8 100%', color: 'grey' }; ;
       }
     },
     activeNavStyle() {
       switch (this.skinNum) {
         case 1: return { background: '#b5c9b8', color: '#fff' }; // 莫兰迪绿
-        case 2: return { background: '#a7c7e7', color: '#fff' }; // 莫兰迪蓝
+        case 2: return { background: '#b5c9b8', color: '#fff' }; // 莫兰迪蓝
         case 3: return { background: '#b7afc6', color: '#fff' }; // 莫兰迪紫
         case 4: return { background: '#e6c1c5', color: '#fff' }; // 莫兰迪粉
         case 5: return { background: '#e9d7a5', color: '#fff' }; // 莫兰迪黄
         case 6: return { background: '#b4b8ab', color: '#fff' }; // 莫兰迪灰
-        default: return { background: '#b5c9b8', color: '#fff' };
+        default: return { background: '#a7c7e7', color: '#fff' };
       }
     },
     hoverNavStyle() {
@@ -129,7 +129,7 @@ export default {
         case 6: return { background: '#b4b8ab', color: '#fff' }; // 莫兰迪灰加深
         default: return { background: '#b5c9b8', color: '#fff' };
       }
-    },
+    }
   },
   methods: {
     // 获取用户信息
@@ -155,6 +155,16 @@ export default {
           path: path
         });
       }
+    },
+    setActive(path) {
+      this.activeNav = path;
+      if (this.$route && this.$route.path !== path) {
+        this.$router.push({ path });
+      } else {
+        if (typeof this.reload === 'function') {
+          this.reload();
+        }
+      }
     }
   },
   mounted() {
@@ -163,11 +173,20 @@ export default {
   },
   created() {
     this.getUser();
+  },
+  watch: {
+    // 同步路由变化与高亮
+    $route(to) {
+      this.activeNav = to.path;
+    }
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
 .main {
   position: relative;
   padding-top: 60px;

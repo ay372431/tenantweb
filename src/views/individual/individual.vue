@@ -561,6 +561,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
 .tip_red {
   color: #3c8dbc;
   padding: 10px 0px;

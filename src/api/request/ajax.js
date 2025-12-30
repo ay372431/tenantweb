@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import axios from 'axios';
 
 // axios 配置
@@ -12,6 +13,7 @@ axios.defaults.headers.post['Content-Type'] = 'application/json'; // 请求头�
 // 请求
 axios.interceptors.request.use(
   config => {
+    // eslint-disable-next-line no-undef
     Toast.loading({
       message: '加载中...',
       loadingType: 'spinner',

@@ -28,5 +28,15 @@ export default {
       params: params,
       headers: { Authorization: 'Bearer ' + header }
     });
+  },
+  // 电子户转账记录
+  async withdrawList1(params) {
+    let header = await mgr();
+    return api({
+      url: '/api/Settlements/GetSettlementLogList1Async',
+      method: 'get',
+      params: params,
+      headers: { Authorization: 'Bearer ' + header }
+    });
   }
 };

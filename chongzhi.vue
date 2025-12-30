@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="header-top">
-      <img src="../../assets/img/logo2.png" class="logo" />
+      <img src="/src/assets/img/logo3.png" class="logo" />
       <div class="alert">
         <el-alert type="error" :closable="false">
           <div class="info">
@@ -37,7 +37,7 @@
         <div class="td">服务器名</div>
         <div class="td">充值</div>
       </div>
-      <div class="tr" v-for="item in 10">
+      <div class="tr">
         <div class="td">服务器名</div>
         <div class="td">
           <el-button type="primary" round size="small">点击充值</el-button>

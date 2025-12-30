@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import { loginUrl } from '../../assets/js/version';
+// import { loginUrl } from '../../assets/js/version';
 export default {
   inject: ['reload'],
   data() {
@@ -222,6 +222,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
 .gs_tabbox {
   background: #fff;
   padding: 20px 0 20px 0;

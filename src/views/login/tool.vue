@@ -1,13 +1,15 @@
 <template>
   <div>
     <login-header></login-header>
-    <div class="banner">
+    <div style="position: relative;top: 126px;">
+      <div class="banner">
       <div class="banner-txt">
-        <img src="../../assets/img/kaiqutitle.png" />
+        <!-- <img src="../../assets/img/kaiqutitle.png" /> -->
+         <span style="font-size: 48px;">开区助手</span>
       </div>
       <div class="banner-right">
-        <img src="../../assets/img/downtxt.png" style="margin-bottom:30px;" />
-        <a :href="downurl" target="_blank"><img src="../../assets/img/down.png" /></a>
+        <!-- <img src="../../assets/img/downtxt.png" style="margin-bottom:30px;" /> -->
+        <!-- <a :href="downurl" target="_blank"><img src="../../assets/img/down.png" /></a> -->
       </div>
     </div>
     <div class="youshi-box">
@@ -111,7 +113,7 @@
             <p>QQ</p>
             <p>
               <a target="_blank"
-                href="http://wpa.qq.com/msgrd?v=3&amp;uin=2851651389&amp;Site=&amp;Menu=yes">2851651389</a>
+                href="https://wpa.qq.com/msgrd?v=3&amp;uin=2851651389&amp;Site=&amp;Menu=yes">2851651389</a>
             </p>
           </div>
           <div class="bluebox">
@@ -122,12 +124,13 @@
       </div>
     </div>
     <login-footer></login-footer>
+    </div>
   </div>
 </template>
 
 <script>
 import loginFooter from '../../components/loginFooter';
-import loginHeader from '../../components/loginHeader2';
+import loginHeader from '../../components/loginHeader';
 import { netUrl } from '../../assets/js/version';
 export default {
   components: {
@@ -162,7 +165,7 @@ export default {
 
 <style scoped>
 .banner {
-  background-image: url('../../assets/img/kaiqubg.png');
+  background-image: url('../../assets/img/kaiqubg2.png');
   background-size: 100% 100%;
   height: 433px;
   display: flex;

@@ -19,40 +19,20 @@
                   <img src="../assets/images/index.png" alt="" />
                 </el-tooltip>
               </li>
-              <li :class="{ on: typeindex === 2 }" @click="typeChange(2)">
+              <!-- <li :class="{ on: typeindex === 2 }" @click="typeChange(2)">
                 <el-tooltip class="item" effect="dark" content="传奇世界" placement="bottom">
                   <img src="../assets/images/cs.png" alt="" />
                 </el-tooltip>
-              </li>
-              <!-- <li :class="{ on: typeindex === 3 }" @click="typeChange(3)">
-                <el-tooltip class="item" effect="dark" content="传奇三" placement="bottom">
-                  <img src="../assets/images/cq3.png" alt="" />
-                </el-tooltip>
-              </li>
-              <li :class="{ on: typeindex === 4 }" @click="typeChange(4)">
-                <el-tooltip class="item" effect="dark" content="SQL通用" placement="bottom">
-                  <img src="../assets/images/sql.png" alt="" />
-                </el-tooltip>
-              </li>
-              <li :class="{ on: typeindex === 5 }" @click="typeChange(5)">
-                <el-tooltip class="item" effect="dark" content="WEB通讯" placement="bottom">
-                  <img src="../assets/images/web.png" alt="" />
-                </el-tooltip>
-              </li>
-              <li :class="{ on: typeindex === 6 }" @click="typeChange(6)">
-                <el-tooltip class="item" effect="dark" content="奇迹MU" placement="bottom">
-                  <img src="../assets/images/qiji.png" style="width: 96px;" alt="" />
-                </el-tooltip>
               </li> -->
             </ul>
-            
+
           </dd>
         </dl>
         <dl class="clearfix">
           <dt></dt>
           <dd>
             <span class="inputbox">
-              <el-checkbox v-model="batchAdd">批量添加分区</el-checkbox>
+              <el-checkbox v-model="batchAdd" onchange="isbatchAdd">批量添加分区</el-checkbox>
             </span>
           </dd>
         </dl>
@@ -61,25 +41,33 @@
           <dl class="clearfix" v-for="(item, idx) in batchList" :key="idx">
             <dt>分区名称：</dt>
             <dd style="display: flex; align-items: center;">
-              <el-input
+              <el-input v-if="idx === 0"
+                style="width:180px;margin-right:10px;"
+                size="small"
+                v-model="partName"
+                placeholder="分区名称"
+              ></el-input>
+              <el-input v-else
                 style="width:180px;margin-right:10px;"
                 size="small"
                 v-model="item.name"
                 placeholder="分区名称"
               ></el-input>
-              <dt>安装路径：</dt>
-              <el-input
-                style="width:220px;margin-right:10px;"
-                size="small"
-                v-model="item.path"
-                placeholder="安装路径"
-              ></el-input>
+              <span style="margin-right:10px;display:flex;align-items:center;">
+                <span style="margin-right:5px;">安装路径：</span>
+                <el-input
+                  style="width:220px;margin-right:10px;"
+                  size="small"
+                  v-model="item.path"
+                  placeholder="安装路径"
+                ></el-input>
+              </span>
               <el-button
                 type="danger"
                 icon="el-icon-delete"
                 size="small"
                 @click="removeBatch(idx)"
-                v-if="batchList.length > 1"
+                v-if="batchList.length > 1 && idx !== 0"
               >删除</el-button>
               <el-button
                 type="primary"
@@ -111,7 +99,7 @@
             <span class="block_tip">分区安装脚本目录或INI文件存放路径</span>
           </dd>
         </dl>
-        <dl class="clearfix">
+        <dl class="clearfix" v-if="!batchAdd">
           <dt></dt>
           <dd>
             <span class="inputbox">
@@ -192,13 +180,13 @@
           </dd>
         </dl>
         <dl class="clearfix" v-if="typeindex === 1 || typeindex === 2">
-          <dt>游戏内充值：</dt>
+          <dt>充值方式：</dt>
           <dd>
             <span class="inputbox pdt5">
               <el-radio-group v-model="glodScan">
-                <el-radio :label="0">支持游戏内扫码</el-radio>
-                <el-radio :label="1">支持游戏内扫码和网页扫码</el-radio>
-                <el-radio :label="2">不支持游戏内扫码</el-radio>
+                <el-radio :label="2">网页扫码</el-radio>
+                <el-radio :label="0">游戏内扫码</el-radio>
+                <el-radio :label="1">以上两者</el-radio>
               </el-radio-group>
             </span>
           </dd>
@@ -207,9 +195,9 @@
           <dt>补丁下载：</dt>
           <dd>
             <span class="inputbox gs_textarea">
-              <a style="color: #333;text-decoration: none;font-size: 14px;" href="http://www.10pay.com/soft/smart/ercon.zip">点击下载补丁</a>
+              <div style="color: #333;text-decoration: none;font-size: 14px;"  @click="gorout">点击下载补丁</div>
             </span>
-            <span class="tip_red">选择游戏内扫码许下载补丁文件放入游戏中，补丁默认编号是240，序号是0</span>
+            <span class="tip_red">选择游戏内扫码许下载补丁文件放入游戏中，补丁默认编号是44，序号是4</span>
           </dd>
         </dl>
         <dl class="clearfix">
@@ -362,48 +350,48 @@
 </template>
 
 <script>
-import slectDrow from "../components/selcetDrow";
+import slectDrow from '../components/selcetDrow';
 export default {
   components: {
-    slectDrow,
+    slectDrow
   },
   data() {
     return {
       installFlag: true, // 保存按钮中的防重复点击
       typeindex: 1, // 分区类型
-      partName: "", // 分区名称
+      partName: '', // 分区名称
       partChecked: false, // 在指定时间更改分区名称
-      changeName: "", // 更改名称
+      changeName: '', // 更改名称
       changeTime: this.getNewTime(), // 更改时间
       teamdata: {
         // 分组
         teamAll: false,
         teamlist: [],
         Options: [], // 分组的多选list
-        isIndeterminate: true,
+        isIndeterminate: true
       },
-      serverIp: "", // 机器码
+      serverIp: '', // 机器码
       serverDrow: [], // 机器码下拉
       // serverPort: 6379, // 通讯端口
-      installPath: "D:\\MirServer", // 安装路径
-      installModel: "", // 模板
+      installPath: 'D:\\MirServer', // 安装路径
+      installModel: '', // 模板
       modelDrow: [], // 模板的下拉
       glodEgg: false, // 元宝蛋
       glodScan: 2, // 扫码充值
-      notice: "", // 分区公告
+      notice: '', // 分区公告
       baseSql: {
         type: 0, // 类型
-        ip: "", // ip
-        port: "", // 端口
-        user: "", // 用户名
-        pwd: "", // 用户名
-        sql: "", // SQL
-        dbName: "",
+        ip: '', // ip
+        port: '', // 端口
+        user: '', // 用户名
+        pwd: '', // 用户名
+        sql: '', // SQL
+        dbName: ''
       },
       webSet: {
-        address: "", // 接收地址
-        successmark: "", // 成功标识
-        datatype: "", // 数据格式
+        address: '', // 接收地址
+        successmark: '', // 成功标识
+        datatype: '' // 数据格式
       },
       setTime: this.getNewTime(), // 定时开区
       setDelType: false, // 定时删区
@@ -411,23 +399,27 @@ export default {
       iscreatjb: 2, // 创建脚本
       batchAdd: false, // 是否批量添加分区
       batchList: [
-        { name: '', path: 'D:\MirServer' }
-      ],
+        { name: '', path: 'D:\\MirServer' }
+      ]
     };
   },
   methods: {
+    // 跳转微信密保
+    gorout() {
+      this.$router.push({ path: '/personal/wechat', query: { tab: 'ewmmb' } });
+    },
     // 分区类型的切换
     typeChange(index) {
       this.typeindex = index;
       console.log(index);
-      this.installModel = "";
+      this.installModel = '';
       this.modelDrowList();
       if (index === 3) {
         this.glodEgg = false;
         this.glodScan = 2;
         this.iscreatjb = 2;
       } else if (index === 1 || index === 2) {
-        this.installPath = "D:\\MirServer";
+        this.installPath = 'D:\\MirServer';
       }
     },
     // 获取用户分组
@@ -454,88 +446,88 @@ export default {
     },
     // 安装时，数据的检验
     dataChecked() {
-      if (this.partName === "") {
+      if (this.partName === '') {
         this.$nextTick(() => {
           this.$refs.partName.focus();
-          this.$messageError("必须填写！");
+          this.$messageError('必须填写！');
         });
         return true;
-      } else if (this.partChecked && this.changeName === "") {
+      } else if (this.partChecked && this.changeName === '') {
         this.$nextTick(() => {
           this.$refs.changeName.focus();
-          this.$messageError("更改名称不能为空，并且为1-30个字符");
+          this.$messageError('更改名称不能为空，并且为1-30个字符');
         });
         return true;
-      } else if (JSON.stringify(this.teamdata.teamlist) === "[]") {
-        this.$messageError("请选择游戏分组！");
+      } else if (JSON.stringify(this.teamdata.teamlist) === '[]') {
+        this.$messageError('请选择游戏分组！');
         return true;
       } else if ((this.typeindex === 1 ||
         this.typeindex === 2 ||
         this.typeindex === 3) &&
-        this.serverIp === "") {
+        this.serverIp === '') {
         this.$nextTick(() => {
           this.$refs.serverIp.focus();
-          this.$messageError("请选择机器码！");
+          this.$messageError('请选择机器码！');
         });
         return true;
       } else if (
         (this.typeindex === 1 ||
           this.typeindex === 2 ||
           this.typeindex === 3) &&
-        this.installPath === ""
+        this.installPath === ''
       ) {
         this.$nextTick(() => {
           this.$refs.installPath.focus();
-          this.$messageError("必须填写！");
+          this.$messageError('必须填写！');
         });
         return true;
-      } else if (this.installModel === "") {
+      } else if (this.installModel === '') {
         this.$nextTick(() => {
           this.$refs.installModel.focus();
-          this.$messageError("请选择模板！");
+          this.$messageError('请选择模板！');
         });
         return true;
-      } else if (this.typeindex === 4 && this.baseSql.ip === "") {
+      } else if (this.typeindex === 4 && this.baseSql.ip === '') {
         this.$nextTick(() => {
           this.$refs.baseSqlip.focus();
-          this.$messageError("必须填写！");
+          this.$messageError('必须填写！');
         });
         return true;
-      } else if (this.typeindex === 4 && this.baseSql.dbName === "") {
+      } else if (this.typeindex === 4 && this.baseSql.dbName === '') {
         this.$nextTick(() => {
           this.$refs.baseSqlDbName.focus();
-          this.$messageError("必须填写！");
+          this.$messageError('必须填写！');
         });
         return true;
-      } else if (this.typeindex === 4 && this.baseSql.port === "") {
+      } else if (this.typeindex === 4 && this.baseSql.port === '') {
         this.$nextTick(() => {
           this.$refs.baseSqlport.focus();
-          this.$messageError("必须填写！");
+          this.$messageError('必须填写！');
         });
         return true;
-      } else if (this.typeindex === 4 && this.baseSql.user === "") {
+      } else if (this.typeindex === 4 && this.baseSql.user === '') {
         this.$nextTick(() => {
           this.$refs.baseSqluser.focus();
-          this.$messageError("必须填写！");
+          this.$messageError('必须填写！');
         });
         return true;
-      } else if (this.typeindex === 4 && this.baseSql.pwd === "") {
+      } else if (this.typeindex === 4 && this.baseSql.pwd === '') {
         this.$nextTick(() => {
           this.$refs.baseSqlpwd.focus();
-          this.$messageError("必须填写！");
+          this.$messageError('必须填写！');
         });
         return true;
-      } else if (this.typeindex === 4 && this.baseSql.sql === "") {
+      } else if (this.typeindex === 4 && this.baseSql.sql === '') {
         this.$nextTick(() => {
           this.$refs.baseSqlsql.focus();
-          this.$messageError("必须填写！");
+          this.$messageError('必须填写！');
         });
         return true;
-      } else if (this.typeindex === 5 && this.webSet.address === "") {
+      } else if (this.typeindex === 5 && this.webSet.address === '') {
         // 提交地址
         this.$nextTick(() => {
           this.$refs.webSetaddress.focus();
-          this.$messageError("必须填写！");
+          this.$messageError('必须填写！');
         });
         return true;
       }
@@ -562,13 +554,13 @@ export default {
               return;
             }
           }
-          if (JSON.stringify(this.teamdata.teamlist) === "[]") {
-            this.$messageError("请选择游戏分组！");
+          if (JSON.stringify(this.teamdata.teamlist) === '[]') {
+            this.$messageError('请选择游戏分组！');
             this.installFlag = true;
             return;
           }
-          if (this.installModel === "") {
-            this.$messageError("请选择模板！");
+          if (this.installModel === '') {
+            this.$messageError('请选择模板！');
             this.installFlag = true;
             return;
           }
@@ -576,19 +568,19 @@ export default {
           const names = this.batchList.map(item => item.name);
           const scriptPaths = this.batchList.map(item => item.path);
           const model = {
-            name: "1",
+            name: '1',
             type: this.typeindex,
             dataFormat: this.webSet.datatype,
             dbInfo: {
-                type: this.baseSql.type,
-                ip: this.baseSql.ip,
-                port:
-                  this.baseSql.port === "" ? 0 : parseFloat(this.baseSql.port),
-                user: this.baseSql.user,
-                pwd: this.baseSql.pwd,
-                sql: this.baseSql.sql,
-                dbName: this.baseSql.dbName
-              }, // 数据库配置对象
+              type: this.baseSql.type,
+              ip: this.baseSql.ip,
+              port:
+                  this.baseSql.port === '' ? 0 : parseFloat(this.baseSql.port),
+              user: this.baseSql.user,
+              pwd: this.baseSql.pwd,
+              sql: this.baseSql.sql,
+              dbName: this.baseSql.dbName
+            }, // 数据库配置对象
             isChangeInTime: this.partChecked,
             useName: this.changeName,
             changeDate: this.changeTime,
@@ -601,7 +593,7 @@ export default {
             scan: this.glodScan,
             templateId: this.installModel,
             groups: this.teamdata.teamlist.map(id => ({ id })),
-            partitionCmdType: this.iscreatjb,
+            partitionCmdType: this.iscreatjb
           };
           // 调用批量接口
           this.$api.partinstall
@@ -609,19 +601,19 @@ export default {
             .then(data => {
               if (data.status === 200) {
                 this.dataInit();
-                this.$messageSuccess("批量安装成功！");
+                this.$messageSuccess('批量安装成功！');
                 this.installFlag = true;
-                this.$router.push({ path: "/main/Zoningmanagement" });
+                this.$router.push({ path: '/main/Zoningmanagement' });
               } else {
-                this.$messageError(data.message || "批量安装失败！");
+                this.$messageError(data.message || '批量安装失败！');
                 this.installFlag = true;
               }
             })
             .catch(err => {
-              this.$messageError(err.message || "批量安装失败！");
+              this.$messageError(err.message || '批量安装失败！');
               this.installFlag = true;
             });
-        }else{
+        } else {
           // 单个模式
           let flag = this.dataChecked();
           if (flag) {
@@ -636,7 +628,7 @@ export default {
                 type: this.baseSql.type,
                 ip: this.baseSql.ip,
                 port:
-                  this.baseSql.port === "" ? 0 : parseFloat(this.baseSql.port),
+                  this.baseSql.port === '' ? 0 : parseFloat(this.baseSql.port),
                 user: this.baseSql.user,
                 pwd: this.baseSql.pwd,
                 sql: this.baseSql.sql,
@@ -650,7 +642,7 @@ export default {
               // noticeState: true, // 默认参数    *页面无对应*
               scriptPath:
                 this.typeindex === 4 || this.typeindex === 5
-                  ? ""
+                  ? ''
                   : this.installPath, // 安装路径
               machineCode: this.serverIp, // 服务器ip
               // serverPort: 0, // 服务器端口 *页面无对应*
@@ -667,53 +659,53 @@ export default {
               groups: this.teamdata.teamlist.map((item) => {
                 return { id: item };
               }),
-              partitionCmdType: this.iscreatjb, // 是否创建脚本
+              partitionCmdType: this.iscreatjb // 是否创建脚本
             })
             .then((data) => {
               if (data.status === 200) {
                 this.dataInit();
-                this.$messageSuccess("安装成功！");
+                this.$messageSuccess('安装成功！');
                 this.installFlag = true;
-                this.$router.push({ path: "/main/Zoningmanagement" });
+                this.$router.push({ path: '/main/Zoningmanagement' });
               }
             })
             .catch((err) => {
               this.$messageError(err.message);
               this.installFlag = true;
             });
-          }
+        }
       }
     },
     // 安装成功后，页面数据初始化
     dataInit() {
       this.typeindex = 1; // 分区类型
-      this.partName = ""; // 分区名称
+      this.partName = ''; // 分区名称
       this.partChecked = false; // 在指定时间更改分区名称
-      this.changeName = ""; // 更改名称
+      this.changeName = ''; // 更改名称
       this.changeTime = this.getNewTime(); // 更改时间
       // 分组
       this.teamdata.teamAll = false;
       this.teamdata.teamlist = [];
       this.teamdata.isIndeterminate = true;
 
-      this.serverIp = ""; // 服务器IP EMKEMEMM333336KCM32M19K2
+      this.serverIp = ''; // 服务器IP EMKEMEMM333336KCM32M19K2
       // this.serverPort = 6379; // 通讯端口
-      this.installPath = "D:\\MirServer"; // 安装路径
-      this.installModel = ""; // 模板
+      this.installPath = 'D:\\MirServer'; // 安装路径
+      this.installModel = ''; // 模板
       this.glodEgg = false; // 元宝蛋
       this.glodScan = 2; // 扫码充值
-      this.notice = ""; // 分区公告
+      this.notice = ''; // 分区公告
       // sql通用
       this.baseSql.type = 4; // 类型
-      this.baseSql.ip = ""; // ip
-      this.baseSql.port = ""; // 端口
-      this.baseSql.user = ""; // 用户名
-      this.baseSql.pwd = ""; // 用户名
-      this.baseSql.sql = ""; // SQL
+      this.baseSql.ip = ''; // ip
+      this.baseSql.port = ''; // 端口
+      this.baseSql.user = ''; // 用户名
+      this.baseSql.pwd = ''; // 用户名
+      this.baseSql.sql = ''; // SQL
       // web通讯
-      this.webSet.address = ""; // 接收地址
-      this.webSet.successmark = ""; // 成功标识
-      this.webSet.datatype = ""; // 数据格式
+      this.webSet.address = ''; // 接收地址
+      this.webSet.successmark = ''; // 成功标识
+      this.webSet.datatype = ''; // 数据格式
       this.setTime = this.getNewTime(); // 定时开区
       this.iscreatjb = 2; // 创建脚本
     },
@@ -751,32 +743,42 @@ export default {
         .delMachineCode([data])
         .then((data) => {
           if ((this.serverIp = data)) {
-            this.serverIp = "";
+            this.serverIp = '';
           }
           this.getequipcode();
-          this.$messageSuccess("删除成功！");
+          this.$messageSuccess('删除成功！');
         })
         .catch((err) => {
           this.$messageError(err.message);
         });
     },
     addBatch() {
-      this.batchList.push({ name: '', path: 'D:\MirServer' });
+      this.batchList.push({ name: '', path: 'D:\\MirServer' });
     },
     removeBatch(idx) {
       this.batchList.splice(idx, 1);
     },
+    isbatchAdd() {
+      if (!this.batchAdd) {
+        this.partChecked = false;
+        this.changeName = '';
+        this.changeTime = this.getNewTime();
+      }
+    }
   },
   created() {
     this.groupsdrow();
     this.modelDrowList();
     this.getequipcode();
-  },
-  
+  }
+
 };
 </script>
 
 <style lang="scss" scoped>
+.gs_title {
+  background: var(--theme-color);
+}
 .tip_red {
   color: red;
   padding: 10px 40px;

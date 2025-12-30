@@ -100,6 +100,16 @@ export default {
       headers: { Authorization: 'Bearer ' + header }
     });
   },
+  // 手动补单确认参数
+  async handOrderOk(params) {
+    let header = await mgr();
+    return api({
+      url: '/api/ReissueRecords/GetReissueAsync',
+      method: 'post',
+      data: params,
+      headers: { Authorization: 'Bearer ' + header }
+    });
+  },
   // 整区补单
   async allOrder(params) {
     let header = await mgr();
