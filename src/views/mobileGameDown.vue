@@ -7,7 +7,7 @@
  -->
  <template>
   <div class="home">
-    <div class="gs_title">手游接口（接口文件为测试版本,有问题联系客服）</div>
+    <div class="gs_title" style="color: white;">手游接口（接口文件为测试版本,有问题联系客服）</div>
     <div class="btnsbox fr mgt10">
       <!-- <el-button size="small" type="success" @click="dialog.show = true">添加</el-button> -->
     </div>

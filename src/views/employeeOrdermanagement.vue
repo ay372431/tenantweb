@@ -7,7 +7,7 @@
  -->
 <template>
   <div class="home">
-    <div class="gs_title">订单管理</div>
+    <div class="gs_title" style="color: white;">订单管理</div>
     <div class="opeartbox">
       <ul class="clearfix">
         <li>

@@ -8,7 +8,7 @@
 
 <template>
   <div class="home">
-    <div class="gs_title">代理订单</div>
+    <div class="gs_title" style="color: white;">代理订单</div>
     <div class="gs_tabbox clearfix mgt15">
       <div class="tabbox">
         <div class="opeartbox">

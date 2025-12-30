@@ -7,7 +7,7 @@
  -->
  <template>
   <div class="home">
-    <div class="gs_title">用户登录日志</div>
+    <div class="gs_title" style="color: white;">用户登录日志</div>
     <!-- <div style=" margin-top: 10px;background: #fff;padding-top: 10px;padding-left: 50px;padding-bottom: 10px;box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);background-color: #D9EDF7;">
       <span>注意事项：1. 为保证更好的用户体验，请不定期的清理您的访问日志。</span><br>
       <span style="padding-left: 79px;"> 2. 日志清除功能会保留您最近三天内的操作日志。</span>

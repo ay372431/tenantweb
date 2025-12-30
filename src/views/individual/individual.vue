@@ -8,7 +8,7 @@
 <template>
   <div class="partinstall">
     <div class="bg_fff">
-      <div class="gs_title">个人中心</div>
+      <div class="gs_title" style="color: white;">个人中心</div>
       <div class="gs_listcontainer">
         <p class="tip_red">基本信息</p>
         <dl class="clearfix">

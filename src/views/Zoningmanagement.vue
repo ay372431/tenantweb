@@ -84,10 +84,14 @@
           <el-table-column prop="serverIp" label="服务器" width="120">
           </el-table-column>
           <el-table-column prop="scriptPath" label="路径">
-          <el-table-column prop="scriptPath" label="通区充值">
           </el-table-column>
+          <el-table-column prop="scriptPath" label="收否通区" width='80'>
+            <template slot-scope="scope">
+              <span v-if="scope.row.tongqu">是</span>
+              <span v-else>否</span>
+            </template>
           </el-table-column>
-          <el-table-column prop="name" label="操作" width='450'>
+          <el-table-column prop="name" label="操作" width='300'>
             <template slot-scope="scope">
               <el-button-group>
                 <el-button size="mini" type="primary" @click="rechargeTeam(scope.row.uuid)">充值</el-button>
@@ -156,11 +160,7 @@ export default {
       pageSize: 20, // 每页的条数
       total: 0, // 总数据的条数
       tableData: [],
-      dialog: {
-        show: false,
-        checked: 1,
-        id: ''
-      },
+      
       timer: null, // 检测时的定时器
       dialog: {
         show: false,
@@ -185,7 +185,7 @@ export default {
         .arealist({
           Type: this.activeName,
           GroupNameID: this.belongTeam === '' ? (this.$route.query.groupId || 0) : this.belongTeam,
-          TemplatesID: this.gameMoudle === '' ? 0 : this.gameMoudle,
+          TemplatesID: this.gameMoudle === '' ?  (this.$route.query.tempId || 0) : this.gameMoudle,
           PageNumber: this.pageIndex,
           PageSize: this.pageSize
         })
@@ -301,15 +301,16 @@ export default {
         .then((data) => {
           if (data.status === 200) {
             url = data.data + '/recharge/' + uuid;
-            let oInput = document.createElement('input');
-            oInput.value = url;
-            document.body.appendChild(oInput);
-            oInput.select(); // 选择对象
-            document.execCommand('Copy'); // 执行浏览器复制命令
-            oInput.className = 'oInput';
-            oInput.style.display = 'none';
-            this.$messageSuccess('复制成功');
-            document.body.removeChild(oInput);
+            // let oInput = document.createElement('input');
+            // oInput.value = url;
+            // document.body.appendChild(oInput);
+            // oInput.select(); // 选择对象
+            // document.execCommand('Copy'); // 执行浏览器复制命令
+            // oInput.className = 'oInput';
+            // oInput.style.display = 'none';
+            // this.$messageSuccess('复制成功');
+            // document.body.removeChild(oInput);
+            window.open(url);
           }
         })
         .catch((err) => {
@@ -439,6 +440,9 @@ export default {
     if (this.$route.query.groupId) {
       this.belongTeam = this.$route.query.groupId;
     }
+    if (this.$route.query.tempId) {
+      this.gameMoudle = this.$route.query.tempId;
+    }
     this.getlist();
     this.belongDrow();
     this.gameDrow();
@@ -447,6 +451,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.el-button--mini, .el-button--mini.is-round {
+    padding: 7px 8px;
+}
 .opeartbox {
   padding: 15px 20px 5px;
   background: #fff;

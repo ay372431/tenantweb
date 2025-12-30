@@ -7,7 +7,7 @@
  -->
 <template>
   <div class="partinstall">
-    <div class="gs_title">创建模板</div>
+    <div class="gs_title" style="color: white;">创建模板</div>
     <!-- 基本信息 -->
     <div class="bg_fff mgt10">
       <div class="gs_title cursor bg_eee" @click="collspa.show1 = !collspa.show1">基本信息<span class="arrow" :class="{'active':collspa.show1}"></span></div>
@@ -176,7 +176,7 @@
             <dd>
               <span class="inputbox">
                 <el-select size="small" v-model="baseInfo.gameEngine" ref="baseGameEngine" placeholder="请选择" @change="gameEngineChange">
-                  <el-option v-for="(item,i) in gameEnginedrow" :key="'yq'+i" :label="item.engine" :value="item.command">
+                  <el-option v-for="(item,i) in gameEnginedrow" :key="'yq'+i" :label="item.engine" :value="item.engine">
                   </el-option>
                   <el-option label="自定义引擎" :value="''">
                   </el-option>
@@ -225,7 +225,7 @@
             <dt>通区：</dt>
             <dd>
               <span class="inputbox pdt5">
-                <el-radio-group v-model="baseInfo.isTongQu" @change="tongQuChange">
+                <el-radio-group v-model="baseInfo.isTongQu"  @input="onChangeRadio">
                   <el-radio :label="false">否</el-radio>
                   <el-radio :label="true">是</el-radio>
                 </el-radio-group>
@@ -233,34 +233,34 @@
               <span class="line_tip">注意:通区同注册账号会出现相互领取,重复加载可能导致正在充值掉单情况</span>
             </dd>
           </dl>
-          <dl class="clearfix"  v-if="baseInfo.isTongQu">
-            <dt>领取路径：</dt>
+          <dl class="clearfix">
+            <dt>目录类别：</dt>
             <dd>
               <span class="inputbox pdt5">
-                <el-radio-group v-model="baseInfo.DirType">
-                  <el-radio :label="false">相对路径</el-radio>
-                  <el-radio :label="true">绝对路径</el-radio>
+                <el-radio-group v-model="baseInfo.isDir" @input="onChangeDir">
+                  <el-radio :label="0">同盘符</el-radio>
+                  <el-radio :label="1">不同盘符</el-radio>
                 </el-radio-group>
-                <span class="line_tip">注意:通区同注册账号会出现相互领取,重复加载可能导致正在充值掉单情况</span>
+                <span class="line_tip" style="color: red;font-weight: bold;">通区目录与游戏引擎是否在同一个盘符上！</span>
               </span>
             </dd>
           </dl>
           <dl class="clearfix"  v-if="baseInfo.isTongQu">
-            <dt>通区目录</dt>
+            <dt>通区目录：</dt>
             <dd>
               <span class="inputbox">
-                <el-input size="small" ref="baseFixedMoney" type="text" v-model="baseInfo.tongQuDir"></el-input>
+                <el-input size="small" @input="onChangeTongQuDir" ref="baseFixedMoney" type="text" v-model="baseInfo.tongQuDir"></el-input>
               </span>
               <span class="line_tip">通区目录</span>
             </dd>
           </dl>
           <dl class="clearfix">
-            <dt>充值脚本路径</dt>
+            <dt>充值脚本路径：</dt>
             <dd>
               <span class="inputbox">
-                <el-input size="small" ref="baseFixedMoney" type="text" v-model="baseInfo.payDir"></el-input>
+                <el-input size="small" @input="onChangeValue" ref="baseFixedMoney" type="text" v-model="baseInfo.payDir"></el-input>
               </span>
-              <span class="line_tip">平台充值脚本存放的文件夹名称，一个区配置双NPC时，该名称需不同</span>
+              <span class="line_tip" style="color: red;font-weight: bold;">平台充值脚本存放的文件夹名称，一个区配置双NPC时，该名称需不同</span>
             </dd>
           </dl>
         </div>
@@ -271,14 +271,14 @@
       <div class="gs_title cursor bg_eee" @click="collspa.show3 = !collspa.show3">附加赠送<span class="arrow" :class="{'active':collspa.show3}"></span></div>
       <el-collapse-transition>
         <div v-show="collspa.show3" class="gs_listcontainer">
-          <dl class="clearfix">
+          <!-- <dl class="clearfix">
             <dt>充值显示：</dt>
             <dd>
               <span class="inputbox pdt5">
                 <el-checkbox v-model="attachInfo.checked">显示附加赠送信息</el-checkbox>
               </span>
             </dd>
-          </dl>
+          </dl> -->
           <dl class="clearfix">
             <dt>附加详情：</dt>
             <dd>
@@ -288,10 +288,11 @@
                     <thead>
                       <tr>
                         <th width="130">附加奖励</th>
-                        <th width="50">显示</th>
+                        <!-- <th width="50"></th> -->
                         <th width="180">脚本命令</th>
                         <th width="100">赠送比例</th>
                         <th width="180">赠送方式</th>
+                        <th width="50" colspan="2">显示选项</th>
                         <th></th>
                       </tr>
                     </thead>
@@ -300,9 +301,7 @@
                         <td>
                           <el-input size="small" :ref="'attachName'+i" v-model="item.name"></el-input>
                         </td>
-                        <td class="tc">
-                          <el-checkbox v-model="item.show"></el-checkbox>
-                        </td>
+                        
                         <td>
                           <el-input size="small" :ref="'attachCommand'+i" v-model="item.command"></el-input>
                         </td>
@@ -314,6 +313,12 @@
                             <el-option v-for="(item,i) in attachInfo.options" :key="'yq'+i" :label="item.label" :value="item.value">
                             </el-option>
                           </el-select>
+                        </td>
+                        <td class="tc">
+                          <el-checkbox v-model="item.show">游戏</el-checkbox>
+                        </td>
+                        <td class="tc">
+                          <el-checkbox v-model="item.isShow">网站</el-checkbox>
                         </td>
                         <td>
                           <el-button size="small" type="danger" @click="delAttach(i)">删除</el-button>
@@ -341,6 +346,17 @@
             <dd>
               <span class="inputbox pdt5">
                 <el-checkbox v-model="inciteInfo.checked">开启激励赠送</el-checkbox>
+              </span>
+            </dd>
+          </dl>
+          <dl class="clearfix">
+            <dt>选项：</dt>
+            <dd>
+              <span class="inputbox pdt5">
+                <el-radio-group @input="onChangeRadio" v-model="baseInfo.giveOptionState">
+                  <el-radio :label="0">按充值金额计算</el-radio>
+                  <el-radio :label="1">充值金额+渠道赠送</el-radio>
+                </el-radio-group>
               </span>
             </dd>
           </dl>
@@ -398,20 +414,17 @@
                     <thead>
                       <tr>
                         <th width="130">附加奖励</th>
-                        <th width="50">显示</th>
-                        <th width="200">文件路径</th>
+                        <th width="150">文件路径</th>
                         <th width="100">赠送比例</th>
                         <th width="180">赠送方式</th>
+                        <th width="50" colspan="2">显示选项</th>
                         <th></th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr v-for="(item,i) in integralInfo.integralList" :key="'integral'+i">
                         <td>
-                          <el-input size="small" style="width:100px;" :ref="'integralName'+i" v-model="item.name"></el-input>
-                        </td>
-                        <td class="tc">
-                          <el-checkbox v-model="item.show"></el-checkbox>
+                          <el-input size="small" style="width:100px;" :ref="'integralName'+i" @input="onChangeIntegralName(i)" v-model="item.name"></el-input>
                         </td>
                         <td>
                           <el-input size="small" style="width:300px;" :ref="'integralFile'+i" v-model="item.file"></el-input>
@@ -420,10 +433,16 @@
                           <el-input size="small" type="number" :ref="'integralRatio'+i" v-model="item.ratio"></el-input>
                         </td>
                         <td>
-                          <el-select size="small" v-model="item.type" placeholder="请选择" style="width:235px;">
+                          <el-select size="small" v-model="item.type" placeholder="请选择" style="width:185px;">
                             <el-option v-for="(li,i) in attachInfo.options" :key="'yq'+i" :label="li.label" :value="li.value">
                             </el-option>
                           </el-select>
+                        </td>
+                        <td class="tc">
+                          <el-checkbox v-model="item.show">游戏</el-checkbox>
+                        </td>
+                         <td class="tc">
+                          <el-checkbox v-model="item.isShow">网站</el-checkbox>
                         </td>
                         <td>
                           <el-button size="small" type="danger" @click="delIntegral(i)">删除</el-button>
@@ -447,15 +466,16 @@
       <el-collapse-transition>
         <div v-show="collspa.show5" class="gs_listcontainer">
           <dl class="clearfix">
-            <dt>充值显示：</dt>
+            <dt>显示选项：</dt>
             <dd>
               <span class="inputbox pdt5">
-                <el-checkbox v-model="equipmentInfo.checked">显示装备赠送信息</el-checkbox>
+                <el-checkbox v-model="equipmentInfo.checked">网站显示</el-checkbox>
+                <el-checkbox v-model="equipmentInfo.isChecked">游戏显示</el-checkbox>
               </span>
             </dd>
           </dl>
           <dl class="clearfix">
-            <dt>赠送方式：</dt>
+            <dt>计算选项：</dt>
             <dd>
               <span class="inputbox pdt5">
                 <el-radio-group v-model="equipmentInfo.giveType">
@@ -464,6 +484,17 @@
                   <el-radio :label="2">充值金额 + 渠道赠送</el-radio>
                   <el-radio :label="3">充值金额 + 激励赠送</el-radio>
                   <el-radio :label="4">充值金额 + 激励赠送 + 渠道赠送</el-radio>
+                </el-radio-group>
+              </span>
+            </dd>
+          </dl>
+          <dl class="clearfix">
+            <dt>赠送选项：</dt>
+            <dd>
+              <span class="inputbox pdt5">
+                <el-radio-group v-model="equipmentInfo.giveOption">
+                  <el-radio :label="0">只送最大金额</el-radio>
+                  <el-radio :label="1">送所有符合的金额</el-radio>
                 </el-radio-group>
               </span>
             </dd>
@@ -718,8 +749,9 @@ export default {
         color: 0, // 币种的颜色值
         command: 'GAMEGOLD + ', // 脚本命令
         rate: 1, // 兑换比例
-        tongQuDir: 'D:/通区充值', // 通区目录
-        payDir:'',//充值脚本路径
+        tongQuDir: '通区充值', // 通区目录
+        dir: [],//充值脚本路径盘符
+        payDir:'7XPAY充值元宝',//充值脚本路径
         DirType: false, // 领取路径
         chargeNpc: [
           {
@@ -747,7 +779,9 @@ export default {
         fixedMoney: '',//固定金额
         isTongQu: false,
         sysMinMoney: 0, // 系统最小金额
-        sysMaxMoney: 0 // 系统最大金额
+        sysMaxMoney: 0, // 系统最大金额
+        isDir: 0, // 目录类别   0同盘符  1不同盘符
+        giveOptionState: 0 // 计算选项  0按充值金额计算  1充值金额+渠道赠送
       },
       inciteInfo: {
         // 激励详情
@@ -824,14 +858,14 @@ export default {
           {
             name: '元宝消费',
             show: false,
-            file: '..\\QuestDiary\\ChenXu\\充值积分\\元宝消费Save.txt',
+            file: '',
             ratio: 1,
             type: 0
           },
           {
             name: '消费积分',
             show: false,
-            file: '..\\QuestDiary\\ChenXu\\充值积分\\消费积分Save.txt',
+            file: '',
             ratio: 1,
             type: 0
           }
@@ -840,7 +874,9 @@ export default {
       equipmentInfo: {
         // 装备赠送
         checked: false, // 充值显示
+        isChecked: false, // 游戏显示
         giveType: 0, // 赠送方式
+        giveOption: 0, // 赠送选项
         list: [] // 装备详情
       },
       redbag: {
@@ -917,6 +953,134 @@ export default {
     }
   },
   methods: {
+    //监听目录类别变化
+    onChangeDir(value) {
+      // const item = this.integralInfo.integralList[index];
+      var tongQuDirInfo = this.baseInfo.tongQuDir;
+      if(value == 0){
+        // 同盘符
+        //分割路径，去掉盘符
+        tongQuDirInfo = tongQuDirInfo.replace(/^[A-Za-z]:\\/,'');
+        this.integralInfo.integralList.forEach(item => {
+          if(this.baseInfo.isTongQu)
+            item.file = `..\\..\\..\\..\\${tongQuDirInfo}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+          else
+            item.file = `..\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+        });
+      }else{
+        // 不同盘符
+        this.integralInfo.integralList.forEach(item => {
+          item.file = `${this.baseInfo.tongQuDir}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+        });
+      }
+    },
+    //监听积分名称变化
+    onChangeIntegralName(index) {
+      const item = this.integralInfo.integralList[index];
+      if (this.baseInfo.isTongQu) {
+        // 通区时
+        if (this.baseInfo.isDir == 0) {
+          // 同盘符，去掉盘符
+          let tongQuDirInfo = this.baseInfo.tongQuDir.replace(/^[A-Za-z]:\\/, '');
+          item.file = `..\\..\\..\\..\\${tongQuDirInfo}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+        } else {
+          // 不同盘符
+          item.file = `${this.baseInfo.tongQuDir}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+        }
+      } else {
+        // 非通区时
+        if (this.baseInfo.isDir == 1) {
+          // 不同盘符
+          item.file = `${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+        } else {
+          // 同盘符
+          item.file = `..\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+        }
+      }
+    },
+    //监听通区目录变化
+    onChangeTongQuDir(value) {
+      if (this.baseInfo.isTongQu) {
+        // 通区时，拼接通区路径
+        if(this.baseInfo.dir == 0){
+          // 同盘符
+          value = value.replace(/^[A-Za-z]:\\/,'');
+        }else{
+          // 不同盘符
+          value = value.replace(/\\$/,'');
+        }
+        this.integralInfo.integralList.forEach(item => {
+          item.file = `..\\..\\..\\..\\${value}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+        });
+      }else{
+        // 非通区时，恢复默认或清空
+        this.integralInfo.integralList.forEach(item => {
+          item.file = `..\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+        });
+      }
+    },
+    //监听通区变化
+    onChangeRadio(value) {
+      if (value) {
+        // 通区时
+        if (this.baseInfo.isDir == 0) {
+          // 同盘符
+          let tongQuDirInfo = this.baseInfo.tongQuDir.replace(/^[A-Za-z]:\\/, '');
+          this.integralInfo.integralList.forEach(item => {
+            item.file = `..\\..\\..\\..\\${tongQuDirInfo}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+          });
+        } else {
+          // 不同盘符
+          this.integralInfo.integralList.forEach(item => {
+            item.file = `${this.baseInfo.tongQuDir}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+          });
+        }
+      } else {
+        // 非通区时
+        if (this.baseInfo.isDir == 1) {
+          // 不同盘符
+          this.integralInfo.integralList.forEach(item => {
+            item.file = `${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+          });
+        } else {
+          // 同盘符
+          this.integralInfo.integralList.forEach(item => {
+            item.file = `..\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+          });
+        }
+      }
+    },
+    //监听充值脚本路径变化
+    onChangeValue(value) {
+      if (this.baseInfo.isTongQu) {
+        // 通区时
+        if (this.baseInfo.isDir == 0) {
+          // 同盘符，去掉盘符
+          let tongQuDirInfo = this.baseInfo.tongQuDir.replace(/^[A-Za-z]:\\/, '');
+          this.integralInfo.integralList.forEach(item => {
+            item.file = `..\\..\\..\\..\\${tongQuDirInfo}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+          });
+        } else {
+          // 不同盘符
+          this.integralInfo.integralList.forEach(item => {
+            item.file = `${this.baseInfo.tongQuDir}\\Mir200\\Envir\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+          });
+        }
+      } else {
+        // 非通区时
+        if (this.baseInfo.isDir == 1) {
+          // 不同盘符
+          this.integralInfo.integralList.forEach(item => {
+            item.file = `${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+          });
+        } else {
+          // 同盘符
+          this.integralInfo.integralList.forEach(item => {
+            item.file = `..\\QuestDiary\\${this.baseInfo.payDir}\\充值积分\\${item.name}Save.txt`;
+          });
+        }
+      }
+    },
     // 获取充值渠道中的产品
     getproductlist() {
       this.$api.partmodule
@@ -1086,17 +1250,11 @@ export default {
         });
     },
     // 游戏引擎切换
-    gameEngineChange(value) {
-      // if (value === 'chuanshi') {
-      //   this.baseInfo.webCommand = 'chuanshi';
-      // } else if (value === 'WebBrowser') {
-      //   this.baseInfo.webCommand = 'WebBrowser';
-      // } else if (value === 'OPENURL') {
-      //   this.baseInfo.webCommand = 'OPENURL';
-      // } else if (value === 'OpenWebSite') {
-      //   this.baseInfo.webCommand = 'OpenWebSite';
-      // }
+    gameEngineChange(label) {
+      const selected = this.gameEnginedrow.find(item => item.engine === label);
+      const value = selected ? selected.command : '';
       this.baseInfo.webCommand = value;
+      this.baseInfo.gameEngine = label;
     },
     // 获取默认最小金额
     getMimicharge() {
@@ -1779,9 +1937,14 @@ export default {
             isTongQu: this.baseInfo.isTongQu,
             gameName: this.baseInfo.gameMing,
             rechargeWay: this.baseInfo.chargetype,
+            tongQuDir: this.baseInfo.tongQuDir,
+            payDir: this.baseInfo.payDir,
+            dir: Array.isArray(this.baseInfo.dir) ? this.baseInfo.dir.join(',') : this.baseInfo.dir,
+            isDir: this.baseInfo.isDir,
             // 激励详情
             isContains: this.inciteInfo.checked,
             incentives: this.inciteInfo.giveList,
+            giveOptionState: this.baseInfo.giveOptionState,
             // 附加赠送
             showAdditional: this.attachInfo.checked,
             additionalGives: this.attachInfo.attachList,
@@ -1791,6 +1954,7 @@ export default {
             // 装备赠送
             showEquip: this.equipmentInfo.checked,
             equipType: this.equipmentInfo.giveType,
+            giveOption: this.equipmentInfo.giveOption,
             equipGives: this.equipmentInfo.list,
             // 红包赠送
             redPacketState: this.redbag.checked,

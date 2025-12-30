@@ -8,7 +8,7 @@
 <template>
   <div class="partinstall">
     <div class="bg_fff">
-      <div class="gs_title">安装分区</div>
+      <div class="gs_title" style="color: white;">安装分区</div>
       <div class="gs_listcontainer">
         <dl class="clearfix">
           <dt>分区类型：</dt>

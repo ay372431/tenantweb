@@ -2,7 +2,7 @@
   <div class="home">
    
     <div class="tablebox mgt15">
-      <div class="gs_title">最新充值订单</div>
+      <div class="gs_title" style="color: white;">最新充值订单</div>
       <div class="gs_tablebox">
         <el-table ref="moduleTable" size="mini" :data="tableData" border style="width: 100%" stripe>
           <el-table-column prop="orderNumber" label="订单号" width="180">

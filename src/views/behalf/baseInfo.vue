@@ -7,7 +7,7 @@
  -->
 <template>
   <div class="wrap-box">
-    <div class="sonbar" style="background-color: #72c9f5;"><img src="../../assets/img/san.png" />基本资料</div>
+    <div class="sonbar" style="background-color: #72c9f5;"><img src="../../assets/img/san.png" /><span style="color: white;">基本资料</span></div>
     <div class="wrap-box-c">
       <el-row :gutter="20">
         <el-col :span="16">

@@ -7,7 +7,7 @@
  -->
 <template>
   <div class="home">
-    <div class="gs_title">提现记录</div>
+    <div class="gs_title" style="color: white;">提现记录</div>
     <div class="opeartbox">
       <ul class="clearfix">
         <li>

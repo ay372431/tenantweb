@@ -8,7 +8,7 @@
 <template>
   <div class="partinstall">
     <div class="bg_fff">
-      <div class="gs_title">克隆分区</div>
+      <div class="gs_title" style="color: white;">克隆分区</div>
       <div class="gs_listcontainer">
        
         <dl class="clearfix">

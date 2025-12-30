@@ -8,7 +8,7 @@
 
 <template>
   <div class="home">
-    <div class="gs_title">定时任务</div>
+    <div class="gs_title" style="color: white;">定时任务</div>
     <div class="tablebox pdb15">
       <div class="gs_tablebox">
         <el-table ref="moduleTable" size="mini" :data="orderlist2.tableData" border style="width: 100%" stripe>

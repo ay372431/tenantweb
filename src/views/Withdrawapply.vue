@@ -8,7 +8,7 @@
 
 <template>
   <div class="home">
-    <div class="gs_title">提现申请</div>
+    <div class="gs_title" style="color: white;">提现申请</div>
     <div class="textBox">
       <p>提现声明：请不要同一天内屡次小额提现，这种情况属于恶意提现，以免财务结算时产生错误对你造成损失。</p>
       <p>到账时间：特殊情况除外，如超过12小时不到账，请与客服联系。</p>

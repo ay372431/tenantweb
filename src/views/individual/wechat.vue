@@ -172,7 +172,7 @@
                   >确认保存</el-button
                 >
               </el-form-item>
-              <el-form-item label="脚本下载：">
+              <!-- <el-form-item label="脚本下载：">
                 <a
                   href="http://manageserver.87z.cc:5002/api/Upload/ShowFileNew?name=GOM"
                   target="_blank"
@@ -183,7 +183,7 @@
                   target="_blank"
                   >新BLUE/GOB脚本</a
                 >
-              </el-form-item>
+              </el-form-item> -->
             </el-form>
           </el-tab-pane>
           <el-tab-pane label="自定义回复" name="second">
@@ -657,9 +657,9 @@
                 <el-divider></el-divider>
                 <div class="qrcode-tags">
                   热血传奇
-                  <el-tag style="margin-left:8px;cursor: pointer;font-size: 14px;"><i class="el-icon-paperclip"></i>Gom</el-tag>
-                  <el-tag style="margin-left:4px;cursor: pointer;font-size: 14px;"><i class="el-icon-paperclip"></i>Gee</el-tag>
-                  <el-tag style="margin-left:4px;cursor: pointer;font-size: 14px;"><i class="el-icon-paperclip"></i>BLUE2</el-tag>
+                  <el-tag style="margin-left:8px;cursor: pointer;font-size: 14px;"><a href="http://localhost:5003/script/七星服务Gom.zip"><i class="el-icon-paperclip"></i>Gom</a></el-tag>
+                  <el-tag style="margin-left:4px;cursor: pointer;font-size: 14px;"><a href="http://localhost:5003/script/七星服务Gee.zip" target="_blank"><i class="el-icon-paperclip"></i>Gee</a></el-tag>
+                  <el-tag style="margin-left:4px;cursor: pointer;font-size: 14px;"><a href="http://localhost:5003/script/七星服务BLUE2.zip" target="_blank"><i class="el-icon-paperclip"></i>BLUE2</a></el-tag>
                 </div>
               </div>
               <el-button type="danger" size="small" style="margin: 12px 0;" @click="openQrcodeDialog(false)">新增</el-button>
@@ -673,7 +673,7 @@
               >
                 <el-table-column prop="title" label="标题" align="center" min-width="100"/>
                 <el-table-column prop="wiiNo" label="WII编号" align="center" min-width="80"/>
-                <el-table-column prop="imgRoomNo" label="图片房号" align="center" min-width="80"/>
+                <el-table-column prop="imgRoomNo" label="图片序号" align="center" min-width="80"/>
                 <el-table-column prop="size" label="尺寸" align="center" min-width="60"/>
                 <el-table-column prop="posX" label="坐标X" align="center" min-width="60"/>
                 <el-table-column prop="posY" label="坐标Y" align="center" min-width="60"/>

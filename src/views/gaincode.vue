@@ -7,7 +7,7 @@
  -->
 <template>
   <div class="home">
-    <div class="gs_title">获取代码</div>
+    <div class="gs_title" style="color: white;">获取代码</div>
     <div class="opeartbox">
       <div class="easttop">
         <ul>

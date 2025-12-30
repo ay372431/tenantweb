@@ -4,12 +4,15 @@
       <div class="userinfo gs_shadow" style="height: 150px;width: 23%;">
         <div class="infobox">
           <div style="display: flex;justify-content: center;align-items: center;">
-            <el-upload class="avatar-uploader" accept=".jpg,.jpeg,.png" action="" :http-request="() => { }"
+            <!-- <el-upload class="avatar-uploader" accept=".jpg,.jpeg,.png" action="" :http-request="() => { }"
               :before-upload="fileSelect" :show-file-list="false">
-              <!-- <img v-if="userInfo.imgurl" :src="userInfo.imgurl" class="avatar"> -->
-              <!-- <img v-else src="../assets/images/header.png" class="avatar"> -->
+              <img v-if="userInfo.imgurl" :src="userInfo.imgurl" class="avatar">
+              <img v-else src="../assets/images/header.png" class="avatar">
                <img src="../assets/images/header.png" class="avatar">
-            </el-upload>
+            </el-upload> -->
+            <div>
+              <img src="../assets/images/header.png" class="avatar">
+            </div>
             <div class="textbox" style="margin-left: 15px;">
               <!-- <p class="acout">{{ userInfo.userName }}
                 <span v-if="userInfo.isSigned" style="color:green">（已签约）</span>

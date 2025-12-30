@@ -8,7 +8,7 @@
 
 <template>
   <div class="home">
-    <div class="gs_title">用户分组</div>
+    <div class="gs_title" style="color: white;">用户分组</div>
     <div class="gs_tabbox clearfix mgt15">
       <div class="tabbox">
         <div class="tablebox pdb15 pdt10 bg_fff">

@@ -8,7 +8,7 @@
 <template>
   <div class="partinstall">
     <div class="bg_fff">
-      <div class="gs_title">编辑分区</div>
+      <div class="gs_title" style="color: white;">编辑分区</div>
       <div class="gs_listcontainer">
         <!-- <p class="tip_red">注意：创建分区前请先把客户端运行起来</p> -->
         <dl class="clearfix">

@@ -8,7 +8,7 @@
 
 <template>
   <div class="home">
-    <div class="gs_title">网站设置</div>
+    <div class="gs_title" style="color: white;">网站设置</div>
     <div class="gs_tabbox clearfix mgt15">
       <form class="site-setting-form">
         <div class="form-row">

@@ -8,7 +8,7 @@
 
  <template>
   <div class="home">
-    <div class="gs_title">分区管理</div>
+    <div class="gs_title" style="color: white;">分区管理</div>
     <div class="tablebox pdb15 mgt20">
       <div class="opeartbox">
         <ul class="clearfix">

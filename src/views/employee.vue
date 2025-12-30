@@ -7,7 +7,7 @@
  -->
 <template>
   <div class="home">
-    <div class="gs_title">员工管理</div>
+    <div class="gs_title" style="color: white;">员工管理</div>
     <div class="btnsbox mgt10" style="margin-left: 2%;">
       <el-button size='small' type="primary" @click="subMerchant.dialog.show = true">添加员工</el-button>
     </div>

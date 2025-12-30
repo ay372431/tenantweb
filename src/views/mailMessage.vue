@@ -8,7 +8,7 @@
 
 <template>
   <div class="home">
-    <div class="gs_title">留言箱</div>
+    <div class="gs_title" style="color: white;">留言箱</div>
     <div class="gs_tabbox clearfix mgt15">
       <div class="tabbox">
         <el-tabs v-model="activeName" type="card" @tab-click="handleClick">

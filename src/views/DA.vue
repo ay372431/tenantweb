@@ -7,7 +7,7 @@
  -->
 <template>
   <div class="home">
-    <div class="gs_title">充值统计</div>
+    <div class="gs_title" style="color: white;">充值统计</div>
     <div class="gs_tabbox clearfix mgt15">
       <div class="tabbox">
         <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
@@ -319,7 +319,7 @@
               </div>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="IPS统计" name="6">
+          <el-tab-pane label="个人IPS统计" name="6">
             <div class="opeartbox">
               <ul class="clearfix">
                 <li>
@@ -364,12 +364,55 @@
               </div>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="来源统计" name="8">
+          <el-tab-pane label="全局IPS统计" name="8">
+            <div class="opeartbox" id="ishow" v-show="money >= 498">
+              <ul class="clearfix">
+                <li>
+                  <span class='tit'>日期：</span>
+                  <el-date-picker style="width:190px;" v-model="tab8.time1" size="small" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期">
+                  </el-date-picker> <span style="font-size:14px;">至 </span>
+                  <el-date-picker style="width:190px;" v-model="tab8.time2" size="small" default-time="23:59:59" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期">
+                  </el-date-picker>
+                </li>
+                <el-button size="small" type="primary" @click="getlist6">查询</el-button>
+              </ul>
+              <div class="tablebox pdb15 pdt20">
+                <div class="gs_tablebox">
+                  <el-table ref="moduleTable" size="mini" :data="tab8.tableData" border style="width: 100%" stripe>
+                    <el-table-column type="index" label="序号" width="65">
+                    </el-table-column>
+                    <el-table-column prop="domain" label="域名">
+                    </el-table-column>
+                    <el-table-column prop="visitNumber" label="访问次数">
+                    </el-table-column>
+                    <el-table-column prop="loginNumber" label="登录次数">
+                    </el-table-column>
+                    <el-table-column prop="orderCount" label="支付笔数">
+                    </el-table-column>
+                    <el-table-column label="充值金额">
+                      <template slot-scope="scope">
+                        <span>{{scope.row.orderMoney.toFixed(2)}}</span>
+                      </template>
+                    </el-table-column>
+                    <el-table-column label="收入">
+                      <template slot-scope="scope">
+                        <span>{{scope.row.profit.toFixed(2)}}</span>
+                      </template>
+                    </el-table-column>
+                  </el-table>
+                </div>
+                <div class="mgt15 pdl20">
+                  <el-pagination @size-change="handleSizeChange6" @current-change="handleCurrentChange6" background :page-sizes="[10, 20, 30, 40]" :current-page="tab8.pageIndex" :page-size="tab6.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="tab6.total">
+                  </el-pagination>
+                </div>
+              </div>
+            </div>
+          </el-tab-pane>
+          <!-- <el-tab-pane label="来源统计" name="8">
             <div class="opeartbox">
               <ul class="clearfix">
                 <li>
                   <span class='tit'>日期：</span>
-                  <!-- <el-date-picker style="width:338px;" v-model="tab6.time" size="small" type="datetimerange" :default-time="['00:00:00', '23:59:59']" value-format="yyyy-MM-dd HH:mm:ss" range-separator="至" start-placeholder="起始时间" end-placeholder="结束时间"></el-date-picker> -->
                   <el-date-picker style="width:190px;" v-model="tab6.time1" size="small" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期">
                   </el-date-picker> <span style="font-size:14px;">至 </span>
                   <el-date-picker style="width:190px;" v-model="tab6.time2" size="small" default-time="23:59:59" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期">
@@ -408,7 +451,7 @@
                 </div>
               </div>
             </div>
-          </el-tab-pane>
+          </el-tab-pane> -->
         </el-tabs>
       </div>
     </div>
@@ -423,6 +466,7 @@ export default {
       activeName: '1', // tab切换
       gameDrawList: [], // 分区下拉list
       agentDraw: [], // 商户下拉
+      money: 0, // 余额
       tab1: {
         time1: this.getCerentTime(true), // 日期
         time2: this.getCerentTime(false), // 日期
@@ -486,6 +530,14 @@ export default {
         pageIndex: 1, // 页码
         pageSize: 20, // 每页的条数
         total: 0 // 总数据的条数
+      },
+      tab8: {
+        time1: this.getCerentTime(true), // 日期
+        time2: this.getCerentTime(false), // 日期
+        tableData: [],
+        pageIndex: 1, // 页码
+        pageSize: 20, // 每页的条数
+        total: 0 // 总数据的条数
       }
     };
   },
@@ -493,6 +545,21 @@ export default {
     ...mapState(['userType'])
   },
   methods: {
+        // 获取帐户信息
+    getAccountInfo() {
+      this.$api.home
+        .getAccountInfo()
+        .then((data) => {
+          if (data.status === 200) {
+            // console.log('用户信息'+data);
+            this.money = data.data.accountAmount.toFixed(2);
+            console.log(this.money);
+          }
+        })
+        .catch((err) => {
+          this.$messageError(err.message);
+        });
+    },
     // tab切换
     handleClick() {
       if (this.activeName === '1') {
@@ -561,6 +628,16 @@ export default {
         this.tab6.pageSize = 20; // 每页的条数
         this.tab6.total = 0; // 总数据的条数
         this.getlist7();
+      }else if (this.activeName === '8') {
+        if(this.money>=498){
+          //显示isshow
+
+        }else{
+          // $("#ishow").hide();
+          this.$messageError('余额不足498.00，请先充值');
+          this.activeName='1';
+          return;
+        }
       }
     },
     // 下属商户
@@ -1410,6 +1487,7 @@ export default {
   created() {
     this.gameareaDrow();
     this.subMerchantDraw();
+    this.getAccountInfo();
     this.$nextTick(() => {
       this.getechart1();
     });

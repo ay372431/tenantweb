@@ -7,7 +7,7 @@
  -->
 <template>
   <div class="home">
-    <div class="gs_title">手动补发</div>
+    <div class="gs_title" style="color: white;">手动补发</div>
     <div class="opeartbox">
       <ul class="clearfix" style="padding-right:200px;">
         <li>

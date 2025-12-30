@@ -7,7 +7,7 @@
  -->
  <template>
   <div class="home">
-    <div class="gs_title">分组管理</div>
+    <div class="gs_title" style="color: white;">分组管理</div>
     <div class="btnsbox fl mgt10" style="margin:10px 10px;">
       <el-button size="small" style="background: #409EFF !important;border-color: #409EFF;" type="success" @click="dialog.show = true">创建分组</el-button>
     </div>

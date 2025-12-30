@@ -7,10 +7,11 @@
  -->
 <template>
   <div class="home">
-    <div class="gs_title">订单补发</div>
+    <div class="gs_title" style="color: white;">订单补发</div>
     <div class="opeartbox">
       <div class="alignmentleft">
-        <h4 style="padding-left: 20px;">手动补发</h4>
+        <h4 style="padding-left: 20px;margin-top: 10px;">手动补发</h4>
+        <el-divider style="width: 90%;"></el-divider>
         <el-form label-width="100px">
           <el-form-item label="游戏分组：">
             <el-select v-model="gameGroup" popper-class="gs_colorSelcet" size="small" placeholder="请选择"  @change="groupChanged">
@@ -60,9 +61,10 @@
           </el-form-item>
         </el-form>
       </div>
-      <div style="height:460px;border-right:1px dashed #888;float:left;"></div>
+      <div style="height:500px;border-right:1px dashed #888;float:left;"></div>
       <div class="alignmentright">
-        <h4 style="padding-left: 20px;">整区补发</h4>
+        <h4 style="padding-left: 20px;margin-top: 10px;">整区补发</h4>
+        <el-divider style="width: 90%;"></el-divider>
         <el-form label-width="100px">
           <el-form-item label="游戏分组：">
             <el-select v-model="gameGroup" popper-class="gs_colorSelcet" size="small" placeholder="请选择" @change="groupChanged">
@@ -657,7 +659,7 @@ export default {
 
 <style lang="scss" scoped>
 .opeartbox {
-  height: 450px;
+  height: 500px;
   padding: 0 20px 10px;
   background: #fff;
   overflow: hidden;

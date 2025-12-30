@@ -7,7 +7,7 @@
  -->
 <template>
   <div class="home">
-    <div class="gs_title">分区模版</div>
+    <div class="gs_title" style="color: white;">分区模版</div>
     <div class="gs_tabbox clearfix mgt15">
       <!-- <div class="tabbox">
         <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
@@ -41,6 +41,11 @@
           <el-table-column prop="ratio" label="兑换比例">
           </el-table-column>
           <el-table-column prop="partitionsCount" label="分区个数">
+            <template slot-scope="scope">
+              <span class="partition-count-link" style="color:#409EFF;cursor:pointer;" @click="toPartList(scope.row.id)">
+                {{ scope.row.partitionsCount }}
+              </span>
+            </template>
           </el-table-column>
           <el-table-column label="充值赠送">
             <template slot-scope="scope">
@@ -78,6 +83,10 @@ export default {
     };
   },
   methods: {
+    //前往分区列表页
+    toPartList(id) {
+      this.$router.push({ path: '/main/Zoningmanagement', query: { tempId: id } });
+    },
     // 获取列表
     getlist() {
       this.$api.partmodule

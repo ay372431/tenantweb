@@ -48,7 +48,7 @@
         <div class="slider" :style="sliderStyle">
           <div class="top_tit" :style="headerStyle">账户管理</div>
           <ul>
-            <li :style="sliderStyle">
+            <li :style="sliderStyle" style="margin-top: 10px;">
               <span @click="refresh('/behalf/baseInfo')">账户概览</span>
             </li>
             <li :style="sliderStyle">
@@ -86,23 +86,23 @@ export default {
       // 根据皮肤号返回不同背景色
       switch (this.skinNum) {
         case 1: return { background: '#88434f',color: 'white'};
-        case 2: return { background: '#0398d6',color: 'white' };
+        case 2: return { background: '#2d3338',color: 'white' };
         case 3: return { background: '#3370ff',color: 'white'};
         case 4: return { background: '#d75f28',color: 'white' };
         case 5: return { background: '#88434f',color: 'white'};
         case 6: return { background: '#5d4aee',color: 'white' };
-        default: return { background: '#2d3338',color: 'white' };
+        default: return { background: '#0398d6',color: 'white' };
       }
     },
     sliderStyle() {
       switch (this.skinNum) {
         case 1: return { background: '#eee2e4', color: 'grey' };
-        case 2: return { background: '#e0eaf2', color: 'grey' };
+        case 2: return { background: 'var(--312143a6)', color: 'grey' };
         case 3: return { background: '#e5e6f6', color: 'grey' };
         case 4: return { background: '#f6e5e0', color: 'grey' };
         case 5: return { background: '#e9e3f4', color: 'grey' };
         case 6: return { background: '#e5e0e2', color: 'grey' };
-        default: return { background: 'var(--312143a6)', color: 'grey' };
+        default: return { background: 'linear-gradient(to bottom,#f2f2f2 0,#f8f8f8 100%', color: 'grey' };;
       }
     },
     activeNavStyle() {
