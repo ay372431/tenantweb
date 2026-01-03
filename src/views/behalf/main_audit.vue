@@ -10,7 +10,7 @@
     <div class="header" :style="headerStyle">
       <div class="headbox clearfix" :style="headerStyle" style="display: flex;">
         <div class="logo">
-          <img src="../../assets/images/logo.png" alt="" />
+          <img src="../../assets/img//logo3.png" alt="" />
         </div>
         <ul class="navbox clearfix" style="width: 75%;">
           <li :class="{ active: activeNav === '/behalf/baseInfo' }"

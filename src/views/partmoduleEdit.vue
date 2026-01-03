@@ -557,8 +557,8 @@
             <dt>显示选项：</dt>
             <dd>
               <span class="inputbox pdt5">
-                <el-checkbox v-model="equipmentInfo.checked">网站显示</el-checkbox>
                 <el-checkbox v-model="equipmentInfo.isChecked">游戏显示</el-checkbox>
+                <el-checkbox v-model="equipmentInfo.checked">网站显示</el-checkbox>
               </span>
             </dd>
           </dl>
@@ -1290,11 +1290,7 @@ export default {
           return `${tong}\\Mir200\\Envir\\QuestDiary\\${paySegment}充值积分\\${name}Save.txt`;
         }
       } else {
-        if (this.baseInfo.isDir === 1) {
-          return `${paySegment}充值积分\\${name}Save.txt`;
-        } else {
-          return `..\\QuestDiary\\${paySegment}充值积分\\${name}Save.txt`;
-        }
+        return `..\\QuestDiary\\${paySegment}充值积分\\${name}Save.txt`;
       }
     },
     // 刷新所有积分文件路径（在 created 与 payDir/通区相关变化时调用）
@@ -1517,13 +1513,13 @@ export default {
     gameMoneyChange() {
       if (this.baseInfo.gameMoney === 0) {
         this.baseInfo.gameName = '元宝';
-        this.baseInfo.command = 'GAMEGOLD + ';
+        this.baseInfo.command = 'GAMEGOLD +';
       } else if (this.baseInfo.gameMoney === 1) {
         this.baseInfo.gameName = '金币';
         this.baseInfo.command = 'give 金币';
       } else if (this.baseInfo.gameMoney === 3) {
         this.baseInfo.gameName = '金元';
-        this.baseInfo.command = 'COLLECTPOINT + ';
+        this.baseInfo.command = 'COLLECTPOINT +';
       } else {
         this.baseInfo.gameName = '';
         this.baseInfo.command = '';
@@ -2277,14 +2273,14 @@ export default {
             giveOptionState: this.baseInfo.giveOptionState,
             // 附加赠送
             showAdditional: this.attachInfo.checked,
-            isShow: this.attachInfo.isChecked,
+            // isShow: this.attachInfo.isChecked,
             additionalGives: this.attachInfo.attachList,
             // 积分赠送
             showIntegral: this.integralInfo.checked,
             integralGives: this.integralInfo.integralList,
             // 装备赠送
             showEquip: this.equipmentInfo.checked,
-            // isShow: this.equipmentInfo.isChecked,
+            isShow: this.equipmentInfo.isChecked,
             equipType: this.equipmentInfo.giveType,
             giveOption: this.equipmentInfo.giveOption,
             equipGives: this.equipmentInfo.list,

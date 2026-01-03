@@ -300,7 +300,7 @@ export default {
           label: '待发送'
         }, {
           value: '0',
-          label: '代付款'
+          label: '待付款'
         },
         // {
         //   value: '5',
@@ -461,7 +461,7 @@ export default {
     getlist() {
       this.$api.order
         .orderlist({
-          State: this.activeName !== '-1' ? this.activeName : '1',
+          State: this.activeName,
           StartOrderDate: this.time1 ? this.time1 : '',
           EndOrderDate: this.time2 ? this.time2 : '',
           OrderNumber: this.ordernumber,
@@ -521,7 +521,7 @@ export default {
     // 昨天充值
     yesterdayCharge() {
       this.$api.order
-        .yesterdayCharge({
+        .chargeInfo({
           State: this.activeName,
           StartOrderDate: this.time1 ? this.time1 : '',
           EndOrderDate: this.time2 ? this.time2 : '',
@@ -955,6 +955,18 @@ export default {
     position: relative;
     height: 22px;
     line-height: 22px;
+
+    &.color0 {
+      background: #f56c6c;
+
+      &:after {
+        border-color: #f56c6c;
+      }
+
+      &:before {
+        border-right-color: #f56c6c;
+      }
+    }
 
     &.color1 {
       background: green;

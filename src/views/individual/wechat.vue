@@ -574,7 +574,11 @@
                 empty-text="无数据">
                 <el-table-column prop="name" label="模版名称" align="center" min-width="100" />
                 <el-table-column prop="gameType" label="游戏类型" align="center" min-width="100" />
-                <el-table-column prop="qrcodeType" label="二维码模版" align="center" min-width="100" />
+                <el-table-column prop="qrcodeType" label="二维码模版" align="center" min-width="100">
+                  <template slot-scope="scope">
+                    {{ getQrcodeTitle(scope.row.qrcodeType) }}
+                  </template>
+                </el-table-column>
                 <el-table-column prop="isForce" label="是否强制验证" align="center" min-width="100">
                   <template slot-scope="scope">
                     <span :style="{ color: scope.row.isForce ? '#f56c6c' : '#67c23a' }">{{ scope.row.isForce ? '强制' :
@@ -616,10 +620,8 @@
                     </el-form-item>
                     <el-form-item label="二维码模版" prop="qrcodeType" style="margin-top:18px;">
                       <el-select v-model="wxmbDialog.form.qrcodeType" placeholder="请选择二维码模版">
-                        <!-- <el-option label="BLUE密保" value="BLUE密保"/>
-                        <el-option label="GOM/GEE密保" value="GOM/GEE密保"/> -->
-                        <el-option v-for="(item, i) in qrcodeTemplatesList" :key="i" :label="item.title"
-                          :value="item.title"></el-option>
+                        <el-option v-for="item in qrcodeTemplatesList" :key="item.id" :label="item.title"
+                          :value="item.id"></el-option>
                       </el-select>
                     </el-form-item>
                     <!-- 传奇世界专属：补丁下载 -->
@@ -1924,6 +1926,10 @@ export default {
         .catch((err) => {
           this.$messageError(err.message);
         });
+    },
+    getQrcodeTitle(id) {
+      const item = this.qrcodeTemplatesList.find(item => item.id === id);
+      return item ? item.title : id;
     }
   },
 

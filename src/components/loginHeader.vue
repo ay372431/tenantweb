@@ -54,7 +54,10 @@ export default {
   },
   methods: {
     windowScroll() {
-      this.height = document.getElementsByClassName('contentBox')[0].scrollTop;
+      const el = document.getElementsByClassName('contentBox')[0];
+      if (el) {
+        this.height = el.scrollTop;
+      }
     },
     singin() {
       let mgr = new Mgr();

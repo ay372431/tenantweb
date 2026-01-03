@@ -32,7 +32,7 @@
           <dt></dt>
           <dd>
             <span class="inputbox">
-              <el-checkbox v-model="batchAdd" onchange="isbatchAdd">批量添加分区</el-checkbox>
+              <el-checkbox v-model="batchAdd" @change="isbatchAdd">批量添加分区</el-checkbox>
             </span>
           </dd>
         </dl>
@@ -41,13 +41,7 @@
           <dl class="clearfix" v-for="(item, idx) in batchList" :key="idx">
             <dt>分区名称：</dt>
             <dd style="display: flex; align-items: center;">
-              <el-input v-if="idx === 0"
-                style="width:180px;margin-right:10px;"
-                size="small"
-                v-model="partName"
-                placeholder="分区名称"
-              ></el-input>
-              <el-input v-else
+              <el-input
                 style="width:180px;margin-right:10px;"
                 size="small"
                 v-model="item.name"
@@ -547,6 +541,7 @@ export default {
         if (this.batchAdd) {
           // 批量模式
           // 校验
+          console.log(this.batchList);
           for (let i = 0; i < this.batchList.length; i++) {
             if (!this.batchList[i].name || !this.batchList[i].path) {
               this.$messageError(`第${i + 1}项分区名称和路径不能为空`);

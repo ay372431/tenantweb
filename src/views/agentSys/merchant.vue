@@ -19,7 +19,7 @@
           </div>
           <div class="gs_tablebox">
             <el-table ref="moduleTable" size="mini" :data="subMerchant.tableData" border style="width: 100%" stripe>
-              <el-table-column prop="name" label="注册时间">
+              <el-table-column prop="name" label="注册时间" width="140">
                 <template slot-scope="scope">
                   <p style="height:18px;">{{scope.row.joinDate?scope.row.joinDate.split(' ')[0]:''}}</p>
                   <p style="color:#999;height:18px;">{{scope.row.joinDate?scope.row.joinDate.split(' ')[1]:''}}</p>
@@ -40,7 +40,7 @@
                   <span>{{'T+'+scope.row.settlementType}}</span>
                 </template>
               </el-table-column>
-              <el-table-column prop="partitionsCount" label="最后登陆">
+              <el-table-column prop="partitionsCount" label="最后登陆" width="140">
                 <template slot-scope="scope">
                   <p style="height:18px;">{{scope.row.lastDate?scope.row.lastDate.split(' ')[0]:''}}</p>
                   <p style="color:#999;height:18px;">{{scope.row.lastDate?scope.row.lastDate.split(' ')[1]:''}}</p>

@@ -107,8 +107,8 @@
       </div>
     </div>
     <!-- 充值确认弹窗 -->
-    <el-dialog title="充值确认" :visible.sync="qrcodeDialog" width="760px"
-      :close-on-click-modal="false" @close="closeQrcodeDialog">
+    <el-dialog title="充值确认" :visible.sync="qrcodeDialog" width="760px" :close-on-click-modal="false"
+      @close="closeQrcodeDialog">
       <el-alert title="请确认您的充值信息是否正确！" type="warning" show-icon :closable="false" />
 
       <div class="confirm-grid">
@@ -134,68 +134,86 @@
             <span v-if="result.isFj">，关闭附加赠送</span>
             <span v-if="result.isJf">，关闭积分赠送</span>
             <span v-if="result.isZb">，关闭装备赠送</span>
-            <span v-if="result.redPacketState">，包含红包赠送</span>
-            <span v-if="!result.isClose && !result.isJl && !result.isFj && !result.isJf && !result.isZb && !result.redPacketState">无</span>
+            <span v-if="result.redPacketState && isRedPacketAmount == false">，包含红包赠送</span>
+            <span
+              v-if="!result.isClose && !result.isJl && !result.isFj && !result.isJf && !result.isZb && !result.redPacketState">无</span>
           </div>
         </div>
 
         <div class="section-title">充值货币 / 合计</div>
         <div class="confirm-row small">
           <div class="label">充值货币</div>
-          <div class="value">{{ result.currencyName || '元宝' }} (1:1)</div>
+          <div class="value">{{ result.currencyName || '元宝' }} (1:{{ result.template.ratio || 1 }})</div>
           <div class="label">合计</div>
-          <div class="value">{{ (result.amount + (result.channelGiveAmount || 0) + (result.incentiveGiveAmount || 0) + (result.extraGiveMoney || 0)).toFixed(2) }} 元
-            ,{{ Math.round(result.amount + (result.channelGiveAmount || 0) + (result.incentiveGiveAmount || 0) + (result.extraGiveMoney || 0)) }}{{ result.currencyName || '元宝' }}
+          <div class="value">
+            {{ result.amount.toFixed(2) }} 元,
+            {{ Math.round(result.amount * (result.template.ratio || 1)) }}{{ result.currencyName || '元宝' }}
           </div>
         </div>
 
         <div class="confirm-row" v-if="result.template.giveState && !result.isQd">
           <div class="label">渠道赠送</div>
-          <div class="value">{{ result.channelName }}  赠送{{ result.channelGiveRate }}%</div>
+          <div class="value">{{ result.channelName }} 赠送{{ result.channelGiveRate }}%</div>
           <div class="label">合计</div>
-          <div class="value">{{ result.channelGiveAmount }}元,{{ result.channelGiveAmount }}{{ result.currencyName }}</div>
+          <div class="value">
+            {{ result.channelGiveAmount }}元,
+            {{ Math.round(result.channelGiveAmount * (result.channelGiveRate || 1)) }}{{ result.currencyName || '元宝' }}
+          </div>
         </div>
 
         <div class="confirm-row" v-if="result.template.isContains && !result.isJl">
           <div class="label">激励赠送</div>
           <div class="value">充值{{ result.incetiveAomunt }} 赠送 {{ result.incentiveGiveAmount }}元</div>
           <div class="label">合计</div>
-          <div class="value" v-if="result.template.giveOptionState == 0">{{ result.incentiveGiveAmount }}元,{{ result.incentiveGiveAmount }}{{ result.currencyName }}</div>
-          <div class="value" v-if="result.template.giveOptionState == 1">{{ result.incentiveGiveAmount + result.channelGiveAmount }}元,{{ result.incentiveGiveAmount + result.channelGiveAmount }}{{ result.currencyName }}</div>
+          <div class="value" v-if="result.template.giveOptionState == 0">{{ result.incentiveGiveAmount }}元,{{
+            result.incentiveGiveAmount }}{{ result.currencyName }}</div>
+          <div class="value" v-if="result.template.giveOptionState == 1">{{ result.incentiveGiveAmount +
+            result.channelGiveAmount }}元,{{ result.incentiveGiveAmount + result.channelGiveAmount }}{{
+              result.currencyName
+            }}</div>
         </div>
 
         <div class="section-title" v-if="!result.isFj">附加赠送</div>
         <div class="chips" v-if="!result.isFj">
-          <el-tag v-for="(item, idx) in result.infoAdditional || []" :key="'add-'+idx" type="info" class="chip">
-            <!-- {{ item.name }} * {{ item.num }} -->
-              <span v-if="item.type === 1">{{ item.name }} * {{ result.amount }}</span>
-              <span v-if="item.type === 2">{{ item.name }} * {{ result.amount +  result.channelGiveAmount}}</span>
-              <span v-if="item.type === 3">{{ item.name }} * {{ result.amount +  result.incentiveGiveAmount}}</span>
-              <span v-if="item.type === 4">{{ item.name }} * {{ result.amount +  result.channelGiveAmount + result.incentiveGiveAmount}}</span>
+          <el-tag v-for="(item, idx) in (result.infoAdditional || []).filter(i => i.type > 0 && i.name)"
+            :key="'add-' + idx" type="info" class="chip">
+            <span v-if="item.type === 1">{{ item.name }} * {{ Math.round(result.amount * item.ratio) }}</span>
+            <span v-if="item.type === 2">{{ item.name }} * {{ Math.round((result.amount + result.channelGiveAmount) * item.ratio) }}</span>
+            <span v-if="item.type === 3">{{ item.name }} * {{ Math.round((result.amount + result.incentiveGiveAmount) * item.ratio) }}</span>
+            <span v-if="item.type === 4">{{ item.name }} * {{ Math.round((result.amount + result.channelGiveAmount +
+              result.incentiveGiveAmount) * item.ratio) }}</span>
           </el-tag>
+          <span v-if="!((result.infoAdditional || []).filter(i => i.type > 0 && i.name).length)">无</span>
           <span v-if="!(result.infoAdditional && result.infoAdditional.length)">无</span>
         </div>
 
         <div class="section-title" v-if="!result.isJf">积分赠送</div>
         <div class="chips" v-if="!result.isJf">
-          <el-tag v-for="(item, idx) in result.infoIntegral || []" :key="'jf-'+idx" type="success" class="chip">
-            <span v-if="item.type === 1">{{ item.name }} * {{ result.amount }}</span>
-            <span v-if="item.type === 2">{{ item.name }} * {{ result.amount +  result.channelGiveAmount}}</span>
-            <span v-if="item.type === 3">{{ item.name }} * {{ result.amount +  result.incentiveGiveAmount}}</span>
-            <span v-if="item.type === 4">{{ item.name }} * {{ result.amount +  result.channelGiveAmount + result.incentiveGiveAmount}}</span>
+          <el-tag v-for="(item, idx) in (result.infoIntegral || []).filter(i => i.type > 0 && i.name)"
+            :key="'jf-' + idx" type="success" class="chip">
+            <span v-if="item.type === 1">{{ item.name }} * {{ Math.round(result.amount * item.ratio) }}</span>
+            <span v-if="item.type === 2">{{ item.name }} * {{ Math.round((result.amount + result.channelGiveAmount) * item.ratio) }}</span>
+            <span v-if="item.type === 3">{{ item.name }} * {{ Math.round((result.amount + result.incentiveGiveAmount) * item.ratio) }}</span>
+            <span v-if="item.type === 4">{{ item.name }} * {{ Math.round((result.amount + result.channelGiveAmount +
+              result.incentiveGiveAmount) * item.ratio) }}</span>
           </el-tag>
+          <span v-if="!((result.infoIntegral || []).filter(i => i.type > 0 && i.name).length)">无</span>
           <span v-if="!(result.infoIntegral && result.infoIntegral.length)">无</span>
         </div>
 
         <div class="section-title" v-if="result.equipType !== 0 && !result.isZb">装备赠送</div>
         <div class="chips" v-if="result.equipType !== 0 && !result.isZb">
-          <el-tag v-for="(item, idx) in visibleEquipItems" :key="'eq-'+idx" type="warning" class="chip">
+          <el-tag v-for="(item, idx) in visibleEquipItems" :key="'eq-' + idx" type="warning" class="chip">
             {{ item.name }}
           </el-tag>
           <span v-if="!visibleEquipItems.length">无</span>
         </div>
 
-        <div class="summary">主货币总计： <strong class="summary-amount">{{ (result.amount + (result.channelGiveAmount || 0) + (result.incentiveGiveAmount || 0) + (result.extraGiveMoney || 0)).toFixed(2) }} 元，{{ Math.round(result.amount + (result.channelGiveAmount || 0) + (result.incentiveGiveAmount || 0) + (result.extraGiveMoney || 0)) }} 元宝</strong></div>
+        <div class="summary">主货币总计： <strong class="summary-amount">{{ (result.amount + (result.channelGiveAmount || 0) +
+          (result.incentiveGiveAmount || 0) + (result.extraGiveMoney || 0)).toFixed(2) }} 元，{{
+              Math.round((result.amount +
+                (result.channelGiveAmount || 0) + (result.incentiveGiveAmount || 0) + (result.extraGiveMoney || 0)) * result.ratio) }}
+            {{result.currencyName}}</strong></div>
       </div>
 
       <div slot="footer" class="dialog-footer">
@@ -732,12 +750,23 @@ export default {
   width: 55%;
   float: right;
 }
-.confirm-grid {
-  padding: 16px 22px;
-  font-size: 14px;
-  color: #333;
+::v-deep .el-dialog__body {
+  padding-bottom: 0 !important;
+  max-height: 60vh;
   overflow-y: auto;
-  max-height: 500px;
+}
+.confirm-grid {
+  max-height: 50vh;
+  overflow-y: auto;
+  padding-bottom: 12px;
+}
+::v-deep .el-dialog__footer {
+  position: sticky;
+  bottom: 0;
+  background: #fff;
+  z-index: 2;
+  box-shadow: 0 -2px 8px #0001;
+  padding: 10px 22px 18px;
 }
 .confirm-row {
   display: grid;
@@ -747,9 +776,20 @@ export default {
   border-bottom: 1px solid #f5f5f5;
   padding: 12px 0;
 }
-.confirm-row.small { padding: 8px 0; }
-.label { color: #888; font-size: 13px; }
-.value { color: #333; font-size: 14px; }
+
+.confirm-row.small {
+  padding: 8px 0;
+}
+
+.label {
+  color: #888;
+  font-size: 13px;
+}
+
+.value {
+  color: #333;
+  font-size: 14px;
+}
 
 .section-title {
   margin-top: 14px;
@@ -758,14 +798,27 @@ export default {
   font-weight: 600;
 }
 
-.chips { padding: 8px 0 12px 0; border-bottom: 1px solid #f5f5f5; }
-.chip { margin-right: 8px; margin-bottom: 6px; }
+.chips {
+  padding: 8px 0 12px 0;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.chip {
+  margin-right: 8px;
+  margin-bottom: 6px;
+}
 
 .summary {
   padding: 14px 0 6px 0;
   color: #c40000;
   font-weight: 700;
 }
-.summary-amount { font-size: 15px; }
-.dialog-footer { padding: 10px 22px 18px; }
+
+.summary-amount {
+  font-size: 15px;
+}
+
+.dialog-footer {
+  padding: 10px 22px 18px;
+}
 </style>
