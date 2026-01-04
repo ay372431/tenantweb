@@ -78,7 +78,7 @@ export default {
           let m = datatime.getMinutes();
           let s = datatime.getSeconds();
           let curDate = datatime.getTime();
-          let three = 30 * 24 * 3600 * 1000;
+          let three = 90 * 24 * 3600 * 1000;
           let threeMonths = curDate - three;
           return (
             time.getTime() < threeMonths ||

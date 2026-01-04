@@ -521,7 +521,7 @@ export default {
     // 昨天充值
     yesterdayCharge() {
       this.$api.order
-        .chargeInfo({
+        .yesterdayCharge({
           State: this.activeName,
           StartOrderDate: this.time1 ? this.time1 : '',
           EndOrderDate: this.time2 ? this.time2 : '',
