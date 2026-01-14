@@ -35,7 +35,7 @@
                 </el-radio-group>
               </el-form-item>
               <div v-if="form.isPlatOpenWxValid && !form.isOwnAccount" class="tc pdt20 pdb25">
-                <img style="width:200px;height:200px;" :src="wxQrStr" alt="">
+                <img style="width:200px;height:200px;" :src="codeimg + '?t=' + Date.now()" alt="">
                 <p class="mgt5"><span>请保存微信二维码，并配置到游戏中</span></p>
               </div>
               <div v-if="form.isOwnAccount && isEnabledWxValid">
@@ -140,7 +140,7 @@
                 <el-form-item label="公众号二维码：" v-if="codeimg">
                   <el-row>
                     <el-col :span="10">
-                      <img style="width:200px;height:200px;" :src="codeimg" alt="">
+                      <img style="width:200px;height:200px;" :src="codeimg + '?t=' + Date.now()" alt="">
                     </el-col>
                   </el-row>
                 </el-form-item>
@@ -1233,7 +1233,7 @@ export default {
       var decrypted = CryptoJS.AES.decrypt(cipher, key, { iv: iv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7 }).toString(CryptoJS.enc.Utf8);
       if(!decrypted){ document.getElementById('container').innerHTML = '<div class="err">解密失败</div>'; return; }
       var img = document.createElement('img');
-      img.src = decrypted;
+      img.src = decrypted + '?t=' + Date.now();
       img.alt = '二维码';
       document.getElementById('container').innerHTML = '';
       document.getElementById('container').appendChild(img);
@@ -1718,43 +1718,43 @@ export default {
         // 传奇世界
         if (gameType === '传奇世界') {
           this.wxmbDialog.form = {
-            name: '',
+            name: '微信密保模版',
             gameType: '传奇世界',
             qrcodeType: '',
             patchType: '',
             isForce: true,
-            mbMapId: '',
-            finishMapId: '',
-            npcName: '',
-            npcs: [{ mapId: '', x: 0, y: 0, lookId: '' }],
+            mbMapId: '3',
+            finishMapId: '3',
+            npcName: '密保NPC',
+            npcs: [{ mapId: '3', x: 0, y: 0, lookId: '3' }],
             transferEnable: false,
-            transferMinAmount: '',
-            transferNpcName: '',
-            transferNpcs: [{ mapId: '', x: 0, y: 0, lookId: '' }]
+            transferMinAmount: '100',
+            transferNpcName: '转区NPC',
+            transferNpcs: [{ mapId: '3', x: 0, y: 0, lookId: '3' }]
           };
         } else {
           // 热血传奇
           this.wxmbDialog.form = {
-            name: '',
-            gameType: gameType || '',
+            name: '微信密保模版',
+            gameType: gameType || '热血传奇',
             qrcodeType: '',
             isForce: true,
-            mbMapId: '',
-            finishMapId: '',
-            machineVar: '',
-            openidVar: '',
-            wxVar: '',
-            npcName: '',
-            npcs: [{ mapId: '', x: 0, y: 0, lookId: '' }],
+            mbMapId: '3',
+            finishMapId: '3',
+            machineVar: 'T47',
+            openidVar: 'T48',
+            wxVar: 'T49',
+            npcName: '密保NPC',
+            npcs: [{ mapId: '3', x: 0, y: 0, lookId: '3' }],
             transferEnable: false,
-            transferMinAmount: '',
-            transferRechargeVar: '',
-            transferUsedVar: '',
-            transferFlagVar: '',
-            transferCoinVar: '',
-            transferCoinName: '',
-            transferNpcName: '',
-            transferNpcs: [{ mapId: '', x: 0, y: 0, lookId: '' }]
+            transferMinAmount: '100',
+            transferRechargeVar: 'U46',
+            transferUsedVar: 'U47',
+            transferFlagVar: 'U48',
+            transferCoinVar: 'U49',
+            transferCoinName: '游戏币',
+            transferNpcName: '转区NPC',
+            transferNpcs: [{ mapId: '3', x: 0, y: 0, lookId: '3' }]
           };
         }
       }

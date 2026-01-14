@@ -157,7 +157,7 @@
           <div class="label">合计</div>
           <div class="value">
             {{ result.channelGiveAmount }}元,
-            {{ Math.round(result.channelGiveAmount * (result.channelGiveRate || 1)) }}{{ result.currencyName || '元宝' }}
+            {{ Math.round(result.channelGiveAmount * result.ratio) }}{{ result.currencyName || '元宝' }}
           </div>
         </div>
 
@@ -166,9 +166,9 @@
           <div class="value">充值{{ result.incetiveAomunt }} 赠送 {{ result.incentiveGiveAmount }}元</div>
           <div class="label">合计</div>
           <div class="value" v-if="result.template.giveOptionState == 0">{{ result.incentiveGiveAmount }}元,{{
-            result.incentiveGiveAmount }}{{ result.currencyName }}</div>
+            Math.round(result.incentiveGiveAmount * (result.template.ratio || 1)) }}{{ result.currencyName }}</div>
           <div class="value" v-if="result.template.giveOptionState == 1">{{ result.incentiveGiveAmount +
-            result.channelGiveAmount }}元,{{ result.incentiveGiveAmount + result.channelGiveAmount }}{{
+            result.channelGiveAmount }}元,{{ Math.round((result.incentiveGiveAmount + result.channelGiveAmount) * (result.template.ratio || 1)) }}{{
               result.currencyName
             }}</div>
         </div>

@@ -213,7 +213,7 @@
 <script>
 export default {
   data() {
-    const today = new Date().toISOString().slice(0, 10);
+    // const today = new Date().toISOString().slice(0, 10);
     return {
       activeName: '1', // tab切换
       tab1: {
@@ -247,8 +247,8 @@ export default {
         show: false
       },
       tab5: {
-        time1: today, // 日期
-        time2: today, // 日期
+        time1: this.getCerentDate(true), // 日期
+        time2: this.getCerentDate(true), // 日期
         tableData: [],
         pageIndex: 1, // 页码
         pageSize: 20, // 每页的条数

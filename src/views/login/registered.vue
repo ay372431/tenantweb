@@ -29,7 +29,7 @@
                 <el-input v-model="account" placeholder="请输入登录账号" @input="checkAccount" @blur="checkAccount1">
                 </el-input>
                 <p class="tip" :class="{ wrong: !checkflag1 }">
-                  账号由3~10个英文字母或数字组成
+                  账号由3~18个英文字母或数字组成
                 </p>
               </div>
             </li>
@@ -775,12 +775,12 @@ export default {
     },
     // 校验帐号
     checkAccount() {
-      if (this.account.length > 10) {
-        this.account = this.account.substr(0, 10);
+      if (this.account.length > 18) {
+        this.account = this.account.substr(0, 18);
       }
     },
     checkAccount1() {
-      let reg = /^[a-zA-Z0-9]{3,10}$/;
+      let reg = /^[a-zA-Z0-9]{3,18}$/;
       this.checkflag1 = reg.test(this.account);
     },
     // 校验昵称
