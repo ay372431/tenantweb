@@ -328,8 +328,8 @@ export default {
           this.getechart4();
         });
       } else if (this.activeName === '5') {
-        this.tab5.time1 = ''; // 日期
-        this.tab5.time2 = ''; // 日期
+        this.tab5.time1 = this.getCerentDate(true); // 日期
+        this.tab5.time2 = this.getCerentDate(true); // 日期
         this.tab5.tableData = [];
         this.tab5.pageIndex = 1; // 页码
         this.tab5.pageSize = 20; // 每页的条数
